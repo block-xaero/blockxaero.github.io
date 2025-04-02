@@ -1,9 +1,7 @@
 // main.dart - Entry point of the application
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'custom_diagrams.dart'; // Import your custom diagram classes here
 
 void main() {
   runApp(const BlockXaeroApp());
@@ -211,16 +209,16 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16.0),
                           child: Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.block,
                                 color: Colors.blueAccent,
                                 size: 24,
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8),
                               Text(
                                 'block-xaero',
                                 style: TextStyle(
@@ -295,7 +293,7 @@ class OverviewPage extends StatelessWidget {
                 size: 72,
               ),
               const SizedBox(height: 24),
-              Text(
+              const Text(
                 'block-xaero',
                 style: TextStyle(
                   color: Colors.white,
@@ -841,38 +839,6 @@ class ProjectPage extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  Widget _buildArchitectureDiagram(String projectTitle, String diagramType) {
-    switch (diagramType) {
-      case "zeroid_architecture":
-        return const ZeroIDArchitectureDiagram();
-      case "onechain_architecture":
-        return const OneChainArchitectureDiagram();
-      case "xaeroflux_architecture":
-        return const XaeroFluxArchitectureDiagram();
-      default:
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.architecture,
-                size: 64,
-                color: Colors.blueAccent,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                '$projectTitle Architecture Diagram',
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-        );
-    }
   }
 
   Widget _buildSection({
