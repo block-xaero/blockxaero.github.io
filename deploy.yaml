@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4 # Updated to v4
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.13.0'
@@ -19,10 +19,11 @@ jobs:
       run: flutter pub get
 
     - name: Build web
-      run: flutter build web --release
+      run: flutter build web --release --base-href=/ # Added base-href
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
+        publish_branch: main # Optional: specify the branch to publish to
