@@ -9,17 +9,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  # Updated to v4
+    - uses: actions/checkout@v4 # Updated to v4
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.18.0'
+        flutter-version: '3.13.0'
         channel: 'stable'
 
     - name: Install dependencies
       run: flutter pub get
 
     - name: Build web
-      run: flutter build web --release --base-href=/  # Added base-href
+      run: flutter build web --release --base-href=/ # Added base-href
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
