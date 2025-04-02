@@ -420,17 +420,12 @@ class OverviewPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               Container(
-                height: 300,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: CustomPaint(
-                  painter: SystemArchitecturePainter(),
-                  size: const Size(double.infinity, 300),
-                ),
-              ),
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(16),
+                  )),
               const SizedBox(height: 24),
               const Text(
                 'The block-xaero ecosystem consists of three main components that work together to provide a complete decentralized solution:',
