@@ -26,3 +26,5 @@ jobs:
         github_token: ${{ secrets.GH_PAT }}
         publish_dir: ./build/web
         publish_branch: gh-pages
+
+## This workflow builds the Flutter web app and deploys it to GitHub Pages.
