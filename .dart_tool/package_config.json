@@ -3,9 +3,9 @@
   "packages": [
     {
       "name": "animated_text_kit",
-      "rootUri": "file:///Users/anirudhvyas/.pub-cache/hosted/pub.dev/animated_text_kit-4.2.3",
+      "rootUri": "file:///Users/anirudhvyas/.pub-cache/hosted/pub.dev/animated_text_kit-4.2.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.17"
     },
     {
       "name": "async",
@@ -266,13 +266,13 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "block_xaero_web",
+      "name": "block_xaero",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2025-04-02T21:38:28.980608Z",
+  "generated": "2025-04-02T21:53:09.481024Z",
   "generator": "pub",
   "generatorVersion": "3.7.0",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.27.1/flutter",
