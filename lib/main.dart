@@ -165,12 +165,12 @@ class _HomePageState extends State<HomePage> {
               NavigationRailDestination(
                 icon: Icon(Icons.fingerprint_outlined),
                 selectedIcon: Icon(Icons.fingerprint),
-                label: Text('ZeroID'),
+                label: Text('XaeroID'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.link_outlined),
                 selectedIcon: Icon(Icons.link),
-                label: Text('OneChain'),
+                label: Text('XaeroChain'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.storage_outlined),
