@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Cyan - Collaboration that keeps up with you. Boards, Notes, Notebooks, Canvas, Chat. All synced instantly. All private.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Cyan - Collaboration Platform">
+  <meta property="og:description" content="Boards. Notes. Notebooks. Canvas. Chat. All synced instantly. All private.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blockxaero.io">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cyan - Collaboration Platform">
+  <meta name="twitter:description" content="Boards. Notes. Notebooks. Canvas. Chat. All synced instantly. All private.">
+  
+  <!-- iOS meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Cyan">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  
+  <title>Cyan - Collaboration Platform</title>
+  
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build
+    const serviceWorkerVersion = "223315552";
+  </script>
+  
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <style>
+    /* Loading styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #272822;
+      overflow: hidden;
+    }
+    
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .loading-text {
+      color: #75715E;
+      font-size: 14px;
+      margin-top: 24px;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #3E3D32;
+      border-top-color: #66D9EF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">// loading cyan</div>
+  </div>
+  
+  <script src="flutter.js" defer></script>
+  <script>
+    window.addEventListener('load', function(ev) {
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            // Hide loading screen
+            document.getElementById('loading').style.display = 'none';
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
