@@ -1,186 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/services.dart';
-import 'dart:html' as html;
+import 'dart:math' as math;
 
 void main() {
   runApp(const CyanWebsite());
 }
 
 // =============================================================================
-// ANIMATED CONSTELLATION WIDGET
-// =============================================================================
-
-class AnimatedConstellation extends StatefulWidget {
-  final double size;
-  const AnimatedConstellation({super.key, this.size = 400});
-
-  @override
-  State<AnimatedConstellation> createState() => _AnimatedConstellationState();
-}
-
-class _AnimatedConstellationState extends State<AnimatedConstellation>
-    with TickerProviderStateMixin {
-  late AnimationController _pulseController;
-  late AnimationController _flowController;
-  late Animation<double> _pulseAnimation;
-  late Animation<double> _flowAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    
-    _pulseController = AnimationController(
-      duration: const Duration(milliseconds: 2500),
-      vsync: this,
-    )..repeat(reverse: true);
-    
-    _flowController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
-      vsync: this,
-    )..repeat();
-    
-    _pulseAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-    
-    _flowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_flowController);
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    _flowController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.size,
-      height: widget.size,
-      child: AnimatedBuilder(
-        animation: Listenable.merge([_pulseController, _flowController]),
-        builder: (context, child) {
-          return CustomPaint(
-            size: Size(widget.size, widget.size),
-            painter: ConstellationPainter(
-              pulseValue: _pulseAnimation.value,
-              flowValue: _flowAnimation.value,
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class ConstellationPainter extends CustomPainter {
-  final double pulseValue;
-  final double flowValue;
-
-  ConstellationPainter({required this.pulseValue, required this.flowValue});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final scale = size.width / 400;
-    
-    // Node positions (relative to center)
-    final topLeft = center + Offset(-70 * scale, -100 * scale);
-    final topRight = center + Offset(70 * scale, -100 * scale);
-    final bottom = center + Offset(0, 120 * scale);
-    
-    // Edge paint
-    final edgePaint = Paint()
-      ..color = Monokai.cyan.withOpacity(0.25)
-      ..strokeWidth = 2 * scale
-      ..strokeCap = StrokeCap.round;
-    
-    // Draw edges
-    canvas.drawLine(center, topLeft, edgePaint);
-    canvas.drawLine(center, topRight, edgePaint);
-    canvas.drawLine(center, bottom, edgePaint);
-    
-    // Draw flowing particles
-    _drawFlowingParticle(canvas, center, topLeft, flowValue, scale);
-    _drawFlowingParticle(canvas, center, topRight, (flowValue + 0.33) % 1.0, scale);
-    _drawFlowingParticle(canvas, center, bottom, (flowValue + 0.66) % 1.0, scale);
-    
-    // Outer nodes
-    _drawNode(canvas, topLeft, 10 * scale, 0.6 + (pulseValue - 1.0) * 0.2);
-    _drawNode(canvas, topRight, 10 * scale, 0.6 + ((pulseValue - 0.9) * 0.3).abs());
-    _drawNode(canvas, bottom, 10 * scale, 0.6 + ((pulseValue - 1.1) * 0.25).abs());
-    
-    // Center node (larger, pulsing)
-    _drawCenterNode(canvas, center, 18 * scale * pulseValue);
-  }
-
-  void _drawFlowingParticle(Canvas canvas, Offset from, Offset to, double t, double scale) {
-    // Particle flows from outer node to center
-    final pos = Offset.lerp(to, from, t)!;
-    final opacity = t < 0.1 ? t * 10 : (t > 0.9 ? (1.0 - t) * 10 : 1.0);
-    
-    final particlePaint = Paint()
-      ..color = Monokai.cyan.withOpacity(0.8 * opacity)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3 * scale);
-    
-    canvas.drawCircle(pos, 4 * scale, particlePaint);
-  }
-
-  void _drawNode(Canvas canvas, Offset pos, double radius, double opacity) {
-    // Outer glow
-    final glowPaint = Paint()
-      ..color = Monokai.cyan.withOpacity(0.15 * opacity)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.8);
-    canvas.drawCircle(pos, radius * 1.5, glowPaint);
-    
-    // Dark core
-    final corePaint = Paint()..color = const Color(0xFF004d4d).withOpacity(opacity);
-    canvas.drawCircle(pos, radius, corePaint);
-    
-    // Bright ring
-    final ringPaint = Paint()..color = Monokai.cyan.withOpacity(opacity);
-    canvas.drawCircle(pos, radius * 0.65, ringPaint);
-    
-    // Center dot
-    final dotPaint = Paint()..color = const Color(0xFFb2ebf2).withOpacity(opacity);
-    canvas.drawCircle(pos, radius * 0.25, dotPaint);
-  }
-
-  void _drawCenterNode(Canvas canvas, Offset pos, double radius) {
-    // Strong glow
-    final glowPaint = Paint()
-      ..color = Monokai.cyan.withOpacity(0.2)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius);
-    canvas.drawCircle(pos, radius * 1.8, glowPaint);
-    
-    // Dark base
-    final basePaint = Paint()..color = const Color(0xFF003d3d);
-    canvas.drawCircle(pos, radius, basePaint);
-    
-    // Gradient middle
-    final midPaint = Paint()..color = Monokai.cyan.withOpacity(0.9);
-    canvas.drawCircle(pos, radius * 0.7, midPaint);
-    
-    // Bright center
-    final centerPaint = Paint()..color = const Color(0xFFb2ebf2);
-    canvas.drawCircle(pos, radius * 0.4, centerPaint);
-    
-    // White core
-    final whitePaint = Paint()..color = Colors.white;
-    canvas.drawCircle(pos, radius * 0.15, whitePaint);
-  }
-
-  @override
-  bool shouldRepaint(ConstellationPainter oldDelegate) {
-    return oldDelegate.pulseValue != pulseValue || oldDelegate.flowValue != flowValue;
-  }
-}
-
-// =============================================================================
-// MONOKAI THEME (exact colors from ThemeManager.swift)
+// MONOKAI THEME
 // =============================================================================
 
 class Monokai {
@@ -201,8 +29,8 @@ class Monokai {
   static const Color orange = Color(0xFFFD971F);
   static const Color pink = Color(0xFFF92672);
   
-  // Darker background for hero
   static const Color heroBackground = Color(0xFF1a1a17);
+  static const Color darkBackground = Color(0xFF0d0d0a);
 }
 
 // =============================================================================
@@ -215,21 +43,14 @@ class CyanWebsite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cyan - Collaboration Platform',
+      title: 'Cyan',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Monokai.background,
+        scaffoldBackgroundColor: Monokai.darkBackground,
         colorScheme: ColorScheme.dark(
           primary: Monokai.cyan,
           secondary: Monokai.green,
           surface: Monokai.surface,
-          background: Monokai.background,
-        ),
-        textTheme: GoogleFonts.jetBrainsMonoTextTheme(
-          ThemeData.dark().textTheme,
-        ).apply(
-          bodyColor: Monokai.foreground,
-          displayColor: Monokai.foreground,
         ),
       ),
       home: const CyanHomePage(),
@@ -248,152 +69,139 @@ class CyanHomePage extends StatefulWidget {
   State<CyanHomePage> createState() => _CyanHomePageState();
 }
 
-class _CyanHomePageState extends State<CyanHomePage> {
-  final ScrollController _scrollController = ScrollController();
+class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMixin {
+  String? _selectedNode;
   final TextEditingController _emailController = TextEditingController();
-  bool _isScrolled = false;
   bool _emailSubmitted = false;
+  
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final isScrolled = _scrollController.offset > 50;
-    if (isScrolled != _isScrolled) {
-      setState(() => _isScrolled = isScrolled);
-    }
-  }
-
-  void _scrollToSection(String section) {
-    // Simple scroll - in production you'd use keys
-    double offset = 0;
-    switch (section) {
-      case 'features':
-        offset = 800;
-        break;
-      case 'lens':
-        offset = 1400;
-        break;
-      case 'download':
-        offset = 100;
-        break;
-    }
-    _scrollController.animateTo(
-      offset,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat(reverse: true);
+    
+    _pulseAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
   }
 
-  void _submitEmail() {
-    if (_emailController.text.isNotEmpty && _emailController.text.contains('@')) {
-      // For now, just show confirmation
-      // TODO: Wire to Buttondown or your backend
-      setState(() => _emailSubmitted = true);
-      // Could also open mailto or post to API
-      print('Email submitted: ${_emailController.text}');
-    }
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _emailController.dispose();
+    super.dispose();
   }
 
-  void _openRequestDemo() async {
-    final uri = Uri.parse('mailto:demo@blockxaero.io?subject=Cyan Demo Request');
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
+  void _selectNode(String? node) {
+    setState(() {
+      _selectedNode = _selectedNode == node ? null : node;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 768;
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < 768;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Main content
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: [
-                _buildHero(isMobile),
-                _buildFeatures(isMobile),
-                _buildLensAI(isMobile),
-                _buildWhyCyan(isMobile),
-                _buildFooter(isMobile),
-              ],
-            ),
-          ),
-          // Fixed navbar
-          _buildNavbar(isMobile),
-        ],
-      ),
-    );
-  }
-
-  // ===========================================================================
-  // NAVBAR
-  // ===========================================================================
-
-  Widget _buildNavbar(bool isMobile) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      height: 64,
-      decoration: BoxDecoration(
-        color: _isScrolled 
-            ? Monokai.background.withOpacity(0.95) 
-            : Colors.transparent,
-        border: Border(
-          bottom: BorderSide(
-            color: _isScrolled ? Monokai.divider : Colors.transparent,
-            width: 1,
-          ),
-        ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 48),
-        child: Row(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
-            // Logo
-            Image.asset(
-              'assets/cyan-wordmark.png',
-              height: 32,
-              filterQuality: FilterQuality.high,
-            ),
-            const Spacer(),
-            if (!isMobile) ...[
-              _navLink('Features', () => _scrollToSection('features')),
-              const SizedBox(width: 32),
-              _navLink('Lens AI', () => _scrollToSection('lens')),
-              const SizedBox(width: 32),
-              _navLink('Download', () => _scrollToSection('download')),
-              const SizedBox(width: 32),
-              _buildRequestDemoButton(),
-            ] else
-              IconButton(
-                icon: const Icon(Icons.menu, color: Monokai.foreground),
-                onPressed: () => _showMobileMenu(),
-              ),
+            // Main hero with constellation
+            _buildHeroSection(size, isMobile),
+            // Expanded content based on selection
+            if (_selectedNode != null) _buildExpandedContent(_selectedNode!, isMobile),
+            // Footer
+            _buildFooter(isMobile),
           ],
         ),
       ),
     );
   }
 
-  Widget _navLink(String text, VoidCallback onTap) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Text(
-          text,
-          style: GoogleFonts.jetBrainsMono(
-            color: Monokai.foregroundSecondary,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+  Widget _buildHeroSection(Size size, bool isMobile) {
+    return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(
+        minHeight: isMobile ? size.height * 0.9 : size.height * 0.85,
+      ),
+      decoration: const BoxDecoration(
+        gradient: RadialGradient(
+          center: Alignment.center,
+          radius: 1.2,
+          colors: [
+            Color(0xFF1a1a17),
+            Monokai.darkBackground,
+          ],
+        ),
+      ),
+      child: Stack(
+        children: [
+          // Navbar
+          _buildNavbar(isMobile),
+          // Central content
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 60),
+                // Headline
+                Text(
+                  'Cyan',
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: isMobile ? 28 : 36,
+                    fontWeight: FontWeight.w700,
+                    color: Monokai.cyan,
+                    letterSpacing: 4,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Collaboration that keeps up with you',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: isMobile ? 14 : 16,
+                    color: Monokai.foregroundSecondary,
+                  ),
+                ),
+                SizedBox(height: isMobile ? 40 : 60),
+                // Interactive Constellation
+                _buildConstellation(isMobile),
+                SizedBox(height: isMobile ? 40 : 50),
+                // Download + signup (compact)
+                _buildDownloadSection(isMobile),
+              ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavbar(bool isMobile) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: 56,
+        padding: EdgeInsets.symmetric(horizontal: isMobile ? 16 : 40),
+        child: Row(
+          children: [
+            // Logo
+            Image.asset(
+              'assets/cyan-wordmark.png',
+              height: 24,
+              filterQuality: FilterQuality.high,
+            ),
+            const Spacer(),
+            _buildRequestDemoButton(),
+          ],
         ),
       ),
     );
@@ -403,9 +211,12 @@ class _CyanHomePageState extends State<CyanHomePage> {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: _openRequestDemo,
+        onTap: () async {
+          final uri = Uri.parse('mailto:demo@blockxaero.io?subject=Cyan Demo Request');
+          if (await canLaunchUrl(uri)) await launchUrl(uri);
+        },
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
           decoration: BoxDecoration(
             border: Border.all(color: Monokai.cyan.withOpacity(0.5)),
             borderRadius: BorderRadius.circular(4),
@@ -414,7 +225,7 @@ class _CyanHomePageState extends State<CyanHomePage> {
             'Request Demo',
             style: GoogleFonts.jetBrainsMono(
               color: Monokai.cyan,
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -423,719 +234,507 @@ class _CyanHomePageState extends State<CyanHomePage> {
     );
   }
 
-  void _showMobileMenu() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Monokai.surface,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: Text('Features', style: GoogleFonts.jetBrainsMono(color: Monokai.foreground)),
-              onTap: () {
-                Navigator.pop(context);
-                _scrollToSection('features');
-              },
+  // ===========================================================================
+  // INTERACTIVE CONSTELLATION
+  // ===========================================================================
+
+  Widget _buildConstellation(bool isMobile) {
+    final nodeSize = isMobile ? 260.0 : 340.0;
+    
+    return SizedBox(
+      width: nodeSize,
+      height: nodeSize,
+      child: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, child) {
+          return CustomPaint(
+            painter: ConstellationBackgroundPainter(
+              pulseValue: _pulseAnimation.value,
+              selectedNode: _selectedNode,
             ),
-            ListTile(
-              title: Text('Lens AI', style: GoogleFonts.jetBrainsMono(color: Monokai.foreground)),
-              onTap: () {
-                Navigator.pop(context);
-                _scrollToSection('lens');
-              },
-            ),
-            ListTile(
-              title: Text('Download', style: GoogleFonts.jetBrainsMono(color: Monokai.foreground)),
-              onTap: () {
-                Navigator.pop(context);
-                _scrollToSection('download');
-              },
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _openRequestDemo();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Monokai.cyan.withOpacity(0.2),
-                  foregroundColor: Monokai.cyan,
+            child: Stack(
+              children: [
+                // Center node - Cyan core
+                _buildCenterNode(nodeSize),
+                // Top node - Collaboration
+                _buildOuterNode(
+                  nodeSize: nodeSize,
+                  angle: -90,
+                  distance: nodeSize * 0.38,
+                  label: 'Collaboration',
+                  sublabel: 'Real-time teamwork',
+                  icon: Icons.people_outline,
+                  color: Monokai.green,
+                  nodeId: 'collaboration',
                 ),
-                child: Text('Request Demo', style: GoogleFonts.jetBrainsMono()),
+                // Bottom-left node - Workspaces
+                _buildOuterNode(
+                  nodeSize: nodeSize,
+                  angle: 150,
+                  distance: nodeSize * 0.38,
+                  label: 'Workspaces',
+                  sublabel: 'Notes • Canvas • Chat',
+                  icon: Icons.dashboard_outlined,
+                  color: Monokai.purple,
+                  nodeId: 'workspaces',
+                ),
+                // Bottom-right node - P2P
+                _buildOuterNode(
+                  nodeSize: nodeSize,
+                  angle: 30,
+                  distance: nodeSize * 0.38,
+                  label: 'Peer-to-Peer',
+                  sublabel: 'Fast • Private • Secure',
+                  icon: Icons.hub_outlined,
+                  color: Monokai.orange,
+                  nodeId: 'p2p',
+                ),
+                // Bottom center - Lens AI
+                _buildOuterNode(
+                  nodeSize: nodeSize,
+                  angle: 90,
+                  distance: nodeSize * 0.42,
+                  label: 'Lens AI',
+                  sublabel: 'Your AI assistant',
+                  icon: Icons.auto_awesome,
+                  color: Monokai.cyan,
+                  nodeId: 'lens',
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildCenterNode(double nodeSize) {
+    final size = nodeSize * 0.22;
+    return Positioned(
+      left: (nodeSize - size) / 2,
+      top: (nodeSize - size) / 2,
+      child: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _pulseAnimation.value,
+            child: Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    Monokai.cyan,
+                    Monokai.cyan.withOpacity(0.6),
+                  ],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Monokai.cyan.withOpacity(0.4),
+                    blurRadius: 30,
+                    spreadRadius: 5,
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Container(
+                  width: size * 0.4,
+                  height: size * 0.4,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-          ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildOuterNode({
+    required double nodeSize,
+    required double angle,
+    required double distance,
+    required String label,
+    required String sublabel,
+    required IconData icon,
+    required Color color,
+    required String nodeId,
+  }) {
+    final radians = angle * (math.pi / 180);
+    final centerX = nodeSize / 2;
+    final centerY = nodeSize / 2;
+    final x = centerX + distance * math.cos(radians);
+    final y = centerY + distance * math.sin(radians);
+    
+    final isSelected = _selectedNode == nodeId;
+    final nodeWidth = nodeSize * 0.28;
+
+    return Positioned(
+      left: x - nodeWidth / 2,
+      top: y - nodeWidth / 2,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () => _selectNode(nodeId),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            width: nodeWidth,
+            height: nodeWidth,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isSelected ? color.withOpacity(0.25) : Monokai.surface.withOpacity(0.8),
+              border: Border.all(
+                color: isSelected ? color : color.withOpacity(0.4),
+                width: isSelected ? 2 : 1,
+              ),
+              boxShadow: isSelected
+                  ? [BoxShadow(color: color.withOpacity(0.3), blurRadius: 20)]
+                  : null,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: color, size: nodeWidth * 0.28),
+                SizedBox(height: nodeWidth * 0.06),
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.jetBrainsMono(
+                    color: Monokai.foreground,
+                    fontSize: nodeWidth * 0.11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (nodeWidth > 70) ...[
+                  SizedBox(height: nodeWidth * 0.02),
+                  Text(
+                    sublabel,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.jetBrainsMono(
+                      color: Monokai.comment,
+                      fontSize: nodeWidth * 0.08,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   // ===========================================================================
-  // HERO SECTION
+  // DOWNLOAD SECTION (COMPACT)
   // ===========================================================================
 
-  Widget _buildHero(bool isMobile) {
-    return Container(
-      width: double.infinity,
-      constraints: BoxConstraints(minHeight: isMobile ? 750 : 850),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            const Color(0xFF0d0d0a),
-            Monokai.heroBackground,
-            Monokai.background,
-          ],
-        ),
-      ),
-      child: Stack(
+  Widget _buildDownloadSection(bool isMobile) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: isMobile ? 24 : 40),
+      child: Column(
         children: [
-          // Animated constellation - more prominent
-          Positioned.fill(
-            child: Center(
-              child: AnimatedConstellation(size: isMobile ? 350 : 500),
-            ),
+          // Download buttons
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            alignment: WrapAlignment.center,
+            children: [
+              _buildDownloadButton(Icons.laptop_mac, 'macOS'),
+              _buildDownloadButton(Icons.laptop_windows, 'Windows'),
+            ],
           ),
-          // Content
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              isMobile ? 24 : 48,
-              140,
-              isMobile ? 24 : 48,
-              80,
-            ),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 800),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Main headline
-                    Text(
-                      'Collaboration that\nkeeps up with you',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.jetBrainsMono(
-                        fontSize: isMobile ? 32 : 52,
-                        fontWeight: FontWeight.w700,
-                        color: Monokai.foreground,
-                        height: 1.2,
+          const SizedBox(height: 24),
+          // Email signup
+          if (!_emailSubmitted)
+            Container(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Monokai.surface,
+                        borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+                        border: Border.all(color: Monokai.divider),
+                      ),
+                      child: TextField(
+                        controller: _emailController,
+                        style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 13),
+                        decoration: InputDecoration(
+                          hintText: 'you@company.com',
+                          hintStyle: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 13),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                        onSubmitted: (_) => _submitEmail(),
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    // Subheadline
-                    Text(
-                      'Boards. Notes. Notebooks. Canvas. Chat.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.jetBrainsMono(
-                        fontSize: isMobile ? 16 : 20,
+                  ),
+                  GestureDetector(
+                    onTap: _submitEmail,
+                    child: Container(
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: const BoxDecoration(
                         color: Monokai.cyan,
-                        fontWeight: FontWeight.w500,
+                        borderRadius: BorderRadius.horizontal(right: Radius.circular(4)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Notify Me',
+                          style: GoogleFonts.jetBrainsMono(
+                            color: Monokai.darkBackground,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Real-time sync. Complete privacy. No compromises.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.jetBrainsMono(
-                        fontSize: isMobile ? 14 : 16,
-                        color: Monokai.foregroundSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    // Tech badges - business friendly
-                    Wrap(
-                      spacing: 12,
-                      runSpacing: 8,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        _buildTechBadge('Peer-to-Peer', Monokai.cyan),
-                        _buildTechBadge('End-to-End Encrypted', Monokai.green),
-                        _buildTechBadge('Lightning Fast', Monokai.orange),
-                      ],
-                    ),
-                    const SizedBox(height: 48),
-                    // Download buttons
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 16,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        _buildDownloadButton(
-                          icon: Icons.laptop_mac,
-                          label: 'macOS',
-                          comingSoon: true,
-                        ),
-                        _buildDownloadButton(
-                          icon: Icons.laptop_windows,
-                          label: 'Windows',
-                          comingSoon: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 48),
-                    // Email signup
-                    _buildEmailSignup(isMobile),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                color: Monokai.green.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(color: Monokai.green.withOpacity(0.3)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.check_circle, color: Monokai.green, size: 16),
+                  const SizedBox(width: 8),
+                  Text(
+                    "You're on the list!",
+                    style: GoogleFonts.jetBrainsMono(color: Monokai.green, fontSize: 13),
+                  ),
+                ],
               ),
             ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildTechBadge(String label, Color color) {
+  Widget _buildDownloadButton(IconData icon, String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.jetBrainsMono(
-          color: color,
-          fontSize: 11,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDownloadButton({
-    required IconData icon,
-    required String label,
-    bool comingSoon = false,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
         color: Monokai.surface,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(4),
         border: Border.all(color: Monokai.divider),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Monokai.foreground, size: 20),
-          const SizedBox(width: 12),
+          Icon(icon, color: Monokai.foreground, size: 18),
+          const SizedBox(width: 10),
           Text(
             label,
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foreground,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 13),
+          ),
+          const SizedBox(width: 10),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: Monokai.orange.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: Text(
+              'Soon',
+              style: GoogleFonts.jetBrainsMono(
+                color: Monokai.orange,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          if (comingSoon) ...[
-            const SizedBox(width: 12),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: Monokai.orange.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Text(
-                'Soon',
-                style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.orange,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
         ],
       ),
     );
   }
 
-  Widget _buildEmailSignup(bool isMobile) {
-    if (_emailSubmitted) {
-      return Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Monokai.green.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: Monokai.green.withOpacity(0.3)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.check_circle, color: Monokai.green, size: 20),
-            const SizedBox(width: 12),
-            Text(
-              "You're on the list. We'll be in touch.",
-              style: GoogleFonts.jetBrainsMono(
-                color: Monokai.green,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-      );
+  void _submitEmail() {
+    if (_emailController.text.isNotEmpty && _emailController.text.contains('@')) {
+      setState(() => _emailSubmitted = true);
+    }
+  }
+
+  // ===========================================================================
+  // EXPANDED CONTENT
+  // ===========================================================================
+
+  Widget _buildExpandedContent(String nodeId, bool isMobile) {
+    Widget content;
+    
+    switch (nodeId) {
+      case 'collaboration':
+        content = _buildCollaborationContent(isMobile);
+        break;
+      case 'workspaces':
+        content = _buildWorkspacesContent(isMobile);
+        break;
+      case 'p2p':
+        content = _buildP2PContent(isMobile);
+        break;
+      case 'lens':
+        content = _buildLensContent(isMobile);
+        break;
+      default:
+        content = const SizedBox();
     }
 
-    return Column(
-      children: [
-        Text(
-          '// get notified when we launch',
-          style: GoogleFonts.jetBrainsMono(
-            color: Monokai.comment,
-            fontSize: 12,
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(isMobile ? 24 : 48),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: content,
           ),
         ),
-        const SizedBox(height: 12),
-        Container(
-          constraints: const BoxConstraints(maxWidth: 400),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: Monokai.surface,
-                    borderRadius: const BorderRadius.horizontal(
-                      left: Radius.circular(6),
-                    ),
-                    border: Border.all(color: Monokai.divider),
-                  ),
-                  child: TextField(
-                    controller: _emailController,
-                    style: GoogleFonts.jetBrainsMono(
-                      color: Monokai.foreground,
-                      fontSize: 14,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'you@company.com',
-                      hintStyle: GoogleFonts.jetBrainsMono(
-                        color: Monokai.comment,
-                        fontSize: 14,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                    ),
-                    onSubmitted: (_) => _submitEmail(),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: _submitEmail,
-                child: Container(
-                  height: 44,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Monokai.cyan,
-                    borderRadius: const BorderRadius.horizontal(
-                      right: Radius.circular(6),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Notify Me',
-                      style: GoogleFonts.jetBrainsMono(
-                        color: Monokai.heroBackground,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+      ),
+    );
+  }
+
+  Widget _buildCollaborationContent(bool isMobile) {
+    return _buildContentCard(
+      color: Monokai.green,
+      title: 'Real-time Collaboration',
+      description: 'Work together seamlessly. Every change syncs instantly across your team — no refresh needed, no conflicts.',
+      features: [
+        'See teammates\' cursors and selections live',
+        'Comments and threads in context',
+        'Presence indicators show who\'s online',
+        'Works offline, syncs when reconnected',
       ],
     );
   }
 
-  // ===========================================================================
-  // FEATURES SECTION
-  // ===========================================================================
-
-  Widget _buildFeatures(bool isMobile) {
-    final features = [
-      _FeatureItem(
-        icon: '📝',
-        title: 'Notes',
-        description: 'Rich documents with real-time collaboration. Always in sync.',
-        color: Monokai.green,
-      ),
-      _FeatureItem(
-        icon: '📓',
-        title: 'Notebook',
-        description: 'Interactive code and data. Python, SQL — run it, share it.',
-        color: Monokai.purple,
-      ),
-      _FeatureItem(
-        icon: '🎨',
-        title: 'Canvas',
-        description: 'Whiteboard for ideas. Diagrams, sketches, visual thinking.',
-        color: Monokai.orange,
-      ),
-      _FeatureItem(
-        icon: '💬',
-        title: 'Chat',
-        description: 'Conversations in context. Discuss right where the work happens.',
-        color: Monokai.cyan,
-      ),
-    ];
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 48,
-        vertical: 80,
-      ),
-      color: Monokai.background,
-      child: Column(
-        children: [
-          Text(
-            'One workspace for everything',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foreground,
-              fontSize: isMobile ? 24 : 36,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Stop switching tools. Start shipping work.',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foregroundSecondary,
-              fontSize: isMobile ? 14 : 16,
-            ),
-          ),
-          const SizedBox(height: 56),
-          Wrap(
-            spacing: 24,
-            runSpacing: 24,
-            alignment: WrapAlignment.center,
-            children: features.map((f) => _buildFeatureCard(f, isMobile)).toList(),
-          ),
-        ],
-      ),
+  Widget _buildWorkspacesContent(bool isMobile) {
+    return _buildContentCard(
+      color: Monokai.purple,
+      title: 'Unified Workspaces',
+      description: 'Notes, notebooks, canvas, and chat — all in one place. Stop switching between tools.',
+      features: [
+        'Notes: Rich documents with markdown',
+        'Notebooks: Run Python, SQL, visualize data',
+        'Canvas: Diagrams, sketches, visual thinking',
+        'Chat: Conversations where the work happens',
+      ],
     );
   }
 
-  Widget _buildFeatureCard(_FeatureItem feature, bool isMobile) {
+  Widget _buildP2PContent(bool isMobile) {
+    return _buildContentCard(
+      color: Monokai.orange,
+      title: 'Peer-to-Peer Architecture',
+      description: 'Your data flows directly between team members. No cloud servers storing your work.',
+      features: [
+        'Direct sync via QUIC protocol',
+        'End-to-end encryption by default',
+        'Faster than traditional cloud apps',
+        'Built on Rust, Iroh, and Tokio',
+      ],
+    );
+  }
+
+  Widget _buildLensContent(bool isMobile) {
+    return _buildContentCard(
+      color: Monokai.cyan,
+      title: 'Cyan Lens AI',
+      description: 'Your intelligent workspace assistant. Surfaces what matters without you digging.',
+      features: [
+        'Asks: Questions waiting for answers',
+        'Decisions: Choices made and pending',
+        'Nudges: What needs your attention',
+        'Pulse: Your team\'s activity summary',
+      ],
+    );
+  }
+
+  Widget _buildContentCard({
+    required Color color,
+    required String title,
+    required String description,
+    required List<String> features,
+  }) {
     return Container(
-      width: isMobile ? double.infinity : 260,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         color: Monokai.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Monokai.divider),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            feature.icon,
-            style: const TextStyle(fontSize: 32),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            feature.title,
-            style: GoogleFonts.jetBrainsMono(
-              color: feature.color,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            feature.description,
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foregroundSecondary,
-              fontSize: 13,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ===========================================================================
-  // LENS AI SECTION
-  // ===========================================================================
-
-  Widget _buildLensAI(bool isMobile) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 48,
-        vertical: 80,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Monokai.surface.withOpacity(0.5),
-            Monokai.background,
-          ],
-        ),
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Column(
+          Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                width: 4,
+                height: 24,
                 decoration: BoxDecoration(
-                  color: Monokai.purple.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  'CYAN LENS AI',
-                  style: GoogleFonts.jetBrainsMono(
-                    color: Monokai.purple,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 2,
-                  ),
+                  color: color,
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(width: 12),
               Text(
-                'Know what matters,\nwithout digging',
-                textAlign: TextAlign.center,
+                title,
                 style: GoogleFonts.jetBrainsMono(
                   color: Monokai.foreground,
-                  fontSize: isMobile ? 28 : 40,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  height: 1.2,
                 ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Lens AI watches your workspace and surfaces what needs attention.\nOpen questions. Pending decisions. Blockers. All in one view.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.foregroundSecondary,
-                  fontSize: 14,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 48),
-              Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                alignment: WrapAlignment.center,
-                children: [
-                  _buildLensFeature('Asks', 'Questions awaiting answers', Monokai.cyan),
-                  _buildLensFeature('Decisions', 'Choices made and pending', Monokai.green),
-                  _buildLensFeature('Nudges', 'What needs your attention', Monokai.orange),
-                  _buildLensFeature('Pulse', 'Your team\'s activity summary', Monokai.purple),
-                ],
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLensFeature(String title, String description, Color color) {
-    return Container(
-      width: 180,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.2)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: GoogleFonts.jetBrainsMono(
-              color: color,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 16),
           Text(
             description,
             style: GoogleFonts.jetBrainsMono(
               color: Monokai.foregroundSecondary,
-              fontSize: 11,
-              height: 1.4,
+              fontSize: 14,
+              height: 1.6,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  // ===========================================================================
-  // WHY CYAN SECTION
-  // ===========================================================================
-
-  Widget _buildWhyCyan(bool isMobile) {
-    final points = [
-      _WhyPoint(
-        icon: Icons.bolt,
-        title: 'Faster than cloud',
-        description: 'Direct peer-to-peer sync means your team sees changes instantly — no waiting on servers.',
-        color: Monokai.yellow,
-      ),
-      _WhyPoint(
-        icon: Icons.lock_outline,
-        title: 'Complete privacy',
-        description: 'Your data never touches our servers. End-to-end encrypted between your team, always.',
-        color: Monokai.green,
-      ),
-      _WhyPoint(
-        icon: Icons.speed,
-        title: 'Enterprise reliability',
-        description: 'Built on battle-tested technology trusted by leading companies worldwide.',
-        color: Monokai.cyan,
-      ),
-      _WhyPoint(
-        icon: Icons.devices,
-        title: 'Works everywhere',
-        description: 'macOS, Windows, and iOS. Your workspace follows you across all your devices.',
-        color: Monokai.purple,
-      ),
-    ];
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 48,
-        vertical: 80,
-      ),
-      color: Monokai.background,
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 900),
-          child: Column(
-            children: [
-              Text(
-                'Why teams choose Cyan',
-                style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.foreground,
-                  fontSize: isMobile ? 24 : 36,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'The speed of local. The power of connected.',
-                style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.foregroundSecondary,
-                  fontSize: isMobile ? 14 : 16,
-                ),
-              ),
-              const SizedBox(height: 56),
-              isMobile
-                  ? Column(
-                      children: points.map((p) => _buildWhyPointCard(p)).toList(),
-                    )
-                  : Wrap(
-                      spacing: 24,
-                      runSpacing: 24,
-                      alignment: WrapAlignment.center,
-                      children: points.map((p) => _buildWhyPointCard(p)).toList(),
+          const SizedBox(height: 20),
+          ...features.map((f) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.check, color: color, size: 18),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    f,
+                    style: GoogleFonts.jetBrainsMono(
+                      color: Monokai.foreground,
+                      fontSize: 13,
+                      height: 1.4,
                     ),
-              const SizedBox(height: 56),
-              // Tech footer - subtle
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Monokai.surface.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Monokai.divider),
+                  ),
                 ),
-                child: Wrap(
-                  spacing: 24,
-                  runSpacing: 8,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    _buildTechFooterItem('Rust'),
-                    _buildTechFooterItem('QUIC'),
-                    _buildTechFooterItem('Iroh'),
-                    _buildTechFooterItem('Tokio'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWhyPointCard(_WhyPoint point) {
-    return Container(
-      width: 200,
-      padding: const EdgeInsets.all(20),
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: Monokai.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: point.color.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: point.color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(8),
+              ],
             ),
-            child: Icon(point.icon, color: point.color, size: 20),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            point.title,
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foreground,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            point.description,
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foregroundSecondary,
-              fontSize: 12,
-              height: 1.5,
-            ),
-          ),
+          )),
         ],
       ),
     );
   }
-
-  Widget _buildTechFooterItem(String label) {
-    return Text(
-      label,
-      style: GoogleFonts.jetBrainsMono(
-        color: Monokai.comment,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-
-
 
   // ===========================================================================
   // FOOTER
@@ -1146,52 +745,28 @@ class _CyanHomePageState extends State<CyanHomePage> {
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         horizontal: isMobile ? 24 : 48,
-        vertical: 48,
+        vertical: 32,
       ),
       decoration: BoxDecoration(
-        color: Monokai.surface.withOpacity(0.5),
-        border: Border(
-          top: BorderSide(color: Monokai.divider),
-        ),
+        border: Border(top: BorderSide(color: Monokai.divider)),
       ),
       child: Column(
         children: [
-          // Logo
-          Image.asset(
-            'assets/cyan-wordmark.png',
-            height: 28,
-            filterQuality: FilterQuality.high,
-          ),
-          const SizedBox(height: 24),
-          // Links
           Wrap(
-            spacing: 32,
-            runSpacing: 16,
+            spacing: 24,
+            runSpacing: 12,
             alignment: WrapAlignment.center,
             children: [
-              _footerLink('Request Demo', _openRequestDemo),
-              _footerLink('Privacy', () {}),
-              _footerLink('Twitter', () async {
-                final uri = Uri.parse('https://twitter.com/blockxaero');
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
-                }
-              }),
+              _footerLink('Request Demo'),
+              _footerLink('Privacy'),
+              _footerLink('Twitter'),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           Text(
-            '© 2026 Cyan. All rights reserved.',
+            '© 2026 Cyan • 21-day free trial',
             style: GoogleFonts.jetBrainsMono(
               color: Monokai.comment,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '21-day free trial • No credit card required',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.comment.withOpacity(0.7),
               fontSize: 11,
             ),
           ),
@@ -1200,58 +775,60 @@ class _CyanHomePageState extends State<CyanHomePage> {
     );
   }
 
-  Widget _footerLink(String text, VoidCallback onTap) {
+  Widget _footerLink(String text) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Text(
-          text,
-          style: GoogleFonts.jetBrainsMono(
-            color: Monokai.foregroundSecondary,
-            fontSize: 13,
-          ),
+      child: Text(
+        text,
+        style: GoogleFonts.jetBrainsMono(
+          color: Monokai.foregroundSecondary,
+          fontSize: 12,
         ),
       ),
     );
   }
+}
+
+// =============================================================================
+// CONSTELLATION BACKGROUND PAINTER
+// =============================================================================
+
+class ConstellationBackgroundPainter extends CustomPainter {
+  final double pulseValue;
+  final String? selectedNode;
+
+  ConstellationBackgroundPainter({required this.pulseValue, this.selectedNode});
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final distance = size.width * 0.38;
+    
+    // Calculate node positions
+    final topAngle = -90 * (math.pi / 180);
+    final bottomLeftAngle = 150 * (math.pi / 180);
+    final bottomRightAngle = 30 * (math.pi / 180);
+    final bottomAngle = 90 * (math.pi / 180);
+    
+    final top = center + Offset(distance * math.cos(topAngle), distance * math.sin(topAngle));
+    final bottomLeft = center + Offset(distance * math.cos(bottomLeftAngle), distance * math.sin(bottomLeftAngle));
+    final bottomRight = center + Offset(distance * math.cos(bottomRightAngle), distance * math.sin(bottomRightAngle));
+    final bottom = center + Offset(size.width * 0.42 * math.cos(bottomAngle), size.width * 0.42 * math.sin(bottomAngle));
+
+    final linePaint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.15)
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round;
+
+    // Draw lines from center to each node
+    canvas.drawLine(center, top, linePaint);
+    canvas.drawLine(center, bottomLeft, linePaint);
+    canvas.drawLine(center, bottomRight, linePaint);
+    canvas.drawLine(center, bottom, linePaint);
   }
-}
 
-// =============================================================================
-// DATA CLASSES
-// =============================================================================
-
-class _FeatureItem {
-  final String icon;
-  final String title;
-  final String description;
-  final Color color;
-
-  _FeatureItem({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.color,
-  });
-}
-
-class _WhyPoint {
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color color;
-
-  _WhyPoint({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.color,
-  });
+  @override
+  bool shouldRepaint(ConstellationBackgroundPainter oldDelegate) {
+    return oldDelegate.pulseValue != pulseValue || oldDelegate.selectedNode != selectedNode;
+  }
 }
