@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math' as math;
+import 'dart:html' as html;
 
 void main() {
   runApp(const CyanWebsite());
@@ -14,22 +15,63 @@ void main() {
 class Monokai {
   static const Color background = Color(0xFF272822);
   static const Color surface = Color(0xFF3E3D32);
-  static const Color surfaceHover = Color(0xFF4E4D42);
   static const Color foreground = Color(0xFFF8F8F2);
   static const Color foregroundSecondary = Color(0xFFCFCFC2);
   static const Color comment = Color(0xFF75715E);
   static const Color divider = Color(0xFF4A4A40);
   
-  static const Color red = Color(0xFFF92672);
   static const Color green = Color(0xFFA6E22E);
-  static const Color yellow = Color(0xFFE6DB74);
-  static const Color blue = Color(0xFF56B6C2);
   static const Color cyan = Color(0xFF66D9EF);
   static const Color purple = Color(0xFFAE81FF);
   static const Color orange = Color(0xFFFD971F);
-  static const Color pink = Color(0xFFF92672);
   
-  static const Color darkBackground = Color(0xFF0d0d0a);
+  static const Color darkBg = Color(0xFF0d0d0a);
+}
+
+// =============================================================================
+// PLATFORM DETECTION
+// =============================================================================
+
+enum AppPlatform { macOS, windows, linux, iOS, android, unknown }
+
+AppPlatform detectPlatform() {
+  final userAgent = html.window.navigator.userAgent.toLowerCase();
+  final platform = html.window.navigator.platform?.toLowerCase() ?? '';
+  
+  if (platform.contains('mac') || userAgent.contains('macintosh')) {
+    return AppPlatform.macOS;
+  } else if (platform.contains('win') || userAgent.contains('windows')) {
+    return AppPlatform.windows;
+  } else if (userAgent.contains('linux') && !userAgent.contains('android')) {
+    return AppPlatform.linux;
+  } else if (userAgent.contains('iphone') || userAgent.contains('ipad')) {
+    return AppPlatform.iOS;
+  } else if (userAgent.contains('android')) {
+    return AppPlatform.android;
+  }
+  return AppPlatform.unknown;
+}
+
+String platformName(AppPlatform p) {
+  switch (p) {
+    case AppPlatform.macOS: return 'macOS';
+    case AppPlatform.windows: return 'Windows';
+    case AppPlatform.linux: return 'Linux';
+    case AppPlatform.iOS: return 'iOS';
+    case AppPlatform.android: return 'Android';
+    default: return 'Your Platform';
+  }
+}
+
+IconData platformIcon(AppPlatform p) {
+  switch (p) {
+    case AppPlatform.macOS: return Icons.laptop_mac;
+    case AppPlatform.windows: return Icons.laptop_windows;
+    case AppPlatform.linux: return Icons.computer;
+    case AppPlatform.iOS: return Icons.phone_iphone;
+    case AppPlatform.android: return Icons.phone_android;
+    default: return Icons.devices;
+  }
 }
 
 // =============================================================================
@@ -44,9 +86,7 @@ class CyanWebsite extends StatelessWidget {
     return MaterialApp(
       title: 'Cyan',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Monokai.darkBackground,
-      ),
+      theme: ThemeData(scaffoldBackgroundColor: Monokai.darkBg),
       home: const CyanHomePage(),
     );
   }
@@ -67,6 +107,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   String? _selectedNode;
   final TextEditingController _emailController = TextEditingController();
   bool _emailSubmitted = false;
+  late AppPlatform _platform;
   
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
@@ -74,6 +115,8 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+    _platform = detectPlatform();
+    
     _pulseController = AnimationController(
       duration: const Duration(milliseconds: 2500),
       vsync: this,
@@ -92,9 +135,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   }
 
   void _selectNode(String? node) {
-    setState(() {
-      _selectedNode = _selectedNode == node ? null : node;
-    });
+    setState(() => _selectedNode = _selectedNode == node ? null : node);
   }
 
   void _submitEmail() {
@@ -106,218 +147,214 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isMobile = size.width < 900;
-
+    final isDesktop = size.width >= 1000;
+    final isTablet = size.width >= 700 && size.width < 1000;
+    
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: RadialGradient(
             center: Alignment.center,
-            radius: 1.5,
-            colors: [Color(0xFF151512), Monokai.darkBackground],
+            radius: 1.2,
+            colors: [Color(0xFF1a1815), Monokai.darkBg],
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Navbar
-              _buildNavbar(),
-              // Main content
-              Expanded(
-                child: isMobile 
-                    ? _buildMobileLayout(size)
-                    : _buildDesktopLayout(size),
-              ),
-              // Platforms + Email
-              _buildBottomSection(isMobile),
-              // Footer
-              _buildFooter(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavbar() {
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        children: [
-          Image.asset(
-            'assets/cyan-wordmark.png',
-            height: 22,
-            filterQuality: FilterQuality.high,
-          ),
-          const Spacer(),
-          _buildRequestDemoButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRequestDemoButton() {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: () async {
-          final uri = Uri.parse('mailto:demo@blockxaero.io?subject=Cyan Demo Request');
-          if (await canLaunchUrl(uri)) await launchUrl(uri);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            border: Border.all(color: Monokai.cyan.withOpacity(0.5)),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            'Request Demo',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.cyan,
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          child: isDesktop 
+              ? _buildDesktopLayout(size)
+              : isTablet
+                  ? _buildTabletLayout(size)
+                  : _buildMobileLayout(size),
         ),
       ),
     );
   }
 
   // ===========================================================================
-  // DESKTOP LAYOUT - Side by side
+  // DESKTOP LAYOUT
   // ===========================================================================
 
   Widget _buildDesktopLayout(Size size) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
-      child: Row(
-        children: [
-          // Left side - Title + Constellation
-          Expanded(
-            flex: 5,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+    final constellationSize = (size.height * 0.55).clamp(300.0, 420.0);
+    
+    return Column(
+      children: [
+        _buildNavbar(),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 60),
+            child: Row(
               children: [
-                // Title
-                Text(
-                  'Cyan',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w700,
-                    color: Monokai.cyan,
-                    letterSpacing: 3,
+                // Left - Constellation
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildTitle(size: 42),
+                      const SizedBox(height: 28),
+                      _buildConstellation(constellationSize),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Collaboration that keeps up with you',
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 13,
-                    color: Monokai.foregroundSecondary,
+                const SizedBox(width: 40),
+                // Right - Content Panel
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildContentArea(maxWidth: 440),
+                      const SizedBox(height: 32),
+                      _buildDownloadAndSignup(),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                // Constellation
-                _buildConstellation(240),
               ],
             ),
           ),
-          // Right side - Content panel
-          Expanded(
-            flex: 5,
-            child: Center(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 250),
-                child: _selectedNode != null
-                    ? _buildContentPanel(_selectedNode!)
-                    : _buildDefaultPanel(),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+        _buildFooter(),
+      ],
     );
   }
 
   // ===========================================================================
-  // MOBILE LAYOUT - Stacked
+  // TABLET LAYOUT
+  // ===========================================================================
+
+  Widget _buildTabletLayout(Size size) {
+    final constellationSize = (size.height * 0.38).clamp(220.0, 300.0);
+    
+    return Column(
+      children: [
+        _buildNavbar(),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                _buildTitle(size: 32),
+                const SizedBox(height: 24),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildConstellation(constellationSize),
+                    const SizedBox(width: 24),
+                    Expanded(child: _buildContentArea(maxWidth: 350)),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                _buildDownloadAndSignup(),
+                const SizedBox(height: 20),
+              ],
+            ),
+          ),
+        ),
+        _buildFooter(),
+      ],
+    );
+  }
+
+  // ===========================================================================
+  // MOBILE LAYOUT
   // ===========================================================================
 
   Widget _buildMobileLayout(Size size) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            // Title
-            Text(
-              'Cyan',
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 28,
-                fontWeight: FontWeight.w700,
-                color: Monokai.cyan,
-                letterSpacing: 3,
-              ),
+    final constellationSize = (size.width * 0.78).clamp(250.0, 340.0);
+    
+    return Column(
+      children: [
+        _buildNavbar(),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                _buildTitle(size: 28),
+                const SizedBox(height: 20),
+                _buildConstellation(constellationSize),
+                const SizedBox(height: 20),
+                _buildContentArea(maxWidth: double.infinity),
+                const SizedBox(height: 24),
+                _buildDownloadAndSignup(),
+                const SizedBox(height: 20),
+              ],
             ),
-            const SizedBox(height: 4),
-            Text(
-              'Collaboration that keeps up with you',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 12,
-                color: Monokai.foregroundSecondary,
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Constellation
-            _buildConstellation(220),
-            const SizedBox(height: 16),
-            // Content panel
-            if (_selectedNode != null) ...[
-              _buildContentPanel(_selectedNode!),
-              const SizedBox(height: 16),
-            ],
-          ],
+          ),
         ),
+        _buildFooter(),
+      ],
+    );
+  }
+
+  // ===========================================================================
+  // SHARED COMPONENTS
+  // ===========================================================================
+
+  Widget _buildNavbar() {
+    return Container(
+      height: 52,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        children: [
+          Image.asset('assets/cyan-wordmark.png', height: 24, filterQuality: FilterQuality.high),
+          const Spacer(),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                final uri = Uri.parse('mailto:demo@blockxaero.io?subject=Cyan Demo Request');
+                if (await canLaunchUrl(uri)) await launchUrl(uri);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Monokai.cyan.withOpacity(0.6)),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'Request Demo',
+                  style: GoogleFonts.jetBrainsMono(color: Monokai.cyan, fontSize: 12, fontWeight: FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildDefaultPanel() {
-    return Container(
-      key: const ValueKey('default'),
-      constraints: const BoxConstraints(maxWidth: 380),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Monokai.surface.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Monokai.divider),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.touch_app, color: Monokai.cyan.withOpacity(0.5), size: 32),
-          const SizedBox(height: 12),
-          Text(
-            'Tap a node to explore',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foregroundSecondary,
-              fontSize: 14,
-            ),
+  Widget _buildTitle({required double size}) {
+    return Column(
+      children: [
+        Text(
+          'Cyan',
+          style: GoogleFonts.jetBrainsMono(
+            fontSize: size,
+            fontWeight: FontWeight.w700,
+            color: Monokai.cyan,
+            letterSpacing: 4,
           ),
-          const SizedBox(height: 8),
-          Text(
-            'Collaboration • Workspaces • P2P • AI',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.comment,
-              fontSize: 11,
-            ),
-          ),
-        ],
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Collaboration that keeps up with you',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.jetBrainsMono(fontSize: size * 0.36, color: Monokai.foregroundSecondary),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Text(
+        '© 2026 Cyan • 21-day free trial',
+        style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 10),
       ),
     );
   }
@@ -326,60 +363,23 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   // CONSTELLATION
   // ===========================================================================
 
-  Widget _buildConstellation(double nodeSize) {
+  Widget _buildConstellation(double size) {
     return SizedBox(
-      width: nodeSize,
-      height: nodeSize,
+      width: size,
+      height: size,
       child: AnimatedBuilder(
         animation: _pulseAnimation,
-        builder: (context, child) {
+        builder: (context, _) {
           return CustomPaint(
-            painter: ConstellationPainter(
-              pulseValue: _pulseAnimation.value,
-              selectedNode: _selectedNode,
-            ),
+            painter: ConstellationPainter(pulseValue: _pulseAnimation.value),
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // Center node
-                _buildCenterNode(nodeSize),
-                // Outer nodes - Y shape
-                _buildOuterNode(
-                  nodeSize: nodeSize,
-                  angle: -90, // Top
-                  distance: 0.42,
-                  label: 'Collaboration',
-                  icon: Icons.people_outline,
-                  color: Monokai.green,
-                  nodeId: 'collaboration',
-                ),
-                _buildOuterNode(
-                  nodeSize: nodeSize,
-                  angle: 210, // Bottom-left
-                  distance: 0.42,
-                  label: 'Workspaces',
-                  icon: Icons.dashboard_outlined,
-                  color: Monokai.purple,
-                  nodeId: 'workspaces',
-                ),
-                _buildOuterNode(
-                  nodeSize: nodeSize,
-                  angle: -30, // Bottom-right
-                  distance: 0.42,
-                  label: 'Peer-to-Peer',
-                  icon: Icons.hub_outlined,
-                  color: Monokai.orange,
-                  nodeId: 'p2p',
-                ),
-                _buildOuterNode(
-                  nodeSize: nodeSize,
-                  angle: 90, // Bottom center
-                  distance: 0.48,
-                  label: 'Lens AI',
-                  icon: Icons.auto_awesome,
-                  color: Monokai.cyan,
-                  nodeId: 'lens',
-                ),
+                _buildCenterNode(size),
+                _buildOuterNode(size: size, angle: -90, dist: 0.40, label: 'Collaboration', icon: Icons.people_outline, color: Monokai.green, id: 'collab'),
+                _buildOuterNode(size: size, angle: 210, dist: 0.40, label: 'Workspaces', icon: Icons.dashboard_outlined, color: Monokai.purple, id: 'workspace'),
+                _buildOuterNode(size: size, angle: -30, dist: 0.40, label: 'Peer-to-Peer', icon: Icons.hub_outlined, color: Monokai.orange, id: 'p2p'),
+                _buildOuterNode(size: size, angle: 90, dist: 0.45, label: 'Lens AI', icon: Icons.auto_awesome, color: Monokai.cyan, id: 'lens'),
               ],
             ),
           );
@@ -388,40 +388,29 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
     );
   }
 
-  Widget _buildCenterNode(double nodeSize) {
-    final size = nodeSize * 0.16; // Smaller center
+  Widget _buildCenterNode(double size) {
+    final r = size * 0.12;
     return Positioned(
-      left: (nodeSize - size) / 2,
-      top: (nodeSize - size) / 2,
+      left: (size - r) / 2,
+      top: (size - r) / 2,
       child: AnimatedBuilder(
         animation: _pulseAnimation,
-        builder: (context, child) {
+        builder: (context, _) {
           return Transform.scale(
             scale: _pulseAnimation.value,
             child: Container(
-              width: size,
-              height: size,
+              width: r,
+              height: r,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const RadialGradient(
-                  colors: [Monokai.cyan, Color(0xFF338899)],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Monokai.cyan.withOpacity(0.5),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                ],
+                gradient: const RadialGradient(colors: [Monokai.cyan, Color(0xFF2a8a9a)]),
+                boxShadow: [BoxShadow(color: Monokai.cyan.withOpacity(0.6), blurRadius: 24, spreadRadius: 4)],
               ),
               child: Center(
                 child: Container(
-                  width: size * 0.35,
-                  height: size * 0.35,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
+                  width: r * 0.35,
+                  height: r * 0.35,
+                  decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                 ),
               ),
             ),
@@ -432,59 +421,48 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   }
 
   Widget _buildOuterNode({
-    required double nodeSize,
+    required double size,
     required double angle,
-    required double distance,
+    required double dist,
     required String label,
     required IconData icon,
     required Color color,
-    required String nodeId,
+    required String id,
   }) {
-    final radians = angle * (math.pi / 180);
-    final centerX = nodeSize / 2;
-    final centerY = nodeSize / 2;
-    final actualDistance = nodeSize * distance;
-    final x = centerX + actualDistance * math.cos(radians);
-    final y = centerY + actualDistance * math.sin(radians);
-    
-    final isSelected = _selectedNode == nodeId;
-    final nodeDiameter = nodeSize * 0.26;
+    final rad = angle * (math.pi / 180);
+    final cx = size / 2, cy = size / 2;
+    final d = size * dist;
+    final x = cx + d * math.cos(rad);
+    final y = cy + d * math.sin(rad);
+    final isSelected = _selectedNode == id;
+    final nodeR = size * 0.22;
 
     return Positioned(
-      left: x - nodeDiameter / 2,
-      top: y - nodeDiameter / 2,
+      left: x - nodeR / 2,
+      top: y - nodeR / 2,
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         child: GestureDetector(
-          onTap: () => _selectNode(nodeId),
+          onTap: () => _selectNode(id),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            width: nodeDiameter,
-            height: nodeDiameter,
+            duration: const Duration(milliseconds: 180),
+            width: nodeR,
+            height: nodeR,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isSelected ? color.withOpacity(0.2) : Monokai.surface.withOpacity(0.9),
-              border: Border.all(
-                color: isSelected ? color : color.withOpacity(0.5),
-                width: isSelected ? 2 : 1.5,
-              ),
-              boxShadow: isSelected
-                  ? [BoxShadow(color: color.withOpacity(0.4), blurRadius: 16)]
-                  : null,
+              border: Border.all(color: isSelected ? color : color.withOpacity(0.5), width: isSelected ? 2.5 : 1.5),
+              boxShadow: isSelected ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 20)] : null,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: color, size: nodeDiameter * 0.28),
-                SizedBox(height: nodeDiameter * 0.04),
+                Icon(icon, color: color, size: nodeR * 0.30),
+                SizedBox(height: nodeR * 0.04),
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.jetBrainsMono(
-                    color: Monokai.foreground,
-                    fontSize: nodeDiameter * 0.13,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: nodeR * 0.12, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -495,20 +473,57 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   }
 
   // ===========================================================================
-  // CONTENT PANEL
+  // CONTENT AREA
   // ===========================================================================
 
-  Widget _buildContentPanel(String nodeId) {
-    final data = _getNodeData(nodeId);
-    
+  Widget _buildContentArea({required double maxWidth}) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      child: _selectedNode != null
+          ? _buildContentPanel(_selectedNode!, maxWidth)
+          : _buildDefaultPanel(maxWidth),
+    );
+  }
+
+  Widget _buildDefaultPanel(double maxWidth) {
     return Container(
-      key: ValueKey(nodeId),
-      constraints: const BoxConstraints(maxWidth: 380),
-      padding: const EdgeInsets.all(20),
+      key: const ValueKey('default'),
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        color: Monokai.surface.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Monokai.divider),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.touch_app_rounded, color: Monokai.cyan.withOpacity(0.6), size: 36),
+          const SizedBox(height: 14),
+          Text(
+            'Tap a node to explore',
+            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 15, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Collaboration • Workspaces • P2P • AI',
+            style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 11),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContentPanel(String id, double maxWidth) {
+    final d = _nodeData(id);
+    return Container(
+      key: ValueKey(id),
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Monokai.surface,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: data['color'].withOpacity(0.4)),
+        border: Border.all(color: (d['color'] as Color).withOpacity(0.5)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -516,58 +531,28 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
         children: [
           Row(
             children: [
-              Container(
-                width: 3,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: data['color'],
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(width: 10),
+              Container(width: 4, height: 22, decoration: BoxDecoration(color: d['color'], borderRadius: BorderRadius.circular(2))),
+              const SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  data['title'],
-                  style: GoogleFonts.jetBrainsMono(
-                    color: Monokai.foreground,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                child: Text(d['title'], style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 17, fontWeight: FontWeight.w600)),
               ),
               GestureDetector(
                 onTap: () => _selectNode(null),
-                child: Icon(Icons.close, color: Monokai.comment, size: 18),
+                child: const Icon(Icons.close, color: Monokai.comment, size: 20),
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          Text(
-            data['description'],
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.foregroundSecondary,
-              fontSize: 12,
-              height: 1.5,
-            ),
-          ),
           const SizedBox(height: 14),
-          ...List.generate(data['features'].length, (i) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+          Text(d['desc'], style: GoogleFonts.jetBrainsMono(color: Monokai.foregroundSecondary, fontSize: 13, height: 1.5)),
+          const SizedBox(height: 16),
+          ...(d['features'] as List<String>).map((f) => Padding(
+            padding: const EdgeInsets.only(bottom: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check, color: data['color'], size: 14),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    data['features'][i],
-                    style: GoogleFonts.jetBrainsMono(
-                      color: Monokai.foreground,
-                      fontSize: 11,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
+                Icon(Icons.check_rounded, color: d['color'], size: 16),
+                const SizedBox(width: 10),
+                Expanded(child: Text(f, style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 12, height: 1.4))),
               ],
             ),
           )),
@@ -576,213 +561,143 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
     );
   }
 
-  Map<String, dynamic> _getNodeData(String nodeId) {
-    switch (nodeId) {
-      case 'collaboration':
-        return {
-          'color': Monokai.green,
-          'title': 'Real-time Collaboration',
-          'description': 'Work together seamlessly. Every change syncs instantly — no refresh, no conflicts.',
-          'features': [
-            'See teammates\' cursors live',
-            'Comments and threads in context',
-            'Works offline, syncs when back',
-          ],
-        };
-      case 'workspaces':
-        return {
-          'color': Monokai.purple,
-          'title': 'Unified Workspaces',
-          'description': 'Notes, notebooks, canvas, and chat — all in one place.',
-          'features': [
-            'Notes: Rich docs with markdown',
-            'Notebooks: Run Python, SQL, visualize',
-            'Canvas: Diagrams & visual thinking',
-            'Chat: Conversations in context',
-          ],
-        };
-      case 'p2p':
-        return {
-          'color': Monokai.orange,
-          'title': 'Peer-to-Peer Architecture',
-          'description': 'Direct sync between team members. No cloud servers.',
-          'features': [
-            'QUIC protocol — faster than HTTP',
-            'End-to-end encrypted by default',
-            'Built on Rust, Iroh & Tokio',
-          ],
-        };
-      case 'lens':
-        return {
-          'color': Monokai.cyan,
-          'title': 'Cyan Lens AI',
-          'description': 'Your intelligent workspace assistant.',
-          'features': [
-            'Asks: Questions awaiting answers',
-            'Decisions: Choices made & pending',
-            'Nudges: What needs attention',
-            'Pulse: Team activity summary',
-          ],
-        };
-      default:
-        return {};
-    }
+  Map<String, dynamic> _nodeData(String id) {
+    final data = {
+      'collab': {
+        'color': Monokai.green,
+        'title': 'Real-time Collaboration',
+        'desc': 'Work together seamlessly. Changes sync instantly — no refresh, no conflicts.',
+        'features': ['Live cursors & selections', 'Contextual comments', 'Offline-first, syncs when back'],
+      },
+      'workspace': {
+        'color': Monokai.purple,
+        'title': 'Unified Workspaces',
+        'desc': 'Notes, notebooks, canvas, and chat — all in one place.',
+        'features': ['Notes: Rich docs with markdown', 'Notebooks: Python, SQL, visualizations', 'Canvas: Diagrams & sketches', 'Chat: In-context conversations'],
+      },
+      'p2p': {
+        'color': Monokai.orange,
+        'title': 'Peer-to-Peer Architecture',
+        'desc': 'Direct sync between team members. No cloud servers storing your data.',
+        'features': ['QUIC protocol — faster than HTTP', 'End-to-end encrypted', 'Built on Rust, Iroh & Tokio'],
+      },
+      'lens': {
+        'color': Monokai.cyan,
+        'title': 'Cyan Lens AI',
+        'desc': 'Your intelligent workspace assistant that surfaces what matters.',
+        'features': ['Asks: Questions awaiting answers', 'Decisions: Choices made & pending', 'Nudges: What needs attention', 'Pulse: Team activity summary'],
+      },
+    };
+    return data[id] ?? {};
   }
 
   // ===========================================================================
-  // BOTTOM SECTION - Platforms + Email
+  // DOWNLOAD & SIGNUP
   // ===========================================================================
 
-  Widget _buildBottomSection(bool isMobile) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : 40,
-        vertical: 16,
-      ),
-      child: Column(
-        children: [
-          // Platform buttons
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.center,
+  Widget _buildDownloadAndSignup() {
+    return Column(
+      children: [
+        // Smart platform button
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            color: Monokai.surface,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: Monokai.cyan.withOpacity(0.4)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              _buildPlatformChip(Icons.laptop_mac, 'macOS'),
-              _buildPlatformChip(Icons.laptop_windows, 'Windows'),
-              _buildPlatformChip(Icons.computer, 'Linux'),
-              _buildPlatformChip(Icons.phone_iphone, 'iOS'),
-              _buildPlatformChip(Icons.phone_android, 'Android'),
+              Icon(platformIcon(_platform), color: Monokai.cyan, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                'Available on ${platformName(_platform)}',
+                style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 13, fontWeight: FontWeight.w500),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Monokai.orange.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'Coming Soon',
+                  style: GoogleFonts.jetBrainsMono(color: Monokai.orange, fontSize: 10, fontWeight: FontWeight.w600),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 16),
-          // Email signup
-          if (!_emailSubmitted)
-            Container(
-              constraints: const BoxConstraints(maxWidth: 340),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: Monokai.surface,
-                        borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
-                        border: Border.all(color: Monokai.divider),
-                      ),
-                      child: TextField(
-                        controller: _emailController,
-                        style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 12),
-                        decoration: InputDecoration(
-                          hintText: 'you@company.com',
-                          hintStyle: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 12),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                        ),
-                        onSubmitted: (_) => _submitEmail(),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: _submitEmail,
-                    child: Container(
-                      height: 36,
-                      padding: const EdgeInsets.symmetric(horizontal: 14),
-                      decoration: const BoxDecoration(
-                        color: Monokai.cyan,
-                        borderRadius: BorderRadius.horizontal(right: Radius.circular(4)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Notify Me',
-                          style: GoogleFonts.jetBrainsMono(
-                            color: Monokai.darkBackground,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          else
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-              decoration: BoxDecoration(
-                color: Monokai.green.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: Monokai.green.withOpacity(0.3)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.check_circle, color: Monokai.green, size: 14),
-                  const SizedBox(width: 6),
-                  Text(
-                    "You're on the list!",
-                    style: GoogleFonts.jetBrainsMono(color: Monokai.green, fontSize: 11),
-                  ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPlatformChip(IconData icon, String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Monokai.surface.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Monokai.divider),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Monokai.foreground, size: 14),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 10),
-          ),
-          const SizedBox(width: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-            decoration: BoxDecoration(
-              color: Monokai.orange.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(2),
-            ),
-            child: Text(
-              'Soon',
-              style: GoogleFonts.jetBrainsMono(
-                color: Monokai.orange,
-                fontSize: 8,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ===========================================================================
-  // FOOTER
-  // ===========================================================================
-
-  Widget _buildFooter() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Text(
-        '© 2026 Cyan • 21-day free trial • Request Demo',
-        style: GoogleFonts.jetBrainsMono(
-          color: Monokai.comment,
-          fontSize: 10,
         ),
-      ),
+        const SizedBox(height: 8),
+        Text(
+          'Also: macOS • Windows • Linux • iOS • Android',
+          style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 10),
+        ),
+        const SizedBox(height: 18),
+        // Email signup
+        if (!_emailSubmitted)
+          Container(
+            constraints: const BoxConstraints(maxWidth: 320),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Monokai.surface,
+                      borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+                      border: Border.all(color: Monokai.divider),
+                    ),
+                    child: TextField(
+                      controller: _emailController,
+                      style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 13),
+                      decoration: InputDecoration(
+                        hintText: 'you@company.com',
+                        hintStyle: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 13),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 14),
+                      ),
+                      onSubmitted: (_) => _submitEmail(),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _submitEmail,
+                  child: Container(
+                    height: 40,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: const BoxDecoration(
+                      color: Monokai.cyan,
+                      borderRadius: BorderRadius.horizontal(right: Radius.circular(4)),
+                    ),
+                    child: Center(
+                      child: Text('Notify Me', style: GoogleFonts.jetBrainsMono(color: Monokai.darkBg, fontSize: 12, fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        else
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: Monokai.green.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Monokai.green.withOpacity(0.4)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.check_circle, color: Monokai.green, size: 18),
+                const SizedBox(width: 8),
+                Text("You're on the list!", style: GoogleFonts.jetBrainsMono(color: Monokai.green, fontSize: 13)),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }
@@ -793,41 +708,24 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
 
 class ConstellationPainter extends CustomPainter {
   final double pulseValue;
-  final String? selectedNode;
-
-  ConstellationPainter({required this.pulseValue, this.selectedNode});
+  ConstellationPainter({required this.pulseValue});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    
-    // Calculate positions
-    final positions = {
-      'collaboration': _getPosition(center, size, -90, 0.42),
-      'workspaces': _getPosition(center, size, 210, 0.42),
-      'p2p': _getPosition(center, size, -30, 0.42),
-      'lens': _getPosition(center, size, 90, 0.48),
-    };
-
-    final linePaint = Paint()
-      ..color = Monokai.cyan.withOpacity(0.12)
+    final c = Offset(size.width / 2, size.height / 2);
+    final paint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.15)
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round;
 
-    // Draw lines from center to each node
-    for (final pos in positions.values) {
-      canvas.drawLine(center, pos, linePaint);
+    for (final angle in [-90.0, 210.0, -30.0, 90.0]) {
+      final dist = angle == 90 ? 0.45 : 0.40;
+      final rad = angle * (math.pi / 180);
+      final p = c + Offset(size.width * dist * math.cos(rad), size.width * dist * math.sin(rad));
+      canvas.drawLine(c, p, paint);
     }
   }
 
-  Offset _getPosition(Offset center, Size size, double angle, double distanceRatio) {
-    final radians = angle * (math.pi / 180);
-    final distance = size.width * distanceRatio;
-    return center + Offset(distance * math.cos(radians), distance * math.sin(radians));
-  }
-
   @override
-  bool shouldRepaint(ConstellationPainter oldDelegate) {
-    return oldDelegate.pulseValue != pulseValue || oldDelegate.selectedNode != selectedNode;
-  }
+  bool shouldRepaint(ConstellationPainter old) => old.pulseValue != pulseValue;
 }
