@@ -354,9 +354,9 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
         ),
         const SizedBox(height: 6),
         Text(
-          'The intelligent P2P workspace',
+          'Intelligent Collaboration Workspace',
           textAlign: TextAlign.center,
-          style: GoogleFonts.jetBrainsMono(fontSize: size * 0.36, color: Monokai.foregroundSecondary),
+          style: GoogleFonts.jetBrainsMono(fontSize: size * 0.34, color: Monokai.foregroundSecondary),
         ),
       ],
     );
@@ -515,12 +515,12 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'The intelligent workspace',
-            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 17, fontWeight: FontWeight.w600),
+            'Intelligent Collaboration Workspace',
+            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 16, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 12),
           Text(
-            'Slack + Confluence + JupyterHub — without the cloud. P2P sync at WiFi speed. AI that surfaces blockers, unanswered questions, and decisions across all your tools.',
+            '"What\'s blocking the release?" — your answer is scattered across Slack, Jira, GitHub, and docs. Cyan connects everything into one workspace with AI that reasons across it all.',
             style: GoogleFonts.jetBrainsMono(color: Monokai.foregroundSecondary, fontSize: 12, height: 1.6),
           ),
           const SizedBox(height: 16),
@@ -528,20 +528,20 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
             spacing: 8,
             runSpacing: 8,
             children: [
-              _buildTagChip('Rust', Monokai.orange),
-              _buildTagChip('QUIC', Monokai.cyan),
-              _buildTagChip('P2P', Monokai.green),
-              _buildTagChip('E2E Encrypted', Monokai.purple),
+              _buildTagChip('P2P Sync', Monokai.green),
+              _buildTagChip('Knowledge Graph', Monokai.purple),
+              _buildTagChip('AI Reasoning', Monokai.cyan),
+              _buildTagChip('E2E Encrypted', Monokai.orange),
             ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
-              Icon(Icons.touch_app_rounded, color: Monokai.cyan.withOpacity(0.6), size: 16),
-              const SizedBox(width: 8),
+              Icon(Icons.touch_app_rounded, color: Monokai.comment, size: 14),
+              const SizedBox(width: 6),
               Text(
                 'Tap a node to explore',
-                style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 11),
+                style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 10),
               ),
             ],
           ),
@@ -649,13 +649,14 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
       },
       'lens': {
         'color': Monokai.cyan,
-        'title': 'Cyan Lens AI',
-        'desc': 'AI that understands your workspace. Connects to Slack, Jira, GitHub, Confluence — builds a knowledge graph and surfaces what matters.',
+        'title': 'Ask Your Workspace Anything',
+        'desc': 'Cyan Lens connects your tools and builds a live knowledge graph of everything happening — conversations, tickets, PRs, docs. Then reasons across it to answer questions no single tool can.',
         'features': [
-          'Asks: Questions waiting for answers',
-          'Decisions: Choices made across tools',
-          'Nudges: Blockers, stale items, follow-ups',
-          'Pulse: Daily summary of team activity',
+          '"What\'s blocking the release?" — traces Slack → Jira → PR → stuck review',
+          '"Who owns the API decision?" — finds the thread, the people, the context',
+          'Surfaces issues before you ask — stale questions, forgotten blockers',
+          'One place for truth — no more tab switching to piece things together',
+          'Connects Slack, Jira, GitHub, Confluence, Google Docs',
         ],
       },
     };
