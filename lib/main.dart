@@ -9,6 +9,177 @@ void main() {
 }
 
 // =============================================================================
+// ANIMATED CONSTELLATION WIDGET
+// =============================================================================
+
+class AnimatedConstellation extends StatefulWidget {
+  final double size;
+  const AnimatedConstellation({super.key, this.size = 400});
+
+  @override
+  State<AnimatedConstellation> createState() => _AnimatedConstellationState();
+}
+
+class _AnimatedConstellationState extends State<AnimatedConstellation>
+    with TickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late AnimationController _flowController;
+  late Animation<double> _pulseAnimation;
+  late Animation<double> _flowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 2500),
+      vsync: this,
+    )..repeat(reverse: true);
+    
+    _flowController = AnimationController(
+      duration: const Duration(milliseconds: 2000),
+      vsync: this,
+    )..repeat();
+    
+    _pulseAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+    
+    _flowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_flowController);
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _flowController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widget.size,
+      height: widget.size,
+      child: AnimatedBuilder(
+        animation: Listenable.merge([_pulseController, _flowController]),
+        builder: (context, child) {
+          return CustomPaint(
+            size: Size(widget.size, widget.size),
+            painter: ConstellationPainter(
+              pulseValue: _pulseAnimation.value,
+              flowValue: _flowAnimation.value,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ConstellationPainter extends CustomPainter {
+  final double pulseValue;
+  final double flowValue;
+
+  ConstellationPainter({required this.pulseValue, required this.flowValue});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final scale = size.width / 400;
+    
+    // Node positions (relative to center)
+    final topLeft = center + Offset(-70 * scale, -100 * scale);
+    final topRight = center + Offset(70 * scale, -100 * scale);
+    final bottom = center + Offset(0, 120 * scale);
+    
+    // Edge paint
+    final edgePaint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.25)
+      ..strokeWidth = 2 * scale
+      ..strokeCap = StrokeCap.round;
+    
+    // Draw edges
+    canvas.drawLine(center, topLeft, edgePaint);
+    canvas.drawLine(center, topRight, edgePaint);
+    canvas.drawLine(center, bottom, edgePaint);
+    
+    // Draw flowing particles
+    _drawFlowingParticle(canvas, center, topLeft, flowValue, scale);
+    _drawFlowingParticle(canvas, center, topRight, (flowValue + 0.33) % 1.0, scale);
+    _drawFlowingParticle(canvas, center, bottom, (flowValue + 0.66) % 1.0, scale);
+    
+    // Outer nodes
+    _drawNode(canvas, topLeft, 10 * scale, 0.6 + (pulseValue - 1.0) * 0.2);
+    _drawNode(canvas, topRight, 10 * scale, 0.6 + ((pulseValue - 0.9) * 0.3).abs());
+    _drawNode(canvas, bottom, 10 * scale, 0.6 + ((pulseValue - 1.1) * 0.25).abs());
+    
+    // Center node (larger, pulsing)
+    _drawCenterNode(canvas, center, 18 * scale * pulseValue);
+  }
+
+  void _drawFlowingParticle(Canvas canvas, Offset from, Offset to, double t, double scale) {
+    // Particle flows from outer node to center
+    final pos = Offset.lerp(to, from, t)!;
+    final opacity = t < 0.1 ? t * 10 : (t > 0.9 ? (1.0 - t) * 10 : 1.0);
+    
+    final particlePaint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.8 * opacity)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3 * scale);
+    
+    canvas.drawCircle(pos, 4 * scale, particlePaint);
+  }
+
+  void _drawNode(Canvas canvas, Offset pos, double radius, double opacity) {
+    // Outer glow
+    final glowPaint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.15 * opacity)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius * 0.8);
+    canvas.drawCircle(pos, radius * 1.5, glowPaint);
+    
+    // Dark core
+    final corePaint = Paint()..color = const Color(0xFF004d4d).withOpacity(opacity);
+    canvas.drawCircle(pos, radius, corePaint);
+    
+    // Bright ring
+    final ringPaint = Paint()..color = Monokai.cyan.withOpacity(opacity);
+    canvas.drawCircle(pos, radius * 0.65, ringPaint);
+    
+    // Center dot
+    final dotPaint = Paint()..color = const Color(0xFFb2ebf2).withOpacity(opacity);
+    canvas.drawCircle(pos, radius * 0.25, dotPaint);
+  }
+
+  void _drawCenterNode(Canvas canvas, Offset pos, double radius) {
+    // Strong glow
+    final glowPaint = Paint()
+      ..color = Monokai.cyan.withOpacity(0.2)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, radius);
+    canvas.drawCircle(pos, radius * 1.8, glowPaint);
+    
+    // Dark base
+    final basePaint = Paint()..color = const Color(0xFF003d3d);
+    canvas.drawCircle(pos, radius, basePaint);
+    
+    // Gradient middle
+    final midPaint = Paint()..color = Monokai.cyan.withOpacity(0.9);
+    canvas.drawCircle(pos, radius * 0.7, midPaint);
+    
+    // Bright center
+    final centerPaint = Paint()..color = const Color(0xFFb2ebf2);
+    canvas.drawCircle(pos, radius * 0.4, centerPaint);
+    
+    // White core
+    final whitePaint = Paint()..color = Colors.white;
+    canvas.drawCircle(pos, radius * 0.15, whitePaint);
+  }
+
+  @override
+  bool shouldRepaint(ConstellationPainter oldDelegate) {
+    return oldDelegate.pulseValue != pulseValue || oldDelegate.flowValue != flowValue;
+  }
+}
+
+// =============================================================================
 // MONOKAI THEME (exact colors from ThemeManager.swift)
 // =============================================================================
 
@@ -310,12 +481,13 @@ class _CyanHomePageState extends State<CyanHomePage> {
   Widget _buildHero(bool isMobile) {
     return Container(
       width: double.infinity,
-      constraints: BoxConstraints(minHeight: isMobile ? 700 : 800),
+      constraints: BoxConstraints(minHeight: isMobile ? 750 : 850),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
+            const Color(0xFF0d0d0a),
             Monokai.heroBackground,
             Monokai.background,
           ],
@@ -323,26 +495,17 @@ class _CyanHomePageState extends State<CyanHomePage> {
       ),
       child: Stack(
         children: [
-          // Animated constellation background (subtle)
+          // Animated constellation - more prominent
           Positioned.fill(
-            child: Opacity(
-              opacity: 0.15,
-              child: Center(
-                child: Image.asset(
-                  'assets/constellation.svg',
-                  width: 600,
-                  height: 600,
-                  // Note: SVG animation won't work as asset, would need flutter_svg
-                  // For now it's a static decorative element
-                ),
-              ),
+            child: Center(
+              child: AnimatedConstellation(size: isMobile ? 350 : 500),
             ),
           ),
           // Content
           Padding(
             padding: EdgeInsets.fromLTRB(
               isMobile ? 24 : 48,
-              120,
+              140,
               isMobile ? 24 : 48,
               80,
             ),
@@ -357,7 +520,7 @@ class _CyanHomePageState extends State<CyanHomePage> {
                       'Collaboration that\nkeeps up with you',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.jetBrainsMono(
-                        fontSize: isMobile ? 32 : 48,
+                        fontSize: isMobile ? 32 : 52,
                         fontWeight: FontWeight.w700,
                         color: Monokai.foreground,
                         height: 1.2,
@@ -376,12 +539,24 @@ class _CyanHomePageState extends State<CyanHomePage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'All synced instantly. All private.',
+                      'Real-time sync. Complete privacy. No compromises.',
                       textAlign: TextAlign.center,
                       style: GoogleFonts.jetBrainsMono(
                         fontSize: isMobile ? 14 : 16,
-                        color: Monokai.comment,
+                        color: Monokai.foregroundSecondary,
                       ),
+                    ),
+                    const SizedBox(height: 40),
+                    // Tech badges - business friendly
+                    Wrap(
+                      spacing: 12,
+                      runSpacing: 8,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _buildTechBadge('Peer-to-Peer', Monokai.cyan),
+                        _buildTechBadge('End-to-End Encrypted', Monokai.green),
+                        _buildTechBadge('Lightning Fast', Monokai.orange),
+                      ],
                     ),
                     const SizedBox(height: 48),
                     // Download buttons
@@ -411,6 +586,25 @@ class _CyanHomePageState extends State<CyanHomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTechBadge(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Text(
+        label,
+        style: GoogleFonts.jetBrainsMono(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
       ),
     );
   }
@@ -571,25 +765,25 @@ class _CyanHomePageState extends State<CyanHomePage> {
       _FeatureItem(
         icon: '📝',
         title: 'Notes',
-        description: 'Rich text editing with markdown support. Fast, local-first.',
+        description: 'Rich documents with real-time collaboration. Always in sync.',
         color: Monokai.green,
       ),
       _FeatureItem(
         icon: '📓',
         title: 'Notebook',
-        description: 'Jupyter-style code execution. Python, SQL, and more.',
+        description: 'Interactive code and data. Python, SQL — run it, share it.',
         color: Monokai.purple,
       ),
       _FeatureItem(
         icon: '🎨',
         title: 'Canvas',
-        description: 'Whiteboard for UML, diagrams, and freehand drawing.',
+        description: 'Whiteboard for ideas. Diagrams, sketches, visual thinking.',
         color: Monokai.orange,
       ),
       _FeatureItem(
         icon: '💬',
         title: 'Chat',
-        description: 'Real-time messaging. P2P sync — no server in the middle.',
+        description: 'Conversations in context. Discuss right where the work happens.',
         color: Monokai.cyan,
       ),
     ];
@@ -604,22 +798,22 @@ class _CyanHomePageState extends State<CyanHomePage> {
       child: Column(
         children: [
           Text(
-            '// features',
-            style: GoogleFonts.jetBrainsMono(
-              color: Monokai.comment,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Everything your team needs',
+            'One workspace for everything',
             style: GoogleFonts.jetBrainsMono(
               color: Monokai.foreground,
-              fontSize: isMobile ? 24 : 32,
+              fontSize: isMobile ? 24 : 36,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 48),
+          const SizedBox(height: 12),
+          Text(
+            'Stop switching tools. Start shipping work.',
+            style: GoogleFonts.jetBrainsMono(
+              color: Monokai.foregroundSecondary,
+              fontSize: isMobile ? 14 : 16,
+            ),
+          ),
+          const SizedBox(height: 56),
           Wrap(
             spacing: 24,
             runSpacing: 24,
@@ -703,7 +897,7 @@ class _CyanHomePageState extends State<CyanHomePage> {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  'CYAN LENS',
+                  'CYAN LENS AI',
                   style: GoogleFonts.jetBrainsMono(
                     color: Monokai.purple,
                     fontSize: 12,
@@ -712,30 +906,20 @@ class _CyanHomePageState extends State<CyanHomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
               Text(
-                '"What\'s blocking the team?"',
+                'Know what matters,\nwithout digging',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.jetBrainsMono(
                   color: Monokai.foreground,
-                  fontSize: isMobile ? 24 : 36,
+                  fontSize: isMobile ? 28 : 40,
                   fontWeight: FontWeight.w600,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Just ask.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.cyan,
-                  fontSize: isMobile ? 20 : 28,
-                  fontWeight: FontWeight.w500,
+                  height: 1.2,
                 ),
               ),
               const SizedBox(height: 24),
               Text(
-                'Lens AI surfaces asks, decisions, and nudges from your\nworkspace — without you digging through threads.',
+                'Lens AI watches your workspace and surfaces what needs attention.\nOpen questions. Pending decisions. Blockers. All in one view.',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.jetBrainsMono(
                   color: Monokai.foregroundSecondary,
@@ -749,10 +933,10 @@ class _CyanHomePageState extends State<CyanHomePage> {
                 runSpacing: 16,
                 alignment: WrapAlignment.center,
                 children: [
-                  _buildLensChip('Asks', Monokai.cyan),
-                  _buildLensChip('Decisions', Monokai.green),
-                  _buildLensChip('Nudges', Monokai.orange),
-                  _buildLensChip('Pulse', Monokai.purple),
+                  _buildLensFeature('Asks', 'Questions awaiting answers', Monokai.cyan),
+                  _buildLensFeature('Decisions', 'Choices made and pending', Monokai.green),
+                  _buildLensFeature('Nudges', 'What needs your attention', Monokai.orange),
+                  _buildLensFeature('Pulse', 'Your team\'s activity summary', Monokai.purple),
                 ],
               ),
             ],
@@ -762,21 +946,36 @@ class _CyanHomePageState extends State<CyanHomePage> {
     );
   }
 
-  Widget _buildLensChip(String label, Color color) {
+  Widget _buildLensFeature(String title, String description, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      width: 180,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        color: color.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withOpacity(0.2)),
       ),
-      child: Text(
-        label,
-        style: GoogleFonts.jetBrainsMono(
-          color: color,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.jetBrainsMono(
+              color: color,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            description,
+            style: GoogleFonts.jetBrainsMono(
+              color: Monokai.foregroundSecondary,
+              fontSize: 11,
+              height: 1.4,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -789,21 +988,27 @@ class _CyanHomePageState extends State<CyanHomePage> {
     final points = [
       _WhyPoint(
         icon: Icons.bolt,
-        title: 'Instant sync',
-        description: 'P2P means no cloud latency. Your changes propagate at network speed.',
+        title: 'Faster than cloud',
+        description: 'Direct peer-to-peer sync means your team sees changes instantly — no waiting on servers.',
         color: Monokai.yellow,
       ),
       _WhyPoint(
         icon: Icons.lock_outline,
-        title: 'Your data stays yours',
-        description: 'Nothing stored on our servers. End-to-end encrypted. Privacy by design.',
+        title: 'Complete privacy',
+        description: 'Your data never touches our servers. End-to-end encrypted between your team, always.',
         color: Monokai.green,
       ),
       _WhyPoint(
-        icon: Icons.code,
-        title: 'Modern architecture',
-        description: 'Rust. QUIC. Built for speed and reliability from the ground up.',
+        icon: Icons.speed,
+        title: 'Enterprise reliability',
+        description: 'Built on battle-tested technology trusted by leading companies worldwide.',
         color: Monokai.cyan,
+      ),
+      _WhyPoint(
+        icon: Icons.devices,
+        title: 'Works everywhere',
+        description: 'macOS, Windows, and iOS. Your workspace follows you across all your devices.',
+        color: Monokai.purple,
       ),
     ];
 
@@ -816,27 +1021,57 @@ class _CyanHomePageState extends State<CyanHomePage> {
       color: Monokai.background,
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
+          constraints: const BoxConstraints(maxWidth: 900),
           child: Column(
             children: [
               Text(
-                '// why cyan',
+                'Why teams choose Cyan',
                 style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.comment,
-                  fontSize: 14,
+                  color: Monokai.foreground,
+                  fontSize: isMobile ? 24 : 36,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 16),
               Text(
-                'Built different',
+                'The speed of local. The power of connected.',
                 style: GoogleFonts.jetBrainsMono(
-                  color: Monokai.foreground,
-                  fontSize: isMobile ? 24 : 32,
-                  fontWeight: FontWeight.w600,
+                  color: Monokai.foregroundSecondary,
+                  fontSize: isMobile ? 14 : 16,
                 ),
               ),
-              const SizedBox(height: 48),
-              ...points.map((p) => _buildWhyPointRow(p, isMobile)).toList(),
+              const SizedBox(height: 56),
+              isMobile
+                  ? Column(
+                      children: points.map((p) => _buildWhyPointCard(p)).toList(),
+                    )
+                  : Wrap(
+                      spacing: 24,
+                      runSpacing: 24,
+                      alignment: WrapAlignment.center,
+                      children: points.map((p) => _buildWhyPointCard(p)).toList(),
+                    ),
+              const SizedBox(height: 56),
+              // Tech footer - subtle
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Monokai.surface.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Monokai.divider),
+                ),
+                child: Wrap(
+                  spacing: 24,
+                  runSpacing: 8,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    _buildTechFooterItem('Rust'),
+                    _buildTechFooterItem('QUIC'),
+                    _buildTechFooterItem('Iroh'),
+                    _buildTechFooterItem('Tokio'),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -844,50 +1079,63 @@ class _CyanHomePageState extends State<CyanHomePage> {
     );
   }
 
-  Widget _buildWhyPointRow(_WhyPoint point, bool isMobile) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: Row(
+  Widget _buildWhyPointCard(_WhyPoint point) {
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: Monokai.surface,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: point.color.withOpacity(0.3)),
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 48,
-            height: 48,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
-              color: point.color.withOpacity(0.1),
+              color: point.color.withOpacity(0.15),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(point.icon, color: point.color, size: 24),
+            child: Icon(point.icon, color: point.color, size: 20),
           ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  point.title,
-                  style: GoogleFonts.jetBrainsMono(
-                    color: point.color,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  point.description,
-                  style: GoogleFonts.jetBrainsMono(
-                    color: Monokai.foregroundSecondary,
-                    fontSize: 14,
-                    height: 1.5,
-                  ),
-                ),
-              ],
+          const SizedBox(height: 16),
+          Text(
+            point.title,
+            style: GoogleFonts.jetBrainsMono(
+              color: Monokai.foreground,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            point.description,
+            style: GoogleFonts.jetBrainsMono(
+              color: Monokai.foregroundSecondary,
+              fontSize: 12,
+              height: 1.5,
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget _buildTechFooterItem(String label) {
+    return Text(
+      label,
+      style: GoogleFonts.jetBrainsMono(
+        color: Monokai.comment,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+
 
   // ===========================================================================
   // FOOTER
