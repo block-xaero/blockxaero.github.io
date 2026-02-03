@@ -138,9 +138,21 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
     setState(() => _selectedNode = _selectedNode == node ? null : node);
   }
 
-  void _submitEmail() {
-    if (_emailController.text.isNotEmpty && _emailController.text.contains('@')) {
-      setState(() => _emailSubmitted = true);
+  void _submitEmail() async {
+    final email = _emailController.text.trim();
+    if (email.isEmpty || !email.contains('@')) return;
+    
+    setState(() => _emailSubmitted = true);
+    
+    // POST to Buttondown
+    try {
+      html.HttpRequest.postFormData(
+        'https://buttondown.com/api/emails/embed-subscribe/blockxaero',
+        {'email': email},
+      );
+    } catch (e) {
+      // Silently fail - user already sees success message
+      // Buttondown will handle duplicates gracefully
     }
   }
 
@@ -175,37 +187,38 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   // ===========================================================================
 
   Widget _buildDesktopLayout(Size size) {
-    final constellationSize = (size.height * 0.55).clamp(300.0, 420.0);
+    // Use more of the screen - 65% of height for constellation
+    final constellationSize = (size.height * 0.65).clamp(350.0, 520.0);
     
     return Column(
       children: [
         _buildNavbar(),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 60),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               children: [
-                // Left - Constellation
+                // Left - Constellation (bigger)
                 Expanded(
-                  flex: 1,
+                  flex: 6,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildTitle(size: 42),
-                      const SizedBox(height: 28),
+                      _buildTitle(size: 48),
+                      const SizedBox(height: 20),
                       _buildConstellation(constellationSize),
                     ],
                   ),
                 ),
-                const SizedBox(width: 40),
+                const SizedBox(width: 24),
                 // Right - Content Panel
                 Expanded(
-                  flex: 1,
+                  flex: 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildContentArea(maxWidth: 440),
-                      const SizedBox(height: 32),
+                      _buildContentArea(maxWidth: 480),
+                      const SizedBox(height: 24),
                       _buildDownloadAndSignup(),
                     ],
                   ),
@@ -306,7 +319,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
               onTap: () async {
-                final uri = Uri.parse('mailto:demo@blockxaero.io?subject=Cyan Demo Request');
+                final uri = Uri.parse('mailto:anirudh.vyas@blockxaero.io?subject=Cyan Demo Request');
                 if (await canLaunchUrl(uri)) await launchUrl(uri);
               },
               child: Container(
@@ -341,7 +354,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
         ),
         const SizedBox(height: 6),
         Text(
-          'Collaboration that keeps up with you',
+          'The intelligent P2P workspace',
           textAlign: TextAlign.center,
           style: GoogleFonts.jetBrainsMono(fontSize: size * 0.36, color: Monokai.foregroundSecondary),
         ),
@@ -376,9 +389,9 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
               clipBehavior: Clip.none,
               children: [
                 _buildCenterNode(size),
-                _buildOuterNode(size: size, angle: -90, dist: 0.40, label: 'Collaboration', icon: Icons.people_outline, color: Monokai.green, id: 'collab'),
-                _buildOuterNode(size: size, angle: 210, dist: 0.40, label: 'Workspaces', icon: Icons.dashboard_outlined, color: Monokai.purple, id: 'workspace'),
-                _buildOuterNode(size: size, angle: -30, dist: 0.40, label: 'Peer-to-Peer', icon: Icons.hub_outlined, color: Monokai.orange, id: 'p2p'),
+                _buildOuterNode(size: size, angle: -90, dist: 0.40, label: 'Collab', icon: Icons.people_outline, color: Monokai.green, id: 'collab'),
+                _buildOuterNode(size: size, angle: 210, dist: 0.40, label: 'Workspace', icon: Icons.dashboard_outlined, color: Monokai.purple, id: 'workspace'),
+                _buildOuterNode(size: size, angle: -30, dist: 0.40, label: 'P2P', icon: Icons.hub_outlined, color: Monokai.orange, id: 'p2p'),
                 _buildOuterNode(size: size, angle: 90, dist: 0.45, label: 'Lens AI', icon: Icons.auto_awesome, color: Monokai.cyan, id: 'lens'),
               ],
             ),
@@ -389,7 +402,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
   }
 
   Widget _buildCenterNode(double size) {
-    final r = size * 0.12;
+    final r = size * 0.14; // Slightly bigger center
     return Positioned(
       left: (size - r) / 2,
       top: (size - r) / 2,
@@ -435,7 +448,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
     final x = cx + d * math.cos(rad);
     final y = cy + d * math.sin(rad);
     final isSelected = _selectedNode == id;
-    final nodeR = size * 0.22;
+    final nodeR = size * 0.26; // Bigger nodes
 
     return Positioned(
       left: x - nodeR / 2,
@@ -457,12 +470,14 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: color, size: nodeR * 0.30),
-                SizedBox(height: nodeR * 0.04),
+                Icon(icon, color: color, size: nodeR * 0.32),
+                SizedBox(height: nodeR * 0.06),
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: nodeR * 0.12, fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.visible,
+                  softWrap: false,
+                  style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: nodeR * 0.14, fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -497,19 +512,55 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.touch_app_rounded, color: Monokai.cyan.withOpacity(0.6), size: 36),
-          const SizedBox(height: 14),
           Text(
-            'Tap a node to explore',
-            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 15, fontWeight: FontWeight.w500),
+            'The intelligent workspace',
+            style: GoogleFonts.jetBrainsMono(color: Monokai.foreground, fontSize: 17, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 12),
           Text(
-            'Collaboration • Workspaces • P2P • AI',
-            style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 11),
+            'Slack + Confluence + JupyterHub — without the cloud. P2P sync at WiFi speed. AI that surfaces blockers, unanswered questions, and decisions across all your tools.',
+            style: GoogleFonts.jetBrainsMono(color: Monokai.foregroundSecondary, fontSize: 12, height: 1.6),
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildTagChip('Rust', Monokai.orange),
+              _buildTagChip('QUIC', Monokai.cyan),
+              _buildTagChip('P2P', Monokai.green),
+              _buildTagChip('E2E Encrypted', Monokai.purple),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Icon(Icons.touch_app_rounded, color: Monokai.cyan.withOpacity(0.6), size: 16),
+              const SizedBox(width: 8),
+              Text(
+                'Tap a node to explore',
+                style: GoogleFonts.jetBrainsMono(color: Monokai.comment, fontSize: 11),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTagChip(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Text(
+        label,
+        style: GoogleFonts.jetBrainsMono(color: color, fontSize: 10, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -565,27 +616,47 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
     final data = {
       'collab': {
         'color': Monokai.green,
-        'title': 'Real-time Collaboration',
-        'desc': 'Work together seamlessly. Changes sync instantly — no refresh, no conflicts.',
-        'features': ['Live cursors & selections', 'Contextual comments', 'Offline-first, syncs when back'],
+        'title': 'Real-time P2P Collaboration',
+        'desc': 'Direct peer-to-peer sync via QUIC. Changes propagate at WiFi speed — 100x faster than cloud round-trips. No server in the middle.',
+        'features': [
+          'Live cursors & presence awareness',
+          'Offline-first — works without internet',
+          'Conflict-free sync when reconnected',
+          'End-to-end encrypted, always',
+        ],
       },
       'workspace': {
         'color': Monokai.purple,
-        'title': 'Unified Workspaces',
-        'desc': 'Notes, notebooks, canvas, and chat — all in one place.',
-        'features': ['Notes: Rich docs with markdown', 'Notebooks: Python, SQL, visualizations', 'Canvas: Diagrams & sketches', 'Chat: In-context conversations'],
+        'title': 'Unified Workspace',
+        'desc': 'Slack + Confluence + JupyterHub in one place. Boards contain everything your team needs — no more tool-switching.',
+        'features': [
+          'Notes: Rich markdown with live collaboration',
+          'Notebooks: Python, SQL, visualizations — executable docs',
+          'Canvas: Diagrams, sketches, visual thinking',
+          'Chat: Threaded conversations in context',
+        ],
       },
       'p2p': {
         'color': Monokai.orange,
-        'title': 'Peer-to-Peer Architecture',
-        'desc': 'Direct sync between team members. No cloud servers storing your data.',
-        'features': ['QUIC protocol — faster than HTTP', 'End-to-end encrypted', 'Built on Rust, Iroh & Tokio'],
+        'title': 'Decentralized Architecture',
+        'desc': 'Built on Rust, Iroh, and Tokio. Your data never touches our servers — sovereign collaboration for teams who care about privacy.',
+        'features': [
+          'QUIC protocol with NAT traversal',
+          'Content-addressed storage (Blake3)',
+          'Merkle-tree sync for efficiency',
+          'Works air-gapped or on local mesh',
+        ],
       },
       'lens': {
         'color': Monokai.cyan,
         'title': 'Cyan Lens AI',
-        'desc': 'Your intelligent workspace assistant that surfaces what matters.',
-        'features': ['Asks: Questions awaiting answers', 'Decisions: Choices made & pending', 'Nudges: What needs attention', 'Pulse: Team activity summary'],
+        'desc': 'AI that understands your workspace. Connects to Slack, Jira, GitHub, Confluence — builds a knowledge graph and surfaces what matters.',
+        'features': [
+          'Asks: Questions waiting for answers',
+          'Decisions: Choices made across tools',
+          'Nudges: Blockers, stale items, follow-ups',
+          'Pulse: Daily summary of team activity',
+        ],
       },
     };
     return data[id] ?? {};

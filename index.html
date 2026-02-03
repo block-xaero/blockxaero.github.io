@@ -25,25 +25,19 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
   
-  <title>Cyan - Collaboration Platform</title>
+  <title>Cyan</title>
   
   <link rel="manifest" href="manifest.json">
 
   <script>
-    // The value below is injected by flutter build
-    const serviceWorkerVersion = "4097690894";
+    const serviceWorkerVersion = "2345950871";
   </script>
   
-  <!-- Preload fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  
   <style>
-    /* Loading styles */
     body {
       margin: 0;
       padding: 0;
-      background-color: #272822;
+      background-color: #0d0d0a;
       overflow: hidden;
     }
     
@@ -56,30 +50,145 @@
       font-family: 'JetBrains Mono', monospace;
     }
     
-    .loading-text {
-      color: #75715E;
-      font-size: 14px;
-      margin-top: 24px;
+    .constellation {
+      width: 120px;
+      height: 120px;
+      position: relative;
     }
     
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid #3E3D32;
-      border-top-color: #66D9EF;
+    /* Center node */
+    .center-node {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: radial-gradient(circle, #66D9EF, #2a8a9a);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      box-shadow: 0 0 20px rgba(102, 217, 239, 0.6);
+      animation: pulse 2s ease-in-out infinite;
     }
     
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .center-node::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 5px;
+      height: 5px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    /* Outer nodes */
+    .node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3E3D32;
+      border: 1.5px solid;
+    }
+    
+    .node-top { left: 50%; top: 10%; transform: translateX(-50%); border-color: #A6E22E; }
+    .node-left { left: 15%; top: 65%; border-color: #AE81FF; }
+    .node-right { right: 15%; top: 65%; border-color: #FD971F; }
+    .node-bottom { left: 50%; bottom: 5%; transform: translateX(-50%); border-color: #66D9EF; }
+    
+    /* Lines */
+    .line {
+      position: absolute;
+      background: rgba(102, 217, 239, 0.15);
+      transform-origin: top center;
+    }
+    
+    .line-top { left: 50%; top: 50%; width: 1.5px; height: 35px; transform: translateX(-50%) rotate(180deg); }
+    .line-left { left: 50%; top: 50%; width: 1.5px; height: 40px; transform: translateX(-50%) rotate(235deg); }
+    .line-right { left: 50%; top: 50%; width: 1.5px; height: 40px; transform: translateX(-50%) rotate(305deg); }
+    .line-bottom { left: 50%; top: 50%; width: 1.5px; height: 42px; transform: translateX(-50%) rotate(0deg); }
+    
+    /* Data packets */
+    .packet {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #66D9EF;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(102, 217, 239, 0.8);
+      opacity: 0;
+    }
+    
+    .packet-1 {
+      animation: flow1 2s ease-in-out infinite;
+    }
+    .packet-2 {
+      animation: flow2 2s ease-in-out infinite 0.5s;
+    }
+    .packet-3 {
+      animation: flow3 2s ease-in-out infinite 1s;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.15); }
+    }
+    
+    @keyframes flow1 {
+      0% { left: 50%; top: 15%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 50%; top: 45%; opacity: 0; }
+    }
+    
+    @keyframes flow2 {
+      0% { left: 20%; top: 65%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 48%; top: 48%; opacity: 0; }
+    }
+    
+    @keyframes flow3 {
+      0% { right: 20%; top: 65%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { right: 48%; top: 48%; opacity: 0; }
+    }
+    
+    .loading-text {
+      color: #66D9EF;
+      font-size: 18px;
+      margin-top: 24px;
+      letter-spacing: 3px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
   <div class="loading" id="loading">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">// loading cyan</div>
+    <div class="constellation">
+      <!-- Lines -->
+      <div class="line line-top"></div>
+      <div class="line line-left"></div>
+      <div class="line line-right"></div>
+      <div class="line line-bottom"></div>
+      
+      <!-- Nodes -->
+      <div class="node node-top"></div>
+      <div class="node node-left"></div>
+      <div class="node node-right"></div>
+      <div class="node node-bottom"></div>
+      
+      <!-- Data packets -->
+      <div class="packet packet-1"></div>
+      <div class="packet packet-2"></div>
+      <div class="packet packet-3"></div>
+      
+      <!-- Center -->
+      <div class="center-node"></div>
+    </div>
+    <div class="loading-text">CYAN</div>
   </div>
   
   <script src="flutter.js" defer></script>
@@ -91,7 +200,6 @@
         },
         onEntrypointLoaded: function(engineInitializer) {
           engineInitializer.initializeEngine().then(function(appRunner) {
-            // Hide loading screen
             document.getElementById('loading').style.display = 'none';
             appRunner.runApp();
           });
