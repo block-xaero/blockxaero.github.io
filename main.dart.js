@@ -39765,7 +39765,7 @@ $S:0}
 A.aez.prototype={
 $0(){var s=0,r=A.P(t.H),q
 var $async$$0=A.Q(function(a,b){if(a===1)return A.M(b,r)
-for(;;)switch(s){case 0:q=A.jm("mailto:anirudh.vyas@blockxaero.io,heejee.jo@blockxaero.io?subject=Cyan Demo Request",0,null)
+for(;;)switch(s){case 0:q=A.jm("https://calendly.com/anirudh-vyas-blockxaero/30min",0,null)
 s=4
 return A.T(A.aoB(q),$async$$0)
 case 4:s=b?2:3

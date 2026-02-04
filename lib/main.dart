@@ -319,7 +319,7 @@ class _CyanHomePageState extends State<CyanHomePage> with TickerProviderStateMix
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
               onTap: () async {
-                final uri = Uri.parse('mailto:anirudh.vyas@blockxaero.io,heejee.jo@blockxaero.io?subject=Cyan Demo Request');
+                final uri = Uri.parse('https://calendly.com/anirudh-vyas-blockxaero/30min');
                 if (await canLaunchUrl(uri)) await launchUrl(uri);
               },
               child: Container(
