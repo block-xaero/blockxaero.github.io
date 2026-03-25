@@ -1,208 +1,1041 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base href="/">
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Cyan - Collaboration that keeps up with you. Boards, Notes, Notebooks, Canvas, Chat. All synced instantly. All private.">
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content="Cyan - Collaboration Platform">
-  <meta property="og:description" content="Boards. Notes. Notebooks. Canvas. Chat. All synced instantly. All private.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyan — Where Your Teams Actually Work</title>
+  <meta name="description" content="Cyan is a collaborative workspace — notes, whiteboards, chat, and files — with an intelligent layer that understands your organization. Your data never touches a third-party cloud.">
+  <meta property="og:title" content="Cyan — Intelligent Collaborative Workspace">
+  <meta property="og:description" content="Your org's intelligence is scattered across Confluence, Slack, Jira, and email. Cyan brings it together.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://blockxaero.io">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Cyan - Collaboration Platform">
-  <meta name="twitter:description" content="Boards. Notes. Notebooks. Canvas. Chat. All synced instantly. All private.">
-  
-  <!-- iOS meta tags -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Cyan">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-  
-  <title>Cyan</title>
-  
-  <link rel="manifest" href="manifest.json">
-
-  <script>
-    const serviceWorkerVersion = "946910095";
-  </script>
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0d0d0a;
-      overflow: hidden;
+    :root {
+      --bg-deep: #0d0d0a;
+      --bg: #272822;
+      --surface: #3E3D32;
+      --fg: #F8F8F2;
+      --fg2: #CFCFC2;
+      --comment: #75715E;
+      --divider: #4A4A40;
+      --cyan: #66D9EF;
+      --green: #A6E22E;
+      --purple: #AE81FF;
+      --orange: #FD971F;
+      --pink: #F92672;
+      --cyan-glow: rgba(102, 217, 239, 0.15);
+      --cyan-glow-strong: rgba(102, 217, 239, 0.3);
     }
-    
-    .loading {
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--fg);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ========= NAV ========= */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(13, 13, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(74, 74, 64, 0.3);
+    }
+
+    .nav-logo {
+      height: 28px;
+      opacity: 0.95;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--fg2);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--cyan) !important;
+      padding: 8px 18px;
+      border: 1px solid rgba(102, 217, 239, 0.5);
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: rgba(102, 217, 239, 0.1);
+      border-color: var(--cyan);
+    }
+
+    /* ========= HERO ========= */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(102, 217, 239, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-pain {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--comment);
+      letter-spacing: 0.5px;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    .hero-pain span {
+      color: var(--orange);
+    }
+
+    .hero h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 700;
+      line-height: 1.1;
+      max-width: 800px;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 .highlight {
+      color: var(--cyan);
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--fg2);
+      max-width: 560px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    .hero-signup {
+      display: flex;
+      gap: 0;
+      max-width: 420px;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .hero-signup input {
+      flex: 1;
+      height: 48px;
+      padding: 0 18px;
+      background: var(--surface);
+      border: 1px solid var(--divider);
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      color: var(--fg);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .hero-signup input::placeholder {
+      color: var(--comment);
+    }
+
+    .hero-signup input:focus {
+      border-color: var(--cyan);
+    }
+
+    .hero-signup button {
+      height: 48px;
+      padding: 0 28px;
+      background: var(--cyan);
+      color: var(--bg-deep);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .hero-signup button:hover {
+      background: #7de3ff;
+    }
+
+    .hero-success {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(166, 226, 46, 0.1);
+      border: 1px solid rgba(166, 226, 46, 0.3);
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--green);
+    }
+
+    .integrations-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .integrations-row span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--comment);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .int-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--fg2);
+      padding: 6px 14px;
+      background: rgba(62, 61, 50, 0.5);
+      border: 1px solid var(--divider);
+      border-radius: 4px;
+      transition: all 0.25s;
+    }
+
+    .int-badge:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(102, 217, 239, 0.05);
+    }
+
+    /* ========= SECTIONS ========= */
+    section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+      font-size: 17px;
+      color: var(--fg2);
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ========= PROBLEM SECTION ========= */
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .problem-card {
+      padding: 32px 28px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--divider);
+      transition: all 0.3s;
+    }
+
+    .problem-card:hover {
+      border-color: rgba(102, 217, 239, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .problem-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .problem-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .problem-card p {
+      font-size: 14px;
+      color: var(--fg2);
+      line-height: 1.6;
+    }
+
+    .problem-card .tool-name {
+      color: var(--orange);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+    }
+
+    /* ========= WORKSPACE SECTION ========= */
+    .workspace-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .screenshot-frame {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--divider);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(102, 217, 239, 0.05);
+      margin-bottom: 48px;
+    }
+
+    .screenshot-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .screenshot-frame .frame-label {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(13, 13, 10, 0.8);
+      padding: 5px 12px;
+      border-radius: 4px;
+      backdrop-filter: blur(8px);
+    }
+
+    .features-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature-item {
+      padding: 24px 20px;
+      background: rgba(62, 61, 50, 0.3);
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.25s;
+    }
+
+    .feature-item:hover {
+      border-color: var(--divider);
+    }
+
+    .feature-item h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-item p {
+      font-size: 13px;
+      color: var(--comment);
+      line-height: 1.5;
+    }
+
+    .feature-item .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ========= LENS SECTION ========= */
+    .lens-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .lens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .lens-card {
+      padding: 28px 24px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--divider);
+    }
+
+    .lens-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .lens-card p {
+      font-size: 14px;
+      color: var(--fg2);
+      line-height: 1.6;
+    }
+
+    .lens-card .tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+
+    /* ========= PIPELINE SECTION ========= */
+    .pipeline-section {
+      padding: 100px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 48px 0 40px;
+      flex-wrap: wrap;
+    }
+
+    .pipeline-step {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'JetBrains Mono', monospace;
+      gap: 10px;
+      padding: 20px 16px;
+      min-width: 130px;
     }
-    
-    .constellation {
-      width: 120px;
-      height: 120px;
+
+    .pipeline-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border: 2px solid;
+      transition: all 0.3s;
+    }
+
+    .pipeline-dot.done { border-color: var(--green); background: rgba(166,226,46,0.1); }
+    .pipeline-dot.running { border-color: var(--cyan); background: rgba(102,217,239,0.1); animation: dotPulse 2s ease infinite; }
+    .pipeline-dot.waiting { border-color: var(--comment); background: rgba(117,113,94,0.1); }
+    .pipeline-dot.human { border-color: var(--orange); background: rgba(253,151,31,0.1); }
+
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(102,217,239,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(102,217,239,0); }
+    }
+
+    .pipeline-step-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--fg2);
+      text-align: center;
+    }
+
+    .pipeline-arrow {
+      color: var(--divider);
+      font-size: 20px;
+      margin: 0 -4px;
+      padding-bottom: 28px;
+    }
+
+    .pipeline-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .pipeline-card {
+      padding: 24px;
+      background: var(--surface);
+      border-radius: 10px;
+      border: 1px solid var(--divider);
+    }
+
+    .pipeline-card h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .pipeline-card p {
+      font-size: 13px;
+      color: var(--fg2);
+      line-height: 1.6;
+    }
+
+    .pipeline-card code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+      background: rgba(166,226,46,0.08);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 900px) {
+      .pipeline-flow { gap: 0; justify-content: center; }
+      .pipeline-step { min-width: 90px; padding: 12px 8px; }
+      .pipeline-cards { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .pipeline-arrow { display: none; }
+      .pipeline-flow { flex-direction: column; gap: 4px; }
+      .pipeline-step { flex-direction: row; min-width: unset; width: 100%; justify-content: flex-start; padding: 8px 16px; }
+    }
+
+    /* ========= PRIVATE SECTION ========= */
+    .private-section {
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .private-banner {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      padding: 48px 56px;
+      background: linear-gradient(135deg, rgba(62, 61, 50, 0.5) 0%, rgba(62, 61, 50, 0.2) 100%);
+      border-radius: 14px;
+      border: 1px solid var(--divider);
+    }
+
+    .private-banner .private-text {
+      flex: 1;
+    }
+
+    .private-banner h3 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .private-banner p {
+      font-size: 15px;
+      color: var(--fg2);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    .private-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .p-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--green);
+      padding: 10px 18px;
+      background: rgba(166, 226, 46, 0.08);
+      border: 1px solid rgba(166, 226, 46, 0.2);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .p-badge::before {
+      content: '✓';
+      font-weight: 700;
+    }
+
+    /* ========= CTA BOTTOM ========= */
+    .bottom-cta {
+      padding: 100px 40px;
+      text-align: center;
       position: relative;
     }
-    
-    /* Center node */
-    .center-node {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 16px;
-      height: 16px;
-      background: radial-gradient(circle, #66D9EF, #2a8a9a);
-      border-radius: 50%;
-      box-shadow: 0 0 20px rgba(102, 217, 239, 0.6);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    
-    .center-node::after {
+
+    .bottom-cta::before {
       content: '';
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 5px;
-      height: 5px;
-      background: white;
-      border-radius: 50%;
+      bottom: 0; left: 0; right: 0;
+      height: 400px;
+      background: radial-gradient(ellipse 70% 100% at 50% 100%, rgba(102, 217, 239, 0.06) 0%, transparent 70%);
+      pointer-events: none;
     }
-    
-    /* Outer nodes */
-    .node {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #3E3D32;
-      border: 1.5px solid;
+
+    .bottom-cta h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
     }
-    
-    .node-top { left: 50%; top: 10%; transform: translateX(-50%); border-color: #A6E22E; }
-    .node-left { left: 15%; top: 65%; border-color: #AE81FF; }
-    .node-right { right: 15%; top: 65%; border-color: #FD971F; }
-    .node-bottom { left: 50%; bottom: 5%; transform: translateX(-50%); border-color: #66D9EF; }
-    
-    /* Lines */
-    .line {
-      position: absolute;
-      background: rgba(102, 217, 239, 0.15);
-      transform-origin: top center;
+
+    .bottom-cta p {
+      font-size: 17px;
+      color: var(--fg2);
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    
-    .line-top { left: 50%; top: 50%; width: 1.5px; height: 35px; transform: translateX(-50%) rotate(180deg); }
-    .line-left { left: 50%; top: 50%; width: 1.5px; height: 40px; transform: translateX(-50%) rotate(235deg); }
-    .line-right { left: 50%; top: 50%; width: 1.5px; height: 40px; transform: translateX(-50%) rotate(305deg); }
-    .line-bottom { left: 50%; top: 50%; width: 1.5px; height: 42px; transform: translateX(-50%) rotate(0deg); }
-    
-    /* Data packets */
-    .packet {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #66D9EF;
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgba(102, 217, 239, 0.8);
+
+    .bottom-cta .hero-signup {
+      margin: 0 auto 24px;
+    }
+
+    /* ========= FOOTER ========= */
+    footer {
+      padding: 32px 40px;
+      text-align: center;
+      border-top: 1px solid rgba(74, 74, 64, 0.3);
+    }
+
+    footer p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--comment);
+    }
+
+    footer a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ========= ANIMATIONS ========= */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
       opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
     }
-    
-    .packet-1 {
-      animation: flow1 2s ease-in-out infinite;
+
+    .fade-up.d1 { animation-delay: 0.1s; }
+    .fade-up.d2 { animation-delay: 0.2s; }
+    .fade-up.d3 { animation-delay: 0.35s; }
+    .fade-up.d4 { animation-delay: 0.5s; }
+    .fade-up.d5 { animation-delay: 0.65s; }
+
+    /* scroll-triggered */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .packet-2 {
-      animation: flow2 2s ease-in-out infinite 0.5s;
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .packet-3 {
-      animation: flow3 2s ease-in-out infinite 1s;
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; }
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.nav-cta) { display: none; }
+
+      .hero { padding: 100px 24px 60px; }
+      section, .workspace-section, .lens-section, .private-section, .bottom-cta { padding: 60px 24px; }
+
+      .problem-grid { grid-template-columns: 1fr; gap: 16px; }
+      .features-row { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .lens-grid { grid-template-columns: 1fr; }
+
+      .private-banner {
+        flex-direction: column;
+        padding: 32px 24px;
+        gap: 28px;
+      }
     }
-    
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.15); }
-    }
-    
-    @keyframes flow1 {
-      0% { left: 50%; top: 15%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { left: 50%; top: 45%; opacity: 0; }
-    }
-    
-    @keyframes flow2 {
-      0% { left: 20%; top: 65%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { left: 48%; top: 48%; opacity: 0; }
-    }
-    
-    @keyframes flow3 {
-      0% { right: 20%; top: 65%; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { right: 48%; top: 48%; opacity: 0; }
-    }
-    
-    .loading-text {
-      color: #66D9EF;
-      font-size: 18px;
-      margin-top: 24px;
-      letter-spacing: 3px;
-      font-weight: 600;
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 30px; }
+      .hero-sub { font-size: 15px; }
+      .hero-signup { flex-direction: column; }
+      .hero-signup input { border-right: 1px solid var(--divider); border-radius: 6px; }
+      .hero-signup button { border-radius: 6px; height: 44px; }
+      .features-row { grid-template-columns: 1fr; }
+      .integrations-row { gap: 10px; }
+      .int-badge { font-size: 12px; padding: 5px 10px; }
     }
   </style>
 </head>
 <body>
-  <div class="loading" id="loading">
-    <div class="constellation">
-      <!-- Lines -->
-      <div class="line line-top"></div>
-      <div class="line line-left"></div>
-      <div class="line line-right"></div>
-      <div class="line line-bottom"></div>
-      
-      <!-- Nodes -->
-      <div class="node node-top"></div>
-      <div class="node node-left"></div>
-      <div class="node node-right"></div>
-      <div class="node node-bottom"></div>
-      
-      <!-- Data packets -->
-      <div class="packet packet-1"></div>
-      <div class="packet packet-2"></div>
-      <div class="packet packet-3"></div>
-      
-      <!-- Center -->
-      <div class="center-node"></div>
+
+  <!-- NAV -->
+  <nav>
+    <img src="assets/cyan-wordmark.png" alt="Cyan" class="nav-logo">
+    <div class="nav-links">
+      <a href="#workspace">Product</a>
+      <a href="#lens">Lens AI</a>
+      <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" target="_blank" class="nav-cta">Request Demo</a>
     </div>
-    <div class="loading-text">CYAN</div>
-  </div>
-  
-  <script src="flutter.js" defer></script>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-pain fade-up d1">
+      Knowledge in <span>Confluence</span>. Decisions in <span>Slack</span>. Progress in <span>Jira</span> and <span>GitHub</span>.<br>Nobody can find anything.
+    </p>
+
+    <h1 class="fade-up d2">
+      One workspace where your<br>teams <span class="highlight">actually work</span>
+    </h1>
+
+    <p class="hero-sub fade-up d3">
+      Notes, whiteboards, chat, and files — organized around how your company runs. An intelligent layer that understands what's happening and helps you stay ahead of it.
+    </p>
+
+    <div class="hero-signup fade-up d4" id="heroSignup">
+      <input type="email" id="heroEmail" placeholder="you@company.com" autocomplete="email">
+      <button onclick="submitEmail('heroEmail', 'heroSignup', 'heroSuccess')">Join Beta</button>
+    </div>
+    <div class="hero-success fade-up d4" id="heroSuccess">
+      ✓ You're on the list. We'll be in touch soon.
+    </div>
+
+    <div class="integrations-row fade-up d5">
+      <span>Connects with</span>
+      <div class="int-badge">Slack</div>
+      <div class="int-badge">Jira</div>
+      <div class="int-badge">GitHub</div>
+      <div class="int-badge">Confluence</div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem" class="reveal">
+    <div class="section-label">The Problem</div>
+    <div class="section-title">Your org's intelligence is scattered</div>
+    <div class="section-desc">Every company runs on the same broken pattern. The tools don't talk to each other, and the people filling them can't keep up.</div>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">📄</div>
+        <h3>Knowledge lives in <span class="tool-name">Confluence</span></h3>
+        <p>Pages nobody updates. Docs nobody reads. The wiki becomes a graveyard of good intentions two weeks after someone writes it.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">💬</div>
+        <h3>Decisions are buried in <span class="tool-name">Slack</span></h3>
+        <p>The real answer is always in a thread somewhere. Good luck finding it when your VP asks "what did we decide about X?"</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🔀</div>
+        <h3>Progress is scattered across <span class="tool-name">Jira</span> &amp; <span class="tool-name">GitHub</span></h3>
+        <p>Tickets in one place, code in another, conversations in a third. Nobody connects the dots until something slips.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKSPACE -->
+  <section id="workspace" class="workspace-section reveal">
+    <div class="section-label">The Workspace</div>
+    <div class="section-title">Organized the way your company runs</div>
+    <div class="section-desc">Departments as groups. Teams as workspaces. Each with boards for notes, whiteboards, chat, and files. Chat at every level.</div>
+
+    <div class="screenshot-frame">
+      <img src="assets/screen-explorer.jpg" alt="Cyan workspace — departments, boards, and notebooks" loading="lazy">
+      <div class="frame-label">Explorer View</div>
+    </div>
+
+    <div class="features-row">
+      <div class="feature-item">
+        <h4><span class="dot" style="background:var(--green)"></span>Notes</h4>
+        <p>Rich markdown documents. Meeting notes, specs, decisions — alive and editable.</p>
+      </div>
+      <div class="feature-item">
+        <h4><span class="dot" style="background:var(--purple)"></span>Canvas</h4>
+        <p>Whiteboards for diagrams, sketches, and visual thinking.</p>
+      </div>
+      <div class="feature-item">
+        <h4><span class="dot" style="background:var(--cyan)"></span>Chat</h4>
+        <p>Conversations in context — scoped to the work, not lost in a firehose.</p>
+      </div>
+      <div class="feature-item">
+        <h4><span class="dot" style="background:var(--orange)"></span>Notebooks</h4>
+        <p>Executable documents. Data analysis, pipelines, and workflows — right where the work happens.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT: CHAT -->
+  <section class="workspace-section reveal">
+    <div class="screenshot-frame">
+      <img src="assets/screen-chat.jpg" alt="Cyan chat — team collaboration with code sharing and file attachments" loading="lazy">
+      <div class="frame-label">Team Chat</div>
+    </div>
+    <p style="text-align:center; color:var(--comment); font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:-28px;">
+      Code sharing, file attachments, team presence — all scoped to your workspace.
+    </p>
+  </section>
+
+  <!-- LENS AI -->
+  <section id="lens" class="lens-section reveal">
+    <div class="section-label">Cyan Lens</div>
+    <div class="section-title">Intelligence that works for you</div>
+    <div class="section-desc">Cyan Lens watches how your organization works and surfaces what matters — before you have to ask.</div>
+
+    <div class="screenshot-frame" style="margin-bottom: 40px;">
+      <img src="assets/screen-lens-asks.jpg" alt="Cyan Lens — open questions tracked and routed to the right people" loading="lazy">
+      <div class="frame-label">Lens AI — Asks</div>
+    </div>
+
+    <div class="lens-grid">
+      <div class="lens-card">
+        <h3>
+          <span class="tag" style="background:rgba(253,151,31,0.15); color:var(--orange);">Nudges</span>
+          Questions going stale
+        </h3>
+        <p>Lens detects unanswered questions and flags them before they become blockers. No more things falling through the cracks.</p>
+      </div>
+      <div class="lens-card">
+        <h3>
+          <span class="tag" style="background:rgba(102,217,239,0.15); color:var(--cyan);">Asks</span>
+          Open questions tracked
+        </h3>
+        <p>Every question gets tracked and routed. You see who's waiting for answers and who needs to respond.</p>
+      </div>
+      <div class="lens-card">
+        <h3>
+          <span class="tag" style="background:rgba(166,226,46,0.15); color:var(--green);">Decisions</span>
+          Captured and visible
+        </h3>
+        <p>Decisions made in conversations are surfaced and recorded. Your team can agree, disagree, and comment.</p>
+      </div>
+      <div class="lens-card">
+        <h3>
+          <span class="tag" style="background:rgba(174,129,255,0.15); color:var(--purple);">Ask Cyan</span>
+          Query your workspace
+        </h3>
+        <p>"What needs attention?" "Find recent boards." Ask natural questions and get answers from your organization's own knowledge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOT: LENS CHAT -->
+  <section class="workspace-section reveal">
+    <div class="screenshot-frame">
+      <img src="assets/screen-lens-chat.jpg" alt="Ask CyanLens — natural language queries across your workspace" loading="lazy">
+      <div class="frame-label">Ask CyanLens</div>
+    </div>
+    <p style="text-align:center; color:var(--comment); font-family:'JetBrains Mono',monospace; font-size:12px; margin-top:-28px;">
+      Search your boards. Analyze activity. Ask what needs attention. All in natural language.
+    </p>
+  </section>
+
+  <!-- PIPELINES & WORKFLOWS -->
+  <section class="pipeline-section reveal">
+    <div class="section-label">Pipelines &amp; Workflows</div>
+    <div class="section-title">Write it in English. Cyan runs it.</div>
+    <div class="section-desc">Stitch a workflow in plain language inside a notebook. Cyan Lens reads your steps, figures out dependencies, and executes — keeping your team in the loop at every stage.</div>
+
+    <!-- Visual pipeline flow -->
+    <div class="pipeline-flow">
+      <div class="pipeline-step">
+        <div class="pipeline-dot done">✓</div>
+        <span class="pipeline-step-label">Ingest &amp; QC</span>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="pipeline-dot done">✓</div>
+        <span class="pipeline-step-label">Transcribe</span>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="pipeline-dot running">⟳</div>
+        <span class="pipeline-step-label">Translate</span>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="pipeline-dot human">👤</div>
+        <span class="pipeline-step-label">Review</span>
+      </div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">
+        <div class="pipeline-dot waiting">⏳</div>
+        <span class="pipeline-step-label">Deliver</span>
+      </div>
+    </div>
+
+    <div class="pipeline-cards">
+      <div class="pipeline-card">
+        <h4 style="color:var(--green);">Notebook = Workflow</h4>
+        <p>Each cell is a step. Write what needs to happen in plain English. Lens compiles your intent into an executable pipeline — no YAML, no drag-and-drop, no code.</p>
+      </div>
+      <div class="pipeline-card">
+        <h4 style="color:var(--cyan);">Board = Live Status</h4>
+        <p>The board face shows every step as a live dot. Click any dot to see what the AI did, what's pending, and who needs to act. Your team sees progress in real time.</p>
+      </div>
+      <div class="pipeline-card">
+        <h4 style="color:var(--orange);">Humans in the Loop</h4>
+        <p>When a step needs human eyes, Lens messages the right people through Cyan chat. They review, approve, and the pipeline continues. No context switching.</p>
+      </div>
+      <div class="pipeline-card">
+        <h4 style="color:var(--purple);">Any Industry, Any Workflow</h4>
+        <p>Media pipelines, software releases, compliance reviews, onboarding flows — same workspace, different skills. Cyan adapts to how your team works.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVATE -->
+  <section class="private-section reveal">
+    <div class="private-banner">
+      <div class="private-text">
+        <div class="section-label" style="margin-bottom:12px;">Your Data, Your Devices</div>
+        <h3>No third-party cloud in between</h3>
+        <p>Cyan connects your team directly over encrypted channels. Your colleague sitting ten feet away doesn't need a server in Virginia to hand you a file. It's the fastest way to work together — because there's nothing in the middle.</p>
+      </div>
+      <div class="private-badges">
+        <div class="p-badge">End-to-end encrypted</div>
+        <div class="p-badge">Direct connections</div>
+        <div class="p-badge">Works offline</div>
+        <div class="p-badge">Your data stays yours</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="bottom-cta reveal">
+    <h2>Help us shape this</h2>
+    <p>We're building Cyan in the open and inviting early testers who care about how their teams collaborate.</p>
+
+    <div class="hero-signup" id="bottomSignup">
+      <input type="email" id="bottomEmail" placeholder="you@company.com" autocomplete="email">
+      <button onclick="submitEmail('bottomEmail', 'bottomSignup', 'bottomSuccess')">Join Beta</button>
+    </div>
+    <div class="hero-success" id="bottomSuccess" style="display:none; justify-content:center;">
+      ✓ You're on the list. We'll be in touch soon.
+    </div>
+
+    <p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--comment); margin-top:16px;">
+      Or <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" target="_blank" style="color:var(--cyan); text-decoration:none;">request a demo</a> to see it live.
+    </p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 <a href="https://blockxaero.io">Cyan</a> by BlockXaero · <a href="mailto:anirudh.vyas@blockxaero.io">anirudh.vyas@blockxaero.io</a></p>
+  </footer>
+
   <script>
-    window.addEventListener('load', function(ev) {
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            document.getElementById('loading').style.display = 'none';
-            appRunner.runApp();
-          });
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Email submission
+    function submitEmail(inputId, formId, successId) {
+      const input = document.getElementById(inputId);
+      const email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        input.style.borderColor = 'var(--pink)';
+        setTimeout(() => input.style.borderColor = '', 1500);
+        return;
+      }
+
+      // POST to Buttondown
+      try {
+        const fd = new FormData();
+        fd.append('email', email);
+        fetch('https://buttondown.com/api/emails/embed-subscribe/blockxaero', {
+          method: 'POST',
+          body: fd,
+          mode: 'no-cors'
+        });
+      } catch (e) { /* silent */ }
+
+      document.getElementById(formId).style.display = 'none';
+      const success = document.getElementById(successId);
+      success.style.display = 'flex';
+    }
+
+    // Enter key support
+    document.querySelectorAll('.hero-signup input').forEach(input => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          input.parentElement.querySelector('button').click();
         }
       });
     });
