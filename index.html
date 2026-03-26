@@ -989,7 +989,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2026 <a href="https://blockxaero.io">Cyan</a> by BlockXaero · <a href="mailto:anirudh.vyas@blockxaero.io">anirudh.vyas@blockxaero.io</a></p>
+    <p>© 2026 <a href="https://blockxaero.io">Cyan</a> by BlockXaero · <a href="mailto:anirudh.vyas@blockxaero.io">anirudh.vyas@blockxaero.io</a> · <a href="mailto:heejee.jo@blockxaero.io">heejee.jo@blockxaero.io</a></p>
   </footer>
 
   <script>
@@ -1015,7 +1015,7 @@
         return;
       }
 
-      // POST to Buttondown
+      // POST to Buttondown (newsletter)
       try {
         const fd = new FormData();
         fd.append('email', email);
@@ -1024,6 +1024,16 @@
           body: fd,
           mode: 'no-cors'
         });
+      } catch (e) { /* silent */ }
+
+      // POST to license server (beta funnel tracking)
+      try {
+        fetch('https://license.blockxaero.io/v1/beta/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email }),
+          mode: 'cors'
+        }).catch(() => {});
       } catch (e) { /* silent */ }
 
       document.getElementById(formId).style.display = 'none';
