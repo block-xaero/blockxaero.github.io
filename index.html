@@ -10,7 +10,8 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://blockxaero.io">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="icon" type="image/png" href="/assets/cyan-wordmark.png">
+<link rel="apple-touch-icon" href="/assets/cyan-wordmark.png">
 
 <style>
 /* Monokai palette — matches Cyan app */
@@ -33,7 +34,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 
 body {
   background: var(--bg);
@@ -97,17 +98,19 @@ nav.top .wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 .brand {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--fg);
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
 }
-.brand .dot { color: var(--cyan); }
+.brand img {
+  height: 72px;
+  width: 72px;
+  display: block;
+  border-radius: 14px;
+}
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a { color: var(--fg-mute); font-size: 14px; font-weight: 500; }
 .nav-links a:hover { color: var(--cyan); }
@@ -730,6 +733,7 @@ footer a:hover { color: var(--cyan); }
 /* Mobile */
 @media (max-width: 880px) {
   section { padding: 64px 0; }
+  .brand img { height: 52px; width: 52px; }
   .nav-links { gap: 16px; }
   .nav-links a:not(.btn-primary) { display: none; }
   .reality-grid { grid-template-columns: 1fr 1fr; }
@@ -755,7 +759,9 @@ footer a:hover { color: var(--cyan); }
 <!-- Nav -->
 <nav class="top">
   <div class="wrap">
-    <a href="#" class="brand">cyan<span class="dot">.</span></a>
+    <a href="#" class="brand" aria-label="Cyan">
+      <img src="/assets/cyan-wordmark.png" alt="Cyan">
+    </a>
     <div class="nav-links">
       <a href="#workspace">Workspace</a>
       <a href="#lens">Lens</a>
