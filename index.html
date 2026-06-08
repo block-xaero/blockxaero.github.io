@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cyan — Stop coordinating. Start collaborating.</title>
-<meta name="description" content="AI-powered post-production workflows for broadcast and media teams. Cyan plans the work, runs the pipeline, and keeps your team in the loop at every gate.">
+<meta name="description" content="Cyan is the AI layer that connects every tool in your media production pipeline — pre-production to delivery. Describe the outcome in plain English; Cyan runs it across your tools and keeps a human at every gate.">
 <meta property="og:title" content="Cyan — Stop coordinating. Start collaborating.">
-<meta property="og:description" content="AI-powered post-production workflows for broadcast and media teams.">
+<meta property="og:description" content="The AI layer that connects every tool in your media production pipeline.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://blockxaero.io">
+<meta property="og:url" content="https://the-cyan.com">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="/assets/cyan-wordmark.png">
 <link rel="apple-touch-icon" href="/assets/cyan-wordmark.png">
@@ -114,6 +114,8 @@ nav.top .wrap {
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a { color: var(--fg-mute); font-size: 14px; font-weight: 500; }
 .nav-links a:hover { color: var(--cyan); }
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; }
+.nav-toggle span { width: 22px; height: 2px; background: var(--fg); display: block; }
 .btn-primary {
   background: var(--cyan);
   color: var(--bg-elev);
@@ -735,7 +737,17 @@ footer a:hover { color: var(--cyan); }
   section { padding: 64px 0; }
   .brand img { height: 52px; width: 52px; }
   .nav-links { gap: 16px; }
-  .nav-links a:not(.btn-primary) { display: none; }
+  nav.top .wrap { position: relative; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: var(--bg-elev); border-bottom: 1px solid var(--line);
+    padding: 4px 24px 16px; display: none;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 14px 0; font-size: 16px; border-bottom: 1px solid var(--line); }
+  .nav-links a.btn-primary { margin-top: 12px; text-align: center; border-bottom: 0; }
   .reality-grid { grid-template-columns: 1fr 1fr; }
   .workspace-grid { grid-template-columns: 1fr; gap: 32px; }
   .lens-cards { grid-template-columns: 1fr; }
@@ -752,6 +764,88 @@ footer a:hover { color: var(--cyan); }
   .pipeline-abstract { gap: 4px; padding: 24px 12px; }
   .node-abstract { width: 36px; height: 36px; }
 }
+/* End-to-end lifecycle */
+.lifecycle-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+.phase {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px;
+  border-top: 3px solid var(--phase, var(--cyan));
+}
+.phase.pre  { --phase: var(--purple); }
+.phase.prod { --phase: var(--orange); }
+.phase.post { --phase: var(--cyan); }
+.phase .phase-step { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--comment); margin-bottom: 8px; }
+.phase .phase-name {
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-size: 19px; font-weight: 700; color: var(--phase); margin-bottom: 14px; letter-spacing: -0.02em;
+}
+.phase .tools { font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--fg-mute); margin-bottom: 12px; line-height: 1.7; }
+.phase .seam { font-size: 14px; color: var(--fg-mute); }
+.seam-band {
+  margin-top: 18px; padding: 16px 24px; background: var(--bg-elev);
+  border-left: 3px solid var(--green); border-radius: 4px; font-size: 16px; color: var(--fg);
+}
+.seam-band strong { color: var(--green); }
+
+/* Plug-in marketplace */
+.market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
+.market-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+.market-card .mc-stat { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 26px; font-weight: 700; color: var(--cyan); margin-bottom: 10px; letter-spacing: -0.02em; }
+.market-card h3 { color: var(--fg); }
+.market-card p { color: var(--fg-mute); font-size: 14px; }
+.shelf { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.chip {
+  font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--fg-mute);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
+}
+.chip.build { color: var(--bg-elev); background: var(--green); border-color: var(--green); font-weight: 600; }
+.market-note { margin-top: 22px; font-size: 13px; color: var(--comment); font-family: "SF Mono", Menlo, monospace; }
+
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+.member { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 28px; }
+.member .m-name { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 22px; font-weight: 700; color: var(--fg); letter-spacing: -0.02em; }
+.member .m-role { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin: 4px 0 16px; font-weight: 600; }
+.member .m-cred { color: var(--fg-mute); font-size: 15px; line-height: 1.6; }
+.member .m-prev { margin-top: 14px; font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--comment); }
+
+@media (max-width: 880px) {
+  .lifecycle-flow { grid-template-columns: 1fr; }
+  .market-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+}
+/* Workspace — materialization flow */
+.mat-flow { list-style: none; display: flex; flex-direction: column; gap: 14px; align-self: center; }
+.mat-step { display: flex; gap: 14px; align-items: flex-start; color: var(--fg-mute); font-size: 15px; line-height: 1.5; }
+.mat-step strong { color: var(--fg); }
+.mat-num { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); color: var(--cyan); font-family: "SF Mono", Menlo, monospace; font-size: 13px; font-weight: 600; display: grid; place-items: center; }
+.run-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
+.run-mode { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 22px; }
+.run-mode .rm-name { font-family: "SF Pro Display", system-ui, sans-serif; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+.run-mode p { color: var(--fg-mute); font-size: 14px; }
+
+/* Demo — end-to-end workflow phases */
+.wf-phases { display: flex; flex-direction: column; gap: 14px; margin-top: 40px; }
+.wf-phase { background: var(--bg-elev); border: 1px solid var(--line); border-left: 3px solid var(--phase, var(--cyan)); border-radius: 10px; padding: 22px 24px; }
+.wf-phase.pre { --phase: var(--purple); }
+.wf-phase.prod { --phase: var(--orange); }
+.wf-phase.post { --phase: var(--cyan); }
+.wf-phase.deliver { --phase: var(--green); }
+.wf-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.wf-name { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 18px; font-weight: 700; color: var(--phase); letter-spacing: -0.02em; }
+.wf-trigger { font-size: 13px; color: var(--comment); }
+.wf-phase ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px 24px; }
+.wf-phase li { font-size: 14px; color: var(--fg-mute); padding-left: 18px; position: relative; }
+.wf-phase li::before { content: "→"; position: absolute; left: 0; color: var(--phase); }
+.wf-tools { margin-top: 14px; font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--comment); }
+.wf-detail-label { margin-top: 28px; margin-bottom: 16px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--comment); }
+
+@media (max-width: 880px) {
+  .run-modes { grid-template-columns: 1fr; }
+  .wf-phase ul { grid-template-columns: 1fr; }
+  .mat-flow { align-self: stretch; }
+}
 </style>
 </head>
 <body>
@@ -762,9 +856,14 @@ footer a:hover { color: var(--cyan); }
     <a href="#" class="brand" aria-label="Cyan">
       <img src="/assets/cyan-wordmark.png" alt="Cyan">
     </a>
-    <div class="nav-links">
-      <a href="#workspace">Workspace</a>
-      <a href="#lens">Lens</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#workspace" onclick="closeNav()">How it works</a>
+      <a href="#marketplace" onclick="closeNav()">Marketplace</a>
+      <a href="#demo" onclick="closeNav()">Workflow</a>
+      <a href="#team" onclick="closeNav()">Team</a>
       <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn-primary">Request demo</a>
     </div>
   </div>
@@ -773,9 +872,9 @@ footer a:hover { color: var(--cyan); }
 <!-- Hero -->
 <section class="hero">
   <div class="wrap">
-    <div class="eyebrow">For broadcast & post-production teams</div>
+    <div class="eyebrow">For broadcast & media production teams</div>
     <h1>Stop coordinating.<br><span class="accent">Start collaborating.</span></h1>
-    <p class="lede">AI-powered post-production workflows that save your team hours of manual coordination — every day.</p>
+    <p class="lede">The AI layer that connects every tool in your media pipeline. Describe the outcome in plain English — Cyan runs it across your tools and keeps a human at every gate.</p>
     <div class="ctas">
       <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn-primary">Request a demo</a>
       <a href="#beta" class="btn-ghost">Join beta</a>
@@ -790,28 +889,100 @@ footer a:hover { color: var(--cyan); }
 <!-- Reality (NAB Slide 2) -->
 <section id="reality">
   <div class="wrap">
-    <div class="eyebrow">Your team's reality</div>
-    <h2>Your work is scattered across four tools.<br>None of them talk to each other.</h2>
+    <div class="eyebrow">The cost of the gaps</div>
+    <h2>Your pipeline lives in a dozen tools.<br>None of them talk to each other.</h2>
     <div class="reality-grid">
       <div class="reality-card">
-        <div class="tool">Slack</div>
-        <p>Decisions buried in threads nobody can find.</p>
+        <div class="tool">Final Draft</div>
+        <p>Script goes to a blue revision. The breakdown's still on white.</p>
       </div>
       <div class="reality-card">
-        <div class="tool">Jira</div>
-        <p>Tickets disconnected from the conversations.</p>
+        <div class="tool">Avid / Resolve</div>
+        <p>Editor locks v6. The rest of the team finds out hours later.</p>
       </div>
       <div class="reality-card">
-        <div class="tool">GitHub</div>
-        <p>PRs waiting for reviews nobody knows about.</p>
+        <div class="tool">Frame.io</div>
+        <p>Review notes pile up. None of them become tasks.</p>
       </div>
       <div class="reality-card">
-        <div class="tool">Confluence</div>
-        <p>Docs nobody reads until something breaks.</p>
+        <div class="tool">ShotGrid</div>
+        <p>VFX tasks reconciled against the new cut — by hand, every day.</p>
       </div>
     </div>
     <div class="kicker">
-      <strong>45 minutes</strong> every morning just figuring out what needs attention. Context is scattered. Decisions are forgotten. Blockers hide until they explode.
+      Every phase boundary is a human shuttling files and metadata. <strong>30–40%</strong> of operator hours go to coordination instead of craft — at ~$40K an operator, a 50-person shop loses around <strong>$2M a year</strong> in the gaps between tools.
+    </div>
+  </div>
+</section>
+
+<!-- End-to-end lifecycle -->
+<section id="lifecycle">
+  <div class="wrap">
+    <div class="eyebrow">End to end</div>
+    <h2>One workflow engine.<br>Every phase of production.</h2>
+    <p class="lede">Most platforms own a single slice. Cyan spans the whole chain — and closes the handoffs <em>between</em> phases, where the hours actually bleed.</p>
+    <div class="lifecycle-flow">
+      <div class="phase pre">
+        <div class="phase-step">Phase 01</div>
+        <div class="phase-name">Pre-production</div>
+        <div class="tools">Final Draft · Movie Magic · EP</div>
+        <p class="seam">Script revisions, breakdowns, schedules, call sheets and cast holds — kept in sync as the plan changes.</p>
+      </div>
+      <div class="phase prod">
+        <div class="phase-step">Phase 02</div>
+        <div class="phase-name">Production</div>
+        <div class="tools">Silverstack · ShotGrid · on-set</div>
+        <p class="seam">Dailies, DIT logs and continuity reconciled against what was actually shot.</p>
+      </div>
+      <div class="phase post">
+        <div class="phase-step">Phase 03</div>
+        <div class="phase-name">Post-production</div>
+        <div class="tools">Avid · Resolve · Frame.io · ShotGrid</div>
+        <p class="seam">Editorial, review notes, VFX tasks, compliance and delivery — one connected flow.</p>
+      </div>
+    </div>
+    <div class="seam-band">
+      The status quo is a different platform for every phase, stitched together by people. <strong>Cyan is the connective layer that runs across all three.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- Plug-in marketplace (moat) -->
+<section id="marketplace">
+  <div class="wrap">
+    <div class="eyebrow">The moat · plug-in marketplace</div>
+    <h2>Every tool you use —<br><span class="accent">and the ones you'll build.</span></h2>
+    <p class="lede">Cyan speaks MCP, so any tool with an API becomes a plug-in your workflows can call. Install integrations and proprietary models like apps — or publish your own.</p>
+    <div class="market-grid">
+      <div class="market-card">
+        <div class="mc-stat">Code-gen</div>
+        <h3>Plug-ins from an API spec</h3>
+        <p>The engine that writes the integration. 5 weeks and $30–50K of engineer time per connector becomes ~4 hours — generated, not hand-built.</p>
+      </div>
+      <div class="market-card">
+        <div class="mc-stat">Install &amp; go</div>
+        <h3>Proprietary models as plug-ins</h3>
+        <p>A studio's custom QC, compliance or transcription model becomes a plug-in any team can install — no in-house ML team required.</p>
+      </div>
+      <div class="market-card">
+        <div class="mc-stat">Compounds</div>
+        <h3>Build once, publish, earn</h3>
+        <p>Builders ship plug-ins, teams install them, the catalog deepens — the industry's media workflows in one place.</p>
+      </div>
+    </div>
+    <div class="shelf">
+      <span class="chip">frameio</span>
+      <span class="chip">shotgrid</span>
+      <span class="chip">avid</span>
+      <span class="chip">resolve</span>
+      <span class="chip">whisper-transcribe</span>
+      <span class="chip">qc-model</span>
+      <span class="chip">compliance-scan</span>
+      <span class="chip">ad-insert</span>
+      <span class="chip build">+ build your own</span>
+    </div>
+    <div class="seam-band">
+      <strong>Why it compounds:</strong> the operational seams we encode, a marketplace that grows with every plug-in, and code-gen that makes the next plug-in nearly free. The catalog gets deeper — the moat gets wider.
     </div>
   </div>
 </section>
@@ -819,46 +990,29 @@ footer a:hover { color: var(--cyan); }
 <!-- Workspace (NAB Slide 3) -->
 <section id="workspace">
   <div class="wrap">
-    <div class="eyebrow">Everything in one place</div>
-    <h2>Organized the way your team actually works.</h2>
-    <p class="lede">Departments as groups. Teams as workspaces. Each board has the surfaces your team needs — all in one place.</p>
+    <div class="eyebrow">From intent to pipeline</div>
+    <h2>Organized the way your team works.</h2>
+    <p class="lede">A board is your team's sounding board. Describe the outcome in plain English — Cyan turns the conversation into a workflow that runs.</p>
 
     <div class="workspace-grid">
       <div class="screenshot-frame">
-        <img src="/assets/full_view_cyan.png" alt="Cyan workspace — departments, workspaces, and boards for a post-production team" loading="lazy">
+        <img src="/assets/full_view_cyan.png" alt="A Cyan board where a team crafts a workflow in plain language" loading="lazy">
       </div>
-      <div class="faces-grid">
-        <div class="face-card">
-          <div class="face-icon">📝</div>
-          <h4>Notes</h4>
-          <p>Markdown docs, meeting notes, specs.</p>
-        </div>
-        <div class="face-card">
-          <div class="face-icon">🎨</div>
-          <h4>Canvas</h4>
-          <p>Whiteboards, diagrams, visual thinking.</p>
-        </div>
-        <div class="face-card">
-          <div class="face-icon">💬</div>
-          <h4>Chat</h4>
-          <p>Conversations scoped to the work.</p>
-        </div>
-        <div class="face-card face-new">
-          <div class="face-icon">⚡</div>
-          <h4>Notebook</h4>
-          <p>Where workflows live and run.</p>
-        </div>
-        <div class="face-card face-new" style="grid-column: span 2;">
-          <div class="face-icon">🎬</div>
-          <h4>Video</h4>
-          <p>Media review with time-coded comments and AI findings on the timeline.</p>
-        </div>
-      </div>
+      <ol class="mat-flow">
+        <li class="mat-step"><span class="mat-num">1</span><div><strong>Parse</strong> the outcome you described, with the context on the board.</div></li>
+        <li class="mat-step"><span class="mat-num">2</span><div><strong>Compile</strong> a plan — the steps and the human gates.</div></li>
+        <li class="mat-step"><span class="mat-num">3</span><div><strong>Select</strong> the right plug-ins for each step.</div></li>
+        <li class="mat-step"><span class="mat-num">4</span><div><strong>Materialize</strong> a runnable pipeline.</div></li>
+        <li class="mat-step"><span class="mat-num">5</span><div><strong>Run</strong> it — with a human at every gate.</div></li>
+      </ol>
     </div>
-    <div class="screenshot-frame" style="margin-top: 56px;">
-      <img src="/assets/proxies_collaboration.png" alt="A board for editing proxies — notes, chat, files, and the workflow all in one place" loading="lazy">
+
+    <div class="run-modes">
+      <div class="run-mode"><div class="rm-name">Cloud</div><p>Cyan Lens does the heavy lifting on GPU.</p></div>
+      <div class="run-mode"><div class="rm-name">Distributed</div><p>Split the work across cloud and your own machines.</p></div>
+      <div class="run-mode"><div class="rm-name">Fully local</div><p>Sensitive jobs never leave your devices.</p></div>
     </div>
-    <p class="scoped-line">Chat at every level — group, workspace, board. Not a firehose. Scoped to the work.</p>
+    <p class="scoped-line">Same workflow — you choose where the compute lives.</p>
   </div>
 </section>
 
@@ -939,10 +1093,54 @@ footer a:hover { color: var(--cyan); }
 <!-- Demo: post-production (NAB Slide 6) -->
 <section id="demo">
   <div class="wrap">
-    <div class="eyebrow">Post-production demo</div>
-    <h2>Six steps. The work happens while you sleep.</h2>
-    <p class="lede">A typical media episode runs through this pipeline. Cyan handles the grind so your team focuses on the calls only humans can make.</p>
+    <div class="eyebrow">End-to-end workflow</div>
+    <h2>From script to broadcast.<br><span class="accent">One connected workflow.</span></h2>
+    <p class="lede">The work doesn't live in any one phase. Cyan rides the seams between them — pre-production to delivery.</p>
 
+    <div class="wf-phases">
+      <div class="wf-phase pre">
+        <div class="wf-head"><span class="wf-name">01 · Pre-production</span><span class="wf-trigger">trigger: script locks or revises</span></div>
+        <ul>
+          <li>Generate the scene breakdown</li>
+          <li>Reconcile it to the Movie Magic budget</li>
+          <li>Rebuild the schedule against cast holds &amp; locations</li>
+          <li>Flag budget drift on every revision</li>
+        </ul>
+        <div class="wf-tools">Final Draft · Movie Magic · EP</div>
+      </div>
+      <div class="wf-phase prod">
+        <div class="wf-head"><span class="wf-name">02 · Production</span><span class="wf-trigger">trigger: on-set capture</span></div>
+        <ul>
+          <li>Reconcile DIT logs to the shot list</li>
+          <li>Track circle takes &amp; continuity</li>
+          <li>Carry on-set metadata forward</li>
+          <li>Hand editorial-ready dailies to Frame.io</li>
+        </ul>
+        <div class="wf-tools">Silverstack · ShotGrid</div>
+      </div>
+      <div class="wf-phase post">
+        <div class="wf-head"><span class="wf-name">03 · Post-production</span><span class="wf-trigger">trigger: editor locks a cut</span></div>
+        <ul>
+          <li>Turn Frame.io notes into tasks</li>
+          <li>Push the change list to ShotGrid VFX</li>
+          <li>Route audio to Pro Tools</li>
+          <li>Reconcile versions across Avid &amp; Resolve</li>
+        </ul>
+        <div class="wf-tools">Frame.io · Avid · DaVinci Resolve · Pro Tools</div>
+      </div>
+      <div class="wf-phase deliver">
+        <div class="wf-head"><span class="wf-name">04 · Delivery</span><span class="wf-trigger">trigger: master approved</span></div>
+        <ul>
+          <li>Ingest &amp; broadcast-grade QC</li>
+          <li>Transcribe, translate &amp; subtitle</li>
+          <li>Compliance &amp; ad markers</li>
+          <li>Package per platform, deliver on approval</li>
+        </ul>
+        <div class="wf-tools">ingest · QC · subtitling · compliance · packaging</div>
+      </div>
+    </div>
+
+    <p class="wf-detail-label">The delivery leg, one prompt deep</p>
     <div class="pipeline-real">
       <div class="step">
         <div class="step-num">01</div>
@@ -1163,6 +1361,28 @@ footer a:hover { color: var(--cyan); }
   </div>
 </section>
 
+<!-- Team -->
+<section id="team">
+  <div class="wrap">
+    <div class="eyebrow">Who's building it</div>
+    <h2>Engineering and revenue,<br>with media in the blood.</h2>
+    <div class="team-grid">
+      <div class="member">
+        <div class="m-name">Anirudh Vyas</div>
+        <div class="m-role">Founder &amp; CEO</div>
+        <p class="m-cred">22 years building software at scale, with $2M+ in operational savings delivered. Advisor to Planetcast Media. Former Principal Engineer at Workday.</p>
+        <div class="m-prev">prev · Workday · Thomson Reuters · Wells Fargo</div>
+      </div>
+      <div class="member">
+        <div class="m-name">HeeJee Jo</div>
+        <div class="m-role">Co-Founder &amp; CRO</div>
+        <p class="m-cred">Drove $300M in revenue growth across global luxury brands. MBA, Columbia Business School.</p>
+        <div class="m-prev">prev · Louis Vuitton · Coach · Prada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Beta CTA -->
 <section id="beta" class="beta">
   <div class="wrap">
@@ -1183,10 +1403,12 @@ footer a:hover { color: var(--cyan); }
 </section>
 
 <footer>
-  <p>© 2026 Cyan by Block Xaero · <a href="mailto:anirudh.vyas@blockxaero.io">anirudh.vyas@blockxaero.io</a> · <a href="mailto:heejee.jo@blockxaero.io">heejee.jo@blockxaero.io</a></p>
+  <p>© 2026 Cyan · Anirudh Vyas &amp; HeeJee Jo · <a href="mailto:anirudh.vyas@the-cyan.com">anirudh.vyas@the-cyan.com</a> · <a href="mailto:heejee.jo@the-cyan.com">heejee.jo@the-cyan.com</a></p>
 </footer>
 
 <script>
+function toggleNav(){var n=document.getElementById('navLinks');var t=document.getElementById('navToggle');var o=n.classList.toggle('open');t.setAttribute('aria-expanded',o);}
+function closeNav(){var n=document.getElementById('navLinks');n.classList.remove('open');document.getElementById('navToggle').setAttribute('aria-expanded','false');}
 function betaSubmit(e) {
   // Let Buttondown receive the POST in the popup target, but show our own confirm
   setTimeout(() => {
