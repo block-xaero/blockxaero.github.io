@@ -113,22 +113,7 @@ nav.top .wrap {
 .brand {
   display: flex;
   align-items: center;
-  gap: 9px;
 }
-/* Deck-style wordmark: white italic CYAN in a purple box + film reel */
-.brand .wordmark {
-  background: var(--cyan);
-  color: #fff;
-  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: 0.2em;
-  font-size: 21px;
-  line-height: 1;
-  padding: 8px 11px 8px 16px;
-  border-radius: 8px;
-}
-.brand .reel { width: 24px; height: 24px; color: var(--cyan); display: block; }
 .brand img {
   height: 72px;
   width: 72px;
@@ -879,15 +864,7 @@ footer a:hover { color: var(--cyan); }
 <nav class="top">
   <div class="wrap">
     <a href="#" class="brand" aria-label="Cyan">
-      <span class="wordmark">CYAN</span>
-      <svg class="reel" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-        <circle cx="12" cy="12" r="2" fill="currentColor"/>
-        <circle cx="12" cy="6.2" r="1.5" fill="currentColor"/>
-        <circle cx="12" cy="17.8" r="1.5" fill="currentColor"/>
-        <circle cx="6.2" cy="12" r="1.5" fill="currentColor"/>
-        <circle cx="17.8" cy="12" r="1.5" fill="currentColor"/>
-      </svg>
+      <img src="/assets/cyan-wordmark.png" alt="Cyan">
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
       <span></span><span></span><span></span>
