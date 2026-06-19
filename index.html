@@ -14,22 +14,23 @@
 <link rel="apple-touch-icon" href="/assets/cyan-wordmark.png">
 
 <style>
-/* Monokai palette — matches Cyan app */
+/* Light palette — matches Cyan pitch deck */
 :root {
-  --bg: #1c1d18;
-  --bg-elev: #272822;
-  --surface: #3e3d32;
-  --surface-2: #49483e;
-  --fg: #f8f8f2;
-  --fg-mute: #a8a89a;
-  --comment: #75715e;
-  --cyan: #66d9ef;
-  --green: #a6e22e;
-  --purple: #ae81ff;
-  --orange: #fd971f;
-  --yellow: #e6db74;
-  --pink: #f92672;
-  --line: #3e3d32;
+  --bg: #ffffff;
+  --bg-elev: #f7f6fc;
+  --surface: #efecfa;
+  --surface-2: #d7d0f2;
+  --fg: #16131f;
+  --fg-mute: #56525f;
+  --comment: #8a8694;
+  --cyan: #8946eb;        /* primary brand purple (from deck) */
+  --purple: #6a3fd0;      /* deeper violet */
+  --lavender: #c5cdf7;    /* soft lavender (deck) */
+  --green: #2f9e6b;       /* legible positive */
+  --orange: #e0791e;      /* legible AI amber */
+  --yellow: #b8901a;
+  --pink: #d6326b;
+  --line: #e8e4f4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +48,7 @@ body {
 }
 
 a { color: var(--cyan); text-decoration: none; }
-a:hover { color: var(--green); }
+a:hover { color: var(--purple); }
 
 img { max-width: 100%; height: auto; display: block; }
 
@@ -71,6 +72,14 @@ h1, h2, h3, h4 {
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.1;
+  color: var(--fg);
+}
+/* Deck-style underlined key terms */
+h1 .accent, h2 .accent {
+  text-decoration: underline;
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.12em;
+  text-decoration-color: currentColor;
 }
 
 h1 { font-size: clamp(40px, 6vw, 72px); }
@@ -89,7 +98,7 @@ nav.top {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(28, 29, 24, 0.85);
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
@@ -104,7 +113,22 @@ nav.top .wrap {
 .brand {
   display: flex;
   align-items: center;
+  gap: 9px;
 }
+/* Deck-style wordmark: white italic CYAN in a purple box + film reel */
+.brand .wordmark {
+  background: var(--cyan);
+  color: #fff;
+  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.2em;
+  font-size: 21px;
+  line-height: 1;
+  padding: 8px 11px 8px 16px;
+  border-radius: 8px;
+}
+.brand .reel { width: 24px; height: 24px; color: var(--cyan); display: block; }
 .brand img {
   height: 72px;
   width: 72px;
@@ -114,6 +138,7 @@ nav.top .wrap {
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a { color: var(--fg-mute); font-size: 14px; font-weight: 500; }
 .nav-links a:hover { color: var(--cyan); }
+.nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
 .nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; }
 .nav-toggle span { width: 22px; height: 2px; background: var(--fg); display: block; }
 .btn-primary {
@@ -128,7 +153,7 @@ nav.top .wrap {
   display: inline-block;
   transition: background 0.15s;
 }
-.btn-primary:hover { background: var(--green); color: var(--bg-elev); }
+.btn-primary:hover { background: var(--purple); color: #fff; }
 .btn-ghost {
   border: 1px solid var(--surface-2);
   color: var(--fg);
@@ -148,8 +173,8 @@ section.hero {
   padding-bottom: 120px;
   border-bottom: 1px solid var(--line);
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(102, 217, 239, 0.06), transparent 70%),
-    var(--bg);
+    radial-gradient(ellipse 90% 70% at 50% -10%, rgba(137, 70, 235, 0.10), transparent 70%),
+    linear-gradient(180deg, #f3f1fb 0%, var(--bg) 60%);
 }
 .hero h1 {
   margin: 18px 0 24px;
@@ -163,8 +188,8 @@ section.hero {
   align-items: center;
   gap: 12px;
   padding: 12px 18px;
-  background: rgba(102, 217, 239, 0.06);
-  border: 1px solid rgba(102, 217, 239, 0.2);
+  background: rgba(137, 70, 235, 0.07);
+  border: 1px solid rgba(137, 70, 235, 0.22);
   border-radius: 6px;
   font-size: 13px;
   color: var(--fg-mute);
@@ -222,7 +247,7 @@ section.hero {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 18px 48px rgba(106, 63, 208, 0.14);
   background: var(--bg-elev);
 }
 .faces-grid {
@@ -240,14 +265,14 @@ section.hero {
 .face-card h4 { font-size: 15px; margin-bottom: 4px; color: var(--fg); }
 .face-card p { font-size: 13px; color: var(--fg-mute); line-height: 1.5; }
 .face-new {
-  border-color: rgba(166, 226, 46, 0.3);
-  background: linear-gradient(135deg, rgba(166, 226, 46, 0.04), transparent);
+  border-color: rgba(137, 70, 235, 0.28);
+  background: linear-gradient(135deg, rgba(137, 70, 235, 0.06), transparent);
 }
 .face-new h4::after {
   content: "NEW";
   font-size: 9px;
-  background: var(--green);
-  color: var(--bg-elev);
+  background: var(--cyan);
+  color: #fff;
   padding: 2px 6px;
   margin-left: 8px;
   border-radius: 3px;
@@ -287,9 +312,9 @@ section.hero {
   font-size: 20px;
   margin-bottom: 16px;
 }
-.lens-card.nudges .icon { background: rgba(253, 151, 31, 0.15); color: var(--orange); }
-.lens-card.asks .icon { background: rgba(102, 217, 239, 0.15); color: var(--cyan); }
-.lens-card.decisions .icon { background: rgba(166, 226, 46, 0.15); color: var(--green); }
+.lens-card.nudges .icon { background: rgba(224, 121, 30, 0.14); color: var(--orange); }
+.lens-card.asks .icon { background: rgba(137, 70, 235, 0.14); color: var(--cyan); }
+.lens-card.decisions .icon { background: rgba(47, 158, 107, 0.14); color: var(--green); }
 .lens-card h3 { font-size: 18px; margin-bottom: 10px; }
 .lens-card p { color: var(--fg-mute); font-size: 14px; margin-bottom: 16px; line-height: 1.55; }
 .lens-card .quote {
@@ -310,7 +335,7 @@ section.hero {
 
 /* Workflow teaser — deliberately vague */
 .teaser {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(174, 129, 255, 0.04) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.06) 100%);
 }
 .teaser .wrap { max-width: 960px; text-align: center; }
 .teaser h2 { font-size: clamp(36px, 5vw, 56px); margin-bottom: 20px; }
@@ -336,7 +361,7 @@ section.hero {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(174, 129, 255, 0.08), transparent 70%);
+  background: radial-gradient(circle at 50% 50%, rgba(137, 70, 235, 0.10), transparent 70%);
   pointer-events: none;
 }
 .node-abstract {
@@ -607,7 +632,7 @@ section.hero {
 
 /* Shortest path / sovereignty */
 .sovereignty {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(102, 217, 239, 0.03) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.05) 100%);
 }
 .path-compare {
   display: grid;
@@ -678,7 +703,7 @@ section.hero {
 /* Beta CTA / footer */
 .beta {
   text-align: center;
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(102, 217, 239, 0.05) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.06) 100%);
 }
 .beta h2 { margin-bottom: 16px; }
 .beta p.lede { margin: 0 auto 32px; }
@@ -800,7 +825,7 @@ footer a:hover { color: var(--cyan); }
   font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--fg-mute);
   background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
 }
-.chip.build { color: var(--bg-elev); background: var(--green); border-color: var(--green); font-weight: 600; }
+.chip.build { color: #fff; background: var(--cyan); border-color: var(--cyan); font-weight: 600; }
 .market-note { margin-top: 22px; font-size: 13px; color: var(--comment); font-family: "SF Mono", Menlo, monospace; }
 
 .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
@@ -854,7 +879,15 @@ footer a:hover { color: var(--cyan); }
 <nav class="top">
   <div class="wrap">
     <a href="#" class="brand" aria-label="Cyan">
-      <img src="/assets/cyan-wordmark.png" alt="Cyan">
+      <span class="wordmark">CYAN</span>
+      <svg class="reel" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+        <circle cx="12" cy="6.2" r="1.5" fill="currentColor"/>
+        <circle cx="12" cy="17.8" r="1.5" fill="currentColor"/>
+        <circle cx="6.2" cy="12" r="1.5" fill="currentColor"/>
+        <circle cx="17.8" cy="12" r="1.5" fill="currentColor"/>
+      </svg>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
       <span></span><span></span><span></span>
