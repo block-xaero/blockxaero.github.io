@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Vyas;Anirudh;;;
+FN:Anirudh Vyas
+ORG:The Cyan Inc.
+TITLE:Founder & CEO
+EMAIL;TYPE=INTERNET,WORK:anirudh.vyas@the-cyan.com
+URL:https://the-cyan.com
+NOTE:Cyan - AI that choreographs your post floor. We met at IBC 2026.
+END:VCARD

@@ -3,859 +3,266 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyan — Stop coordinating. Start collaborating.</title>
-<meta name="description" content="Cyan is the AI layer that connects every tool in your media production pipeline — pre-production to delivery. Describe the outcome in plain English; Cyan runs it across your tools and keeps a human at every gate.">
-<meta property="og:title" content="Cyan — Stop coordinating. Start collaborating.">
-<meta property="og:description" content="The AI layer that connects every tool in your media production pipeline.">
+<title>Cyan — AI that choreographs your post floor.</title>
+<meta name="description" content="One sentence from the post supervisor, one press, and Cyan&#x27;s AI runs the floor: it stages the day, reads every take, minds the rough cut, packages the hand-offs, proposes the grade and keeps the record. Every chair finds its toil already done, and signs only the doors that matter.">
+<meta property="og:title" content="Cyan — AI that choreographs your post floor.">
+<meta property="og:description" content="One sentence from the post supervisor, one press, and Cyan&#x27;s AI runs the floor: it stages the day, reads every take, minds the rough cut, packages the hand-offs, proposes the grade and keeps the record. Every chair finds its toil already done, and signs only the doors that matter.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://the-cyan.com">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="/assets/cyan-wordmark.png">
-<link rel="apple-touch-icon" href="/assets/cyan-wordmark.png">
-
+<meta property="og:url" content="https://the-cyan.com/">
+<meta property="og:image" content="https://the-cyan.com/assets/cyan-logo-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#14171A">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
-/* Light palette — matches Cyan pitch deck */
-:root {
-  --bg: #ffffff;
-  --bg-elev: #f7f6fc;
-  --surface: #efecfa;
-  --surface-2: #d7d0f2;
-  --fg: #16131f;
-  --fg-mute: #56525f;
-  --comment: #8a8694;
-  --cyan: #8946eb;        /* primary brand purple (from deck) */
-  --purple: #6a3fd0;      /* deeper violet */
-  --lavender: #c5cdf7;    /* soft lavender (deck) */
-  --green: #2f9e6b;       /* legible positive */
-  --orange: #e0791e;      /* legible AI amber */
-  --yellow: #b8901a;
-  --pink: #d6326b;
-  --line: #e8e4f4;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; scroll-padding-top: 100px; }
-
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
-  font-size: 16px;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a { color: var(--cyan); text-decoration: none; }
-a:hover { color: var(--purple); }
-
-img { max-width: 100%; height: auto; display: block; }
-
-/* Layout */
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
-
-section { padding: 96px 0; border-bottom: 1px solid var(--line); }
-section:last-of-type { border-bottom: none; }
-
-.eyebrow {
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--comment);
-  font-weight: 600;
-  margin-bottom: 14px;
-}
-
-h1, h2, h3, h4 {
-  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  color: var(--fg);
-}
-/* Deck-style underlined key terms */
-h1 .accent, h2 .accent {
-  text-decoration: underline;
-  text-decoration-thickness: 0.07em;
-  text-underline-offset: 0.12em;
-  text-decoration-color: currentColor;
-}
-
-h1 { font-size: clamp(40px, 6vw, 72px); }
-h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 16px; }
-h3 { font-size: 20px; margin-bottom: 8px; }
-
-p.lede {
-  font-size: 19px;
-  color: var(--fg-mute);
-  max-width: 640px;
-  line-height: 1.55;
-}
+:root{--paper:#FFFFFF;--ink:#14171A;--muted:#5B6670;--line:#D9DEE3;--band:#0B0B0C;--band-ink:#F4F1EA;--cyan:#2FB3D6;--olive:#7E9C3A;--amber:#C08A1E;--magenta:#E5187B;--cream:#F1E5C6;--wash:#F4F6F8;--gray:#7A8288;
+--display:"Bricolage Grotesque","Archivo Black","Helvetica Neue",Arial,sans-serif;--body:"Source Sans 3","Source Sans Pro","Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.5 var(--body);overflow-x:hidden}
+img,svg{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.01em;margin:0}
+h2{font-size:clamp(28px,3.4vw,40px);line-height:1.1;font-weight:800;text-wrap:balance;max-width:24ch}
+h3{font-size:20px;line-height:1.2;font-weight:700}
+p{margin:0}
+.eyebrow{font:600 13px/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:3px;background:var(--cyan);border-radius:2px}
+.lede{font-size:19px;color:var(--muted);max-width:62ch;margin-top:14px}
+.sec{padding:80px 0}
+.sec.wash{background:var(--wash)}
+.sec.band{background:var(--band);color:var(--band-ink)}
+.sec.band .eyebrow{color:var(--cyan)}
+.sec.band .lede{color:#D9D4C7}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;font:600 16px/1.2 var(--body);text-decoration:none;border:1.5px solid transparent;transition:transform .12s ease,background .12s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-ink{background:var(--ink);color:var(--band-ink)}
+.btn-cyan{background:var(--cyan);color:var(--ink)}
+.btn-ghost{border-color:var(--band-ink);color:var(--band-ink);background:transparent}
+.btn-ghost:hover{background:rgba(244,241,234,.08)}
+.btn-line{border-color:var(--line);color:var(--ink);background:var(--paper)}
 
 /* Nav */
-nav.top {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-nav.top .wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-.brand {
-  display: flex;
-  align-items: center;
-}
-.brand img {
-  height: 72px;
-  width: 72px;
-  display: block;
-  border-radius: 14px;
-}
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a { color: var(--fg-mute); font-size: 14px; font-weight: 500; }
-.nav-links a:hover { color: var(--cyan); }
-.nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
-.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; }
-.nav-toggle span { width: 22px; height: 2px; background: var(--fg); display: block; }
-.btn-primary {
-  background: var(--cyan);
-  color: var(--bg-elev);
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-  transition: background 0.15s;
-}
-.btn-primary:hover { background: var(--purple); color: #fff; }
-.btn-ghost {
-  border: 1px solid var(--surface-2);
-  color: var(--fg);
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 14px;
-  background: transparent;
-  cursor: pointer;
-  transition: border-color 0.15s;
-}
-.btn-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+nav.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 20px/1 var(--display);letter-spacing:.06em}
+.brand img{width:36px;height:36px;border-radius:8px;display:block}
+.nav-links{display:flex;gap:26px;align-items:center}
+.nav-links a{color:var(--muted);font:600 15px/1 var(--body);text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.btn{color:var(--band-ink);font-size:15px;padding:10px 16px}
+.nav-toggle{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
+.nav-toggle span{width:22px;height:2px;background:var(--ink);display:block}
 
 /* Hero */
-section.hero {
-  padding-top: 120px;
-  padding-bottom: 120px;
-  border-bottom: 1px solid var(--line);
-  background:
-    radial-gradient(ellipse 90% 70% at 50% -10%, rgba(137, 70, 235, 0.10), transparent 70%),
-    linear-gradient(180deg, #f3f1fb 0%, var(--bg) 60%);
-}
-.hero h1 {
-  margin: 18px 0 24px;
-  max-width: 900px;
-}
-.hero h1 .accent { color: var(--cyan); }
-.hero p.lede { font-size: 21px; max-width: 680px; margin-bottom: 36px; }
-.hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-.partner-line {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  background: rgba(137, 70, 235, 0.07);
-  border: 1px solid rgba(137, 70, 235, 0.22);
-  border-radius: 6px;
-  font-size: 13px;
-  color: var(--fg-mute);
-}
-.partner-line .label {
-  color: var(--cyan);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 11px;
-}
+.hero{background:var(--band);color:var(--band-ink);padding:72px 0 76px}
+.hero .wrap{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center}
+.hero .eyebrow{color:var(--cyan)}
+.hero .eyebrow::before{background:var(--cyan)}
+.hero h1{font-size:clamp(38px,6vw,68px);line-height:1.04;font-weight:800;text-wrap:balance;max-width:14ch}
+.hero p.lede{color:#D9D4C7;font-size:clamp(17px,1.6vw,20px);max-width:64ch;margin-top:22px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero .mark{width:min(260px,28vw);height:auto;border-radius:24px;box-shadow:0 20px 60px rgba(47,179,214,.18)}
 
-/* Reality cards (slack/jira/github/confluence) */
-.reality-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 40px;
-}
-.reality-card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 24px;
-}
-.reality-card .tool {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 12px;
-  color: var(--orange);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.reality-card p { color: var(--fg-mute); font-size: 14px; }
-.kicker {
-  margin-top: 32px;
-  padding: 20px 24px;
-  background: var(--bg-elev);
-  border-left: 3px solid var(--pink);
-  border-radius: 4px;
-  font-size: 16px;
-  color: var(--fg);
-}
-.kicker strong { color: var(--pink); }
+/* What it does: the sequence */
+.flow{margin-top:40px;display:grid;gap:18px}
+.flow-in{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;background:var(--band);color:var(--band-ink);border-radius:18px;padding:22px 26px}
+.flow-in .k{font:600 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}
+.flow-in b{font:800 clamp(20px,2.4vw,28px)/1.1 var(--display)}
+.flow-in span.who{color:#D9D4C7;font-size:17px}
+.flow-in em{font-style:normal;margin-left:auto;font:700 15px/1 var(--display);background:var(--cyan);color:var(--ink);padding:10px 16px;border-radius:999px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;counter-reset:s}
+.steps li{position:relative;border:1.5px solid var(--line);border-top:4px solid var(--c);border-radius:14px;padding:18px 16px 16px;background:var(--paper);min-height:118px;display:flex;flex-direction:column;gap:8px}
+.steps .n{font:800 13px/1 var(--display);color:var(--c);letter-spacing:.06em}
+.steps b{font:700 19px/1.15 var(--display);display:block;text-wrap:balance}
+.steps small{color:var(--muted);font-size:13px;letter-spacing:.04em;text-transform:uppercase;margin-top:auto}
+.flow-out{border-left:4px solid var(--cyan);padding:6px 0 6px 18px;font-size:19px;max-width:60ch}
+.flow-out b{font-family:var(--display);font-weight:700}
 
-/* Workspace section */
-.workspace-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 56px;
-  align-items: center;
-  margin-top: 48px;
-}
-.screenshot-frame {
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  box-shadow: 0 18px 48px rgba(106, 63, 208, 0.14);
-  background: var(--bg-elev);
-}
-.faces-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.face-card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  padding: 18px;
-  border-radius: 8px;
-}
-.face-icon { font-size: 22px; margin-bottom: 8px; }
-.face-card h4 { font-size: 15px; margin-bottom: 4px; color: var(--fg); }
-.face-card p { font-size: 13px; color: var(--fg-mute); line-height: 1.5; }
-.face-new {
-  border-color: rgba(137, 70, 235, 0.28);
-  background: linear-gradient(135deg, rgba(137, 70, 235, 0.06), transparent);
-}
-.face-new h4::after {
-  content: "NEW";
-  font-size: 9px;
-  background: var(--cyan);
-  color: #fff;
-  padding: 2px 6px;
-  margin-left: 8px;
-  border-radius: 3px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  vertical-align: middle;
-}
-.scoped-line {
-  margin-top: 32px;
-  text-align: center;
-  color: var(--fg-mute);
-  font-style: italic;
-  font-size: 15px;
-}
+/* Spine + chairs */
+.spine{display:flex;flex-wrap:wrap;gap:10px 6px;align-items:center;margin:34px 0 36px}
+.spine .pill{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:112px;padding:10px 14px;border-radius:999px;color:#fff;text-align:center}
+.spine .pill b{font:700 14px/1.15 var(--display)}
+.spine .pill span{font-size:12px;color:var(--band-ink);opacity:.9;line-height:1.15;margin-top:2px}
+.spine .arr{width:14px;height:14px;flex:none;color:var(--muted)}
+.chairs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.chair{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--c);border-radius:16px;padding:20px 20px 18px;display:flex;flex-direction:column;gap:14px}
+.chair h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font-size:19px}
+.chair .who{display:inline-block;padding:4px 10px;border-radius:999px;font:700 12px/1.3 var(--body);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--c)}
+.chair .yours{font-size:15px;color:var(--muted);margin-top:auto}
+.chair .yours b{color:var(--ink);font-weight:600}
+.dg{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.dg li{position:relative;border:1.3px solid var(--c);background:linear-gradient(rgba(255,255,255,.92),rgba(255,255,255,.92)),var(--c);border-radius:8px;padding:10px 4px;min-height:64px;display:flex;flex-direction:column;justify-content:center;gap:4px;text-align:center}
+.dg li b{font:700 13.5px/1.15 var(--display);letter-spacing:-.01em;color:var(--ink);text-wrap:balance}
+.dg li span{font-size:12px;line-height:1.2;color:var(--muted)}
+.dg li.you{border-style:dashed;border-color:var(--ink);background:var(--paper)}
+.dg li.you span{color:var(--ink)}
+.dg li:not(:last-child)::after{content:"";position:absolute;right:-9.5px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:6px solid var(--c);border-top:4.5px solid transparent;border-bottom:4.5px solid transparent}
 
-/* Lens section */
-.lens-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 48px;
-  margin-bottom: 56px;
-}
-.lens-card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 28px 24px;
-}
-.lens-card .icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  margin-bottom: 16px;
-}
-.lens-card.nudges .icon { background: rgba(224, 121, 30, 0.14); color: var(--orange); }
-.lens-card.asks .icon { background: rgba(137, 70, 235, 0.14); color: var(--cyan); }
-.lens-card.decisions .icon { background: rgba(47, 158, 107, 0.14); color: var(--green); }
-.lens-card h3 { font-size: 18px; margin-bottom: 10px; }
-.lens-card p { color: var(--fg-mute); font-size: 14px; margin-bottom: 16px; line-height: 1.55; }
-.lens-card .quote {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 12px;
-  background: var(--bg);
-  border-left: 2px solid var(--surface-2);
-  padding: 10px 12px;
-  color: var(--fg);
-  border-radius: 0 4px 4px 0;
-  line-height: 1.5;
-}
-.lens-screens {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
+/* Footage */
+.reads{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:36px}
+.reads div{position:relative;border:1.5px solid var(--ink);background:rgba(20,23,26,.08);border-radius:12px;padding:16px 14px;min-height:96px}
+.reads div b{display:block;font:700 17px/1.15 var(--display)}
+.reads div span{display:block;color:var(--muted);font-size:14px;margin-top:6px}
+.reads div:not(:last-child)::after{content:"";position:absolute;right:-10px;top:50%;width:0;height:0;border-left:6px solid var(--ink);border-top:5px solid transparent;border-bottom:5px solid transparent;transform:translateY(-50%)}
+.rule{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-top:40px;border-top:1px solid var(--line);padding-top:28px}
+.rule .big{font:800 clamp(30px,4vw,46px)/1 var(--display);letter-spacing:-.02em;white-space:nowrap}
+.rule p{font-size:18px;max-width:60ch}
 
-/* Workflow teaser — deliberately vague */
-.teaser {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.06) 100%);
-}
-.teaser .wrap { max-width: 960px; text-align: center; }
-.teaser h2 { font-size: clamp(36px, 5vw, 56px); margin-bottom: 20px; }
-.teaser h2 .accent { color: var(--purple); }
-.teaser p.lede { margin: 0 auto 48px; font-size: 18px; }
+/* Eyebrows with several phrases: each phrase stays whole, the dot rides the phrase before it */
+.eyebrow{flex-wrap:wrap}
+.eyebrow span{white-space:nowrap}
+.eyebrow span:not(:last-of-type)::after{content:" ·";margin-left:2px}
 
-/* Abstract pipeline silhouette — no labels, deliberately vague */
-.pipeline-abstract {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  margin: 48px auto;
-  max-width: 720px;
-  padding: 40px 20px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-}
-.pipeline-abstract::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(137, 70, 235, 0.10), transparent 70%);
-  pointer-events: none;
-}
-.node-abstract {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 2px solid var(--surface-2);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-  animation: pulse 3s infinite ease-in-out;
-}
-.node-abstract:nth-child(1) { animation-delay: 0s; border-color: var(--cyan); }
-.node-abstract:nth-child(3) { animation-delay: 0.4s; border-color: var(--green); }
-.node-abstract:nth-child(5) { animation-delay: 0.8s; border-color: var(--yellow); }
-.node-abstract:nth-child(7) { animation-delay: 1.2s; border-color: var(--orange); }
-.node-abstract:nth-child(9) { animation-delay: 1.6s; border-color: var(--purple); }
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 0.7; }
-  50% { box-shadow: 0 0 24px 0 currentColor; opacity: 1; }
-}
-.connector-abstract {
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(90deg, var(--surface-2), var(--surface), var(--surface-2));
-  position: relative;
-  z-index: 1;
-}
-.teaser-cta {
-  margin-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
+/* Plugins and the marketplace */
+.plug{margin-top:36px;display:grid;gap:18px}
+.plug-spine{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 18px;background:var(--band);color:var(--band-ink);border-radius:18px;padding:20px 26px}
+.plug-spine b{font:800 clamp(18px,2.2vw,24px)/1.1 var(--display)}
+.plug-spine span{color:#D9D4C7;font-size:16px}
+.plug-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px}
+.pg{position:relative;border:1.5px solid var(--line);border-top:4px solid var(--c);border-radius:14px;background:var(--paper);padding:18px 16px 16px;display:flex;flex-direction:column;gap:10px}
+.pg::before{content:"";position:absolute;left:50%;top:-26px;width:2px;height:22px;background:var(--c)}
+.pg b{font:700 19px/1.15 var(--display)}
+.pg ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pg li{font:600 13px/1 var(--body);padding:7px 10px;border-radius:999px;border:1px solid var(--c);color:var(--ink);background:linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,.9)),var(--c)}
+.pg span{color:var(--muted);font-size:14px;margin-top:auto}
+.plug-market{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;border-top:1px solid var(--line);padding-top:22px}
+.plug-market b{display:block;font:700 19px/1.2 var(--display);margin-bottom:6px}
+.plug-market p{color:var(--ink);font-size:16px}
+@media (max-width:760px){.plug-grid{grid-template-columns:1fr 1fr}.plug-market{grid-template-columns:1fr}.pg::before{display:none}}
+@media (max-width:420px){.plug-grid{grid-template-columns:1fr}}
 
-/* Demo / post-production pipeline */
-.pipeline-real {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-  margin-top: 48px;
-}
-.step {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 20px 16px;
-  position: relative;
-}
-.step-num {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 11px;
-  color: var(--comment);
-  margin-bottom: 8px;
-}
-.step h4 { font-size: 15px; margin-bottom: 6px; }
-.step .timing {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 13px;
-  color: var(--green);
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-.step .timing.human { color: var(--cyan); }
-.step p { font-size: 12px; color: var(--fg-mute); line-height: 1.45; }
-.outcome-callout {
-  margin-top: 36px;
-  padding: 24px 28px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--green);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.outcome-callout .big {
-  font-size: 28px;
-  font-weight: 700;
-  font-family: "SF Mono", Menlo, monospace;
-}
-.outcome-callout .big .from { color: var(--comment); text-decoration: line-through; }
-.outcome-callout .big .arrow { color: var(--cyan); margin: 0 12px; }
-.outcome-callout .big .to { color: var(--green); }
-.outcome-callout .partner-attr {
-  font-size: 13px;
-  color: var(--fg-mute);
-  font-style: italic;
-  text-align: right;
-}
-.outcome-callout .partner-attr strong { color: var(--cyan); font-style: normal; }
+/* Deployment */
+.laws{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:36px}
+.law{border-top:3px solid var(--cyan);padding-top:14px}
+.law b{display:block;font:700 20px/1.2 var(--display);margin-bottom:8px}
+.law p{color:var(--ink);font-size:16px}
+.racks{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);padding:18px 18px 10px}
+.racks h3{margin-bottom:10px}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.racks-svg{width:100%;height:auto;display:block;min-width:640px}
+.racks-m{display:none}
+.rm-room{border:1.4px solid var(--rc);background:linear-gradient(rgba(255,255,255,.94),rgba(255,255,255,.94)),var(--rc);border-radius:12px;padding:14px 16px}
+.rm-room b{display:block;font:800 13px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.rm-room span{display:block;font-size:15px;line-height:1.35}
+.rm-room span i{font-style:normal;font-weight:600}
+.rm-room em{display:inline-block;font-style:normal;font-weight:600;font-size:13px;margin-top:10px;background:var(--ink);color:var(--band-ink);padding:5px 12px;border-radius:999px}
+.rm-link{list-style:none;margin:0;padding:8px 0 8px 18px;border-left:2px solid var(--line);margin-left:22px}
+.rm-link li{position:relative;font-size:15px;font-weight:600;padding:4px 0 4px 12px}
+.rm-link li::before{content:"";position:absolute;left:-2px;top:12px;width:8px;height:8px;border-radius:50%;background:var(--lc)}
+.rm-link li small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.rm-legend{margin-top:14px;font-size:14px;font-weight:600;color:var(--ink)}
+.phases{margin-top:40px}
+.phases h3{margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:15.5px;min-width:640px}
+th{text-align:left;font:600 12px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding:0 14px 10px 0}
+td{vertical-align:top;padding:12px 14px 12px 0;border-bottom:1px solid var(--line)}
+td:first-child{font:700 16px/1.3 var(--display);white-space:nowrap}
+.phases .note{margin-top:14px;color:var(--muted);font-size:15.5px;max-width:80ch}
+.ask{margin-top:36px;background:var(--band);color:var(--band-ink);border-radius:18px;padding:28px 30px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.ask b{display:block;font:700 20px/1.2 var(--display);color:var(--cyan);margin-bottom:10px}
+.ask ul{margin:0;padding-left:20px;color:#E6E1D4}
+.ask li{margin:0 0 6px}
 
-/* Video review section */
-.video-mock {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  margin-top: 48px;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1.7fr 1fr;
-}
-.video-pane {
-  background: #0a0a08;
-  position: relative;
-  min-height: 380px;
-  display: flex;
-  flex-direction: column;
-}
-.video-frame {
-  flex: 1;
-  background:
-    linear-gradient(135deg, rgba(102, 217, 239, 0.05), rgba(174, 129, 255, 0.05)),
-    repeating-linear-gradient(45deg, #1a1a18, #1a1a18 10px, #1c1d18 10px, #1c1d18 20px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-.video-frame::after {
-  content: "▶";
-  font-size: 64px;
-  color: rgba(248, 248, 242, 0.2);
-}
-.video-tc {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 11px;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 4px 8px;
-  border-radius: 3px;
-  color: var(--fg);
-}
-.video-timeline {
-  height: 40px;
-  background: #0a0a08;
-  border-top: 1px solid var(--surface);
-  position: relative;
-  padding: 0 12px;
-}
-.timeline-bar {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 50%;
-  height: 4px;
-  transform: translateY(-50%);
-  background: var(--surface);
-  border-radius: 2px;
-}
-.timeline-bar::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 38%;
-  background: var(--cyan);
-  border-radius: 2px;
-}
-.marker {
-  position: absolute;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: 2px solid var(--bg);
-}
-.marker.ai { background: var(--orange); }
-.marker.human { background: var(--cyan); }
-.marker.ad { background: var(--green); }
+/* IBC strip */
+.ibc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.ibc-card{display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:center;background:rgba(244,241,234,.06);border:1px solid rgba(244,241,234,.18);border-radius:16px;padding:16px;color:var(--band-ink);text-decoration:none}
+.ibc-card:hover{border-color:var(--cyan)}
+.ibc-card .qr{width:96px;height:96px;background:#fff;border-radius:10px;padding:6px}
+.ibc-card .qr img{width:100%;height:100%;display:block;image-rendering:pixelated}
+.ibc-card b{display:block;font:700 18px/1.2 var(--display)}
+.ibc-card span{display:block;color:#D9D4C7;font-size:14px;margin-top:4px}
+.ibc-line{margin-top:22px;color:#D9D4C7;font-size:16px}
+.ibc-line a{color:var(--cyan)}
 
-.comments-pane {
-  background: var(--bg);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-left: 1px solid var(--line);
-}
-.comments-header {
-  font-size: 11px;
-  font-family: "SF Mono", Menlo, monospace;
-  color: var(--comment);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--line);
-}
-.comment {
-  font-size: 12px;
-  line-height: 1.5;
-}
-.comment .tc {
-  font-family: "SF Mono", Menlo, monospace;
-  color: var(--comment);
-  margin-right: 8px;
-}
-.comment .author { font-weight: 600; }
-.comment .author.ai { color: var(--orange); }
-.comment .author.human { color: var(--cyan); }
-.comment .text { color: var(--fg-mute); display: block; margin-top: 2px; padding-left: 0; }
+/* Team */
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+.member{border:1px solid var(--line);border-radius:16px;padding:24px;background:var(--paper)}
+.m-name{font:800 22px/1.2 var(--display)}
+.m-role{color:var(--muted);font-weight:600;margin:4px 0 12px}
+.m-cred{font-size:16px}
+.m-prev{margin-top:12px;color:var(--muted);font-size:14px;letter-spacing:.02em}
 
-.video-callouts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 32px;
-}
-.video-callout {
-  padding: 18px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.video-callout .ico { font-size: 18px; margin-bottom: 8px; }
-.video-callout h4 { font-size: 14px; margin-bottom: 4px; }
-.video-callout p { font-size: 13px; color: var(--fg-mute); }
+/* Beta */
+.beta .wrap{text-align:center;display:flex;flex-direction:column;align-items:center}
+.beta .eyebrow{justify-content:center}
+.beta h2{margin:0 auto}
+.beta .lede{margin-left:auto;margin-right:auto}
+.beta-form{display:flex;gap:10px;margin-top:26px;width:100%;max-width:520px}
+.beta-form input{flex:1;min-width:0;padding:12px 16px;border:1.5px solid var(--line);border-radius:999px;font:400 16px/1.2 var(--body);background:var(--paper);color:var(--ink)}
+.beta-form input:focus{border-color:var(--cyan);outline:none;box-shadow:0 0 0 3px rgba(47,179,214,.3)}
+.beta-form button{border:0;cursor:pointer}
+.beta-confirm{display:none;margin-top:16px;color:var(--olive);font-weight:600}
+.beta-confirm.show{display:block}
+.demo-link{margin-top:18px;color:var(--muted)}
+.demo-link a{color:var(--ink)}
 
-/* AI vs Humans split */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-top: 48px;
-}
-.split-col {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 32px;
-}
-.split-col.ai { border-top: 3px solid var(--orange); }
-.split-col.human { border-top: 3px solid var(--cyan); }
-.split-col h3 {
-  font-size: 18px;
-  margin-bottom: 20px;
-  font-family: "SF Mono", Menlo, monospace;
-  letter-spacing: -0.01em;
-}
-.split-col.ai h3 { color: var(--orange); }
-.split-col.human h3 { color: var(--cyan); }
-.split-col ul { list-style: none; }
-.split-col li {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  color: var(--fg);
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.split-col li:last-child { border-bottom: none; }
-.split-col li::before {
-  flex-shrink: 0;
-  margin-top: 2px;
-  font-family: "SF Mono", Menlo, monospace;
-  font-weight: 700;
-}
-.split-col.ai li::before { content: "✓"; color: var(--orange); }
-.split-col.human li::before { content: "→"; color: var(--cyan); }
+footer{border-top:1px solid var(--line);padding:28px 0 36px;color:var(--muted);font-size:14px}
+footer a{color:var(--muted);white-space:nowrap}
+footer a:hover{color:var(--ink)}
 
-/* Shortest path / sovereignty */
-.sovereignty {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.05) 100%);
+@media (max-width:1000px){
+  .steps{grid-template-columns:repeat(3,1fr)}
+  .reads{grid-template-columns:repeat(3,1fr)}
+  .reads div:nth-child(3)::after{display:none}
+  .ibc-cards{grid-template-columns:1fr}
 }
-.path-compare {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-top: 48px;
+@media (max-width:760px){
+  .sec{padding:56px 0}
+  .nav-toggle{display:flex}
+  nav.top .wrap{position:relative}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:66px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0;padding:8px 24px 18px}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:14px 0;font-size:16px;border-bottom:1px solid var(--line)}
+  .nav-links a.btn{margin-top:12px;border-bottom:0;text-align:center}
+  .hero{padding:52px 0}
+  .hero .wrap{grid-template-columns:1fr}
+  .hero .mark{width:120px;order:-1;border-radius:16px}
+  .flow-in em{margin-left:0}
+  .steps{grid-template-columns:1fr 1fr}
+  .chairs{grid-template-columns:1fr}
+  .reads{grid-template-columns:1fr 1fr}
+  .reads div::after{display:none!important}
+  .rule{grid-template-columns:1fr;gap:12px}
+  .laws{grid-template-columns:1fr}
+  .ask{grid-template-columns:1fr;padding:22px}
+  .team-grid{grid-template-columns:1fr}
+  .beta-form{flex-direction:column}
+  .spine{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .spine .arr{display:none}
+  .spine .pill{min-width:0}
+  .spine .pill:last-child{grid-column:1/-1}
+  .dg{grid-template-columns:repeat(6,1fr);gap:10px}
+  .dg li{grid-column:span 2;padding:10px 5px}
+  .dg li:nth-child(n+4){grid-column:span 3}
+  .dg li:nth-child(3)::after{display:none}
+  .dg li:not(:last-child)::after{right:-8.5px}
+  .dg li b{font-size:14px}
+  .dg li span{font-size:13px}
+  .racks .scroller{display:none}
+  .racks-m{display:block;padding-bottom:6px}
+  .phases .scroller{overflow:visible}
+  table{min-width:0;display:block}
+  thead{display:none}
+  tbody,tr,td{display:block}
+  tr{border:1px solid var(--line);border-radius:14px;padding:12px 16px 6px;margin-bottom:12px;background:var(--paper)}
+  td{border:0;padding:6px 0 10px}
+  td:first-child{font-size:20px;white-space:normal;padding-top:0}
+  td:first-child::before{content:"Phase ";font-weight:800}
+  td[data-l]::before{content:attr(data-l);display:block;font:600 11px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 }
-.path {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 28px;
-}
-.path-label {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 11px;
-  color: var(--comment);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 16px;
-}
-.path-flow {
-  font-family: "SF Mono", Menlo, monospace;
-  font-size: 13px;
-  line-height: 2;
-  color: var(--fg-mute);
-}
-.path-flow .step-name { display: inline-block; }
-.path-flow .arrow { color: var(--surface-2); margin: 0 6px; }
-.path.cyan { border-color: rgba(102, 217, 239, 0.3); }
-.path.cyan .path-label { color: var(--cyan); }
-.path.cyan .path-flow { font-size: 16px; color: var(--fg); }
-.path.cyan .step-name { color: var(--cyan); font-weight: 600; }
-.thats-it {
-  margin-top: 16px;
-  font-size: 13px;
-  color: var(--green);
-  font-style: italic;
-}
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 40px;
-}
-.stat {
-  text-align: center;
-  padding: 24px 12px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-}
-.stat .num {
-  font-size: 32px;
-  font-weight: 700;
-  font-family: "SF Mono", Menlo, monospace;
-  color: var(--cyan);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-.stat .lbl {
-  font-size: 12px;
-  color: var(--fg-mute);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* Beta CTA / footer */
-.beta {
-  text-align: center;
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(137, 70, 235, 0.06) 100%);
-}
-.beta h2 { margin-bottom: 16px; }
-.beta p.lede { margin: 0 auto 32px; }
-.beta-form {
-  display: flex;
-  gap: 8px;
-  max-width: 480px;
-  margin: 0 auto;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.beta-form input[type="email"] {
-  flex: 1;
-  min-width: 240px;
-  background: var(--bg-elev);
-  border: 1px solid var(--surface-2);
-  color: var(--fg);
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 15px;
-  font-family: inherit;
-}
-.beta-form input[type="email"]:focus {
-  outline: none;
-  border-color: var(--cyan);
-}
-.beta-form button {
-  padding: 12px 24px;
-  font-size: 15px;
-}
-.beta-confirm {
-  display: none;
-  margin-top: 16px;
-  color: var(--green);
-  font-size: 14px;
-}
-.beta-confirm.show { display: block; }
-.demo-link {
-  margin-top: 24px;
-  font-size: 14px;
-  color: var(--fg-mute);
-}
-
-footer {
-  padding: 40px 0;
-  text-align: center;
-  font-size: 13px;
-  color: var(--comment);
-  border-top: 1px solid var(--line);
-}
-footer a { color: var(--fg-mute); }
-footer a:hover { color: var(--cyan); }
-
-/* Mobile */
-@media (max-width: 880px) {
-  section { padding: 64px 0; }
-  .brand img { height: 52px; width: 52px; }
-  .nav-links { gap: 16px; }
-  nav.top .wrap { position: relative; }
-  .nav-toggle { display: flex; }
-  .nav-links {
-    position: absolute; top: 100%; left: 0; right: 0;
-    flex-direction: column; align-items: stretch; gap: 0;
-    background: var(--bg-elev); border-bottom: 1px solid var(--line);
-    padding: 4px 24px 16px; display: none;
-  }
-  .nav-links.open { display: flex; }
-  .nav-links a { padding: 14px 0; font-size: 16px; border-bottom: 1px solid var(--line); }
-  .nav-links a.btn-primary { margin-top: 12px; text-align: center; border-bottom: 0; }
-  .reality-grid { grid-template-columns: 1fr 1fr; }
-  .workspace-grid { grid-template-columns: 1fr; gap: 32px; }
-  .lens-cards { grid-template-columns: 1fr; }
-  .lens-screens { grid-template-columns: 1fr; }
-  .pipeline-real { grid-template-columns: 1fr 1fr; }
-  .video-mock { grid-template-columns: 1fr; }
-  .comments-pane { border-left: none; border-top: 1px solid var(--line); }
-  .video-callouts { grid-template-columns: 1fr; }
-  .split { grid-template-columns: 1fr; }
-  .path-compare { grid-template-columns: 1fr; }
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .outcome-callout { flex-direction: column; align-items: flex-start; }
-  .outcome-callout .partner-attr { text-align: left; }
-  .pipeline-abstract { gap: 4px; padding: 24px 12px; }
-  .node-abstract { width: 36px; height: 36px; }
-}
-/* End-to-end lifecycle */
-.lifecycle-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
-.phase {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 24px;
-  border-top: 3px solid var(--phase, var(--cyan));
-}
-.phase.pre  { --phase: var(--purple); }
-.phase.prod { --phase: var(--orange); }
-.phase.post { --phase: var(--cyan); }
-.phase .phase-step { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--comment); margin-bottom: 8px; }
-.phase .phase-name {
-  font-family: "SF Pro Display", -apple-system, system-ui, sans-serif;
-  font-size: 19px; font-weight: 700; color: var(--phase); margin-bottom: 14px; letter-spacing: -0.02em;
-}
-.phase .tools { font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--fg-mute); margin-bottom: 12px; line-height: 1.7; }
-.phase .seam { font-size: 14px; color: var(--fg-mute); }
-.seam-band {
-  margin-top: 18px; padding: 16px 24px; background: var(--bg-elev);
-  border-left: 3px solid var(--green); border-radius: 4px; font-size: 16px; color: var(--fg);
-}
-.seam-band strong { color: var(--green); }
-
-/* Plug-in marketplace */
-.market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
-.market-card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
-.market-card .mc-stat { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 26px; font-weight: 700; color: var(--cyan); margin-bottom: 10px; letter-spacing: -0.02em; }
-.market-card h3 { color: var(--fg); }
-.market-card p { color: var(--fg-mute); font-size: 14px; }
-.shelf { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-.chip {
-  font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--fg-mute);
-  background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
-}
-.chip.build { color: #fff; background: var(--cyan); border-color: var(--cyan); font-weight: 600; }
-.market-note { margin-top: 22px; font-size: 13px; color: var(--comment); font-family: "SF Mono", Menlo, monospace; }
-
-.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
-.member { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 28px; }
-.member .m-name { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 22px; font-weight: 700; color: var(--fg); letter-spacing: -0.02em; }
-.member .m-role { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin: 4px 0 16px; font-weight: 600; }
-.member .m-cred { color: var(--fg-mute); font-size: 15px; line-height: 1.6; }
-.member .m-prev { margin-top: 14px; font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--comment); }
-
-@media (max-width: 880px) {
-  .lifecycle-flow { grid-template-columns: 1fr; }
-  .market-grid { grid-template-columns: 1fr; }
-  .team-grid { grid-template-columns: 1fr; }
-}
-/* Workspace — materialization flow */
-.mat-flow { list-style: none; display: flex; flex-direction: column; gap: 14px; align-self: center; }
-.mat-step { display: flex; gap: 14px; align-items: flex-start; color: var(--fg-mute); font-size: 15px; line-height: 1.5; }
-.mat-step strong { color: var(--fg); }
-.mat-num { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); color: var(--cyan); font-family: "SF Mono", Menlo, monospace; font-size: 13px; font-weight: 600; display: grid; place-items: center; }
-.run-modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 56px; }
-.run-mode { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 10px; padding: 22px; }
-.run-mode .rm-name { font-family: "SF Pro Display", system-ui, sans-serif; font-weight: 700; color: var(--green); margin-bottom: 8px; }
-.run-mode p { color: var(--fg-mute); font-size: 14px; }
-
-/* Demo — end-to-end workflow phases */
-.wf-phases { display: flex; flex-direction: column; gap: 14px; margin-top: 40px; }
-.wf-phase { background: var(--bg-elev); border: 1px solid var(--line); border-left: 3px solid var(--phase, var(--cyan)); border-radius: 10px; padding: 22px 24px; }
-.wf-phase.pre { --phase: var(--purple); }
-.wf-phase.prod { --phase: var(--orange); }
-.wf-phase.post { --phase: var(--cyan); }
-.wf-phase.deliver { --phase: var(--green); }
-.wf-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-.wf-name { font-family: "SF Pro Display", system-ui, sans-serif; font-size: 18px; font-weight: 700; color: var(--phase); letter-spacing: -0.02em; }
-.wf-trigger { font-size: 13px; color: var(--comment); }
-.wf-phase ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 7px 24px; }
-.wf-phase li { font-size: 14px; color: var(--fg-mute); padding-left: 18px; position: relative; }
-.wf-phase li::before { content: "→"; position: absolute; left: 0; color: var(--phase); }
-.wf-tools { margin-top: 14px; font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--comment); }
-.wf-detail-label { margin-top: 28px; margin-bottom: 16px; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--comment); }
-
-@media (max-width: 880px) {
-  .run-modes { grid-template-columns: 1fr; }
-  .wf-phase ul { grid-template-columns: 1fr; }
-  .mat-flow { align-self: stretch; }
-}
+@media (max-width:420px){.steps{grid-template-columns:1fr}.reads{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -864,523 +271,384 @@ footer a:hover { color: var(--cyan); }
 <nav class="top">
   <div class="wrap">
     <a href="#" class="brand" aria-label="Cyan">
-      <img src="/assets/cyan-wordmark.png" alt="Cyan">
+      <img src="/assets/cyan-logo-192.png" alt="" width="36" height="36">
+      <span>Cyan</span>
     </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links" id="navLinks">
-      <a href="#workspace" onclick="closeNav()">How it works</a>
-      <a href="#marketplace" onclick="closeNav()">Marketplace</a>
-      <a href="#demo" onclick="closeNav()">Workflow</a>
-      <a href="#team" onclick="closeNav()">Team</a>
-      <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn-primary">Request demo</a>
+      <a href="#what">What it does</a>
+      <a href="#chairs">Every chair</a>
+      <a href="#footage">The footage</a>
+      <a href="#plugins">Plugins</a>
+      <a href="#deployment">Deployment</a>
+      <a href="#ibc">IBC 2026</a>
+      <a href="#team">Team</a>
+      <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn btn-ink">Book a demo</a>
     </div>
   </div>
 </nav>
 
 <!-- Hero -->
-<section class="hero">
+<header class="hero">
   <div class="wrap">
-    <div class="eyebrow">For broadcast & media production teams</div>
-    <h1>Stop coordinating.<br><span class="accent">Start collaborating.</span></h1>
-    <p class="lede">The AI layer that connects every tool in your media pipeline. Describe the outcome in plain English — Cyan runs it across your tools and keeps a human at every gate.</p>
-    <div class="ctas">
-      <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn-primary">Request a demo</a>
-      <a href="#beta" class="btn-ghost">Join beta</a>
+    <div>
+      <p class="eyebrow"><span>Post production</span><span>one spine</span><span>every chair</span></p>
+      <h1>AI that choreographs your post floor.</h1>
+      <p class="lede">One sentence from the post supervisor, one press, and Cyan&#x27;s AI runs the floor: it stages the day, reads every take, minds the rough cut, packages the hand-offs, proposes the grade and keeps the record. Every chair finds its toil already done, and signs only the doors that matter.</p>
+      <div class="ctas">
+        <a href="/ibc/" class="btn btn-cyan">Meet us at IBC 2026 · Planetcast stand</a>
+        <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn btn-ghost">Book a demo</a>
+      </div>
     </div>
-    <div class="partner-line">
-      <span class="label">Design partner</span>
-      <span>Planetcast Media Services — pilot for IBC 2026</span>
-    </div>
+    <img class="mark" src="/assets/cyan-logo-512.png" alt="The Cyan mark" width="512" height="512">
   </div>
-</section>
+</header>
 
-<!-- Reality (NAB Slide 2) -->
-<section id="reality">
+<!-- What it does -->
+<section id="what" class="sec">
   <div class="wrap">
-    <div class="eyebrow">The cost of the gaps</div>
-    <h2>Your pipeline lives in a dozen tools.<br>None of them talk to each other.</h2>
-    <div class="reality-grid">
-      <div class="reality-card">
-        <div class="tool">Final Draft</div>
-        <p>Script goes to a blue revision. The breakdown's still on white.</p>
+    <p class="eyebrow">What it does</p>
+    <h2>One sentence from the post supervisor, one press, and Cyan's AI runs the floor.</h2>
+    <div class="flow">
+      <div class="flow-in">
+        <span class="k">In</span>
+        <b>One sentence</b>
+        <span class="who">from the post supervisor</span>
+        <em>one press</em>
       </div>
-      <div class="reality-card">
-        <div class="tool">Avid / Resolve</div>
-        <p>Editor locks v6. The rest of the team finds out hours later.</p>
-      </div>
-      <div class="reality-card">
-        <div class="tool">Frame.io</div>
-        <p>Review notes pile up. None of them become tasks.</p>
-      </div>
-      <div class="reality-card">
-        <div class="tool">ShotGrid</div>
-        <p>VFX tasks reconciled against the new cut — by hand, every day.</p>
-      </div>
-    </div>
-    <div class="kicker">
-      Every phase boundary is a human shuttling files and metadata. <strong>30–40%</strong> of operator hours go to coordination instead of craft — at ~$40K an operator, a 50-person shop loses around <strong>$2M a year</strong> in the gaps between tools.
-    </div>
-  </div>
-</section>
-
-<!-- End-to-end lifecycle -->
-<section id="lifecycle">
-  <div class="wrap">
-    <div class="eyebrow">End to end</div>
-    <h2>One workflow engine.<br>Every phase of production.</h2>
-    <p class="lede">Most platforms own a single slice. Cyan spans the whole chain — and closes the handoffs <em>between</em> phases, where the hours actually bleed.</p>
-    <div class="lifecycle-flow">
-      <div class="phase pre">
-        <div class="phase-step">Phase 01</div>
-        <div class="phase-name">Pre-production</div>
-        <div class="tools">Final Draft · Movie Magic · EP</div>
-        <p class="seam">Script revisions, breakdowns, schedules, call sheets and cast holds — kept in sync as the plan changes.</p>
-      </div>
-      <div class="phase prod">
-        <div class="phase-step">Phase 02</div>
-        <div class="phase-name">Production</div>
-        <div class="tools">Silverstack · ShotGrid · on-set</div>
-        <p class="seam">Dailies, DIT logs and continuity reconciled against what was actually shot.</p>
-      </div>
-      <div class="phase post">
-        <div class="phase-step">Phase 03</div>
-        <div class="phase-name">Post-production</div>
-        <div class="tools">Avid · Resolve · Frame.io · ShotGrid</div>
-        <p class="seam">Editorial, review notes, VFX tasks, compliance and delivery — one connected flow.</p>
-      </div>
-    </div>
-    <div class="seam-band">
-      The status quo is a different platform for every phase, stitched together by people. <strong>Cyan is the connective layer that runs across all three.</strong>
-    </div>
-  </div>
-</section>
-
-<!-- Plug-in marketplace (moat) -->
-<section id="marketplace">
-  <div class="wrap">
-    <div class="eyebrow">The moat · plug-in marketplace</div>
-    <h2>Every tool you use —<br><span class="accent">and the ones you'll build.</span></h2>
-    <p class="lede">Cyan speaks MCP, so any tool with an API becomes a plug-in your workflows can call. Install integrations and proprietary models like apps — or publish your own.</p>
-    <div class="market-grid">
-      <div class="market-card">
-        <div class="mc-stat">Code-gen</div>
-        <h3>Plug-ins from an API spec</h3>
-        <p>The engine that writes the integration. 5 weeks and $30–50K of engineer time per connector becomes ~4 hours — generated, not hand-built.</p>
-      </div>
-      <div class="market-card">
-        <div class="mc-stat">Install &amp; go</div>
-        <h3>Proprietary models as plug-ins</h3>
-        <p>A studio's custom QC, compliance or transcription model becomes a plug-in any team can install — no in-house ML team required.</p>
-      </div>
-      <div class="market-card">
-        <div class="mc-stat">Compounds</div>
-        <h3>Build once, publish, earn</h3>
-        <p>Builders ship plug-ins, teams install them, the catalog deepens — the industry's media workflows in one place.</p>
-      </div>
-    </div>
-    <div class="shelf">
-      <span class="chip">frameio</span>
-      <span class="chip">shotgrid</span>
-      <span class="chip">avid</span>
-      <span class="chip">resolve</span>
-      <span class="chip">whisper-transcribe</span>
-      <span class="chip">qc-model</span>
-      <span class="chip">compliance-scan</span>
-      <span class="chip">ad-insert</span>
-      <span class="chip build">+ build your own</span>
-    </div>
-    <div class="seam-band">
-      <strong>Why it compounds:</strong> the operational seams we encode, a marketplace that grows with every plug-in, and code-gen that makes the next plug-in nearly free. The catalog gets deeper — the moat gets wider.
-    </div>
-  </div>
-</section>
-
-<!-- Workspace (NAB Slide 3) -->
-<section id="workspace">
-  <div class="wrap">
-    <div class="eyebrow">From intent to pipeline</div>
-    <h2>Organized the way your team works.</h2>
-    <p class="lede">A board is your team's sounding board. Describe the outcome in plain English — Cyan turns the conversation into a workflow that runs.</p>
-
-    <div class="workspace-grid">
-      <div class="screenshot-frame">
-        <img src="/assets/full_view_cyan.png" alt="A Cyan board where a team crafts a workflow in plain language" loading="lazy">
-      </div>
-      <ol class="mat-flow">
-        <li class="mat-step"><span class="mat-num">1</span><div><strong>Parse</strong> the outcome you described, with the context on the board.</div></li>
-        <li class="mat-step"><span class="mat-num">2</span><div><strong>Compile</strong> a plan — the steps and the human gates.</div></li>
-        <li class="mat-step"><span class="mat-num">3</span><div><strong>Select</strong> the right plug-ins for each step.</div></li>
-        <li class="mat-step"><span class="mat-num">4</span><div><strong>Materialize</strong> a runnable pipeline.</div></li>
-        <li class="mat-step"><span class="mat-num">5</span><div><strong>Run</strong> it — with a human at every gate.</div></li>
+      <ol class="steps" aria-label="What Cyan's AI does, in order">
+        <li style="--c:var(--olive)"><span class="n">1</span><b>Stages the day</b><small>assistant editor</small></li>
+        <li style="--c:var(--ink)"><span class="n">2</span><b>Reads every take</b><small>the footage</small></li>
+        <li style="--c:var(--cyan)"><span class="n">3</span><b>Minds the rough cut</b><small>editor</small></li>
+        <li style="--c:var(--amber)"><span class="n">4</span><b>Packages the hand-offs</b><small>turnover · sound</small></li>
+        <li style="--c:var(--magenta)"><span class="n">5</span><b>Proposes the grade</b><small>colorist</small></li>
+        <li style="--c:var(--gray)"><span class="n">6</span><b>Keeps the record</b><small>post supervisor</small></li>
       </ol>
-    </div>
-
-    <div class="run-modes">
-      <div class="run-mode"><div class="rm-name">Cloud</div><p>Cyan Lens does the heavy lifting on GPU.</p></div>
-      <div class="run-mode"><div class="rm-name">Distributed</div><p>Split the work across cloud and your own machines.</p></div>
-      <div class="run-mode"><div class="rm-name">Fully local</div><p>Sensitive jobs never leave your devices.</p></div>
-    </div>
-    <p class="scoped-line">Same workflow — you choose where the compute lives.</p>
-  </div>
-</section>
-
-<!-- Lens (NAB Slide 4) -->
-<section id="lens">
-  <div class="wrap">
-    <div class="eyebrow">Cyan Lens</div>
-    <h2>AI that connects the dots.</h2>
-    <p class="lede">Lens watches how your team works and surfaces what matters — before you have to ask.</p>
-
-    <div class="lens-cards">
-      <div class="lens-card nudges">
-        <div class="icon">🔔</div>
-        <h3>Nudges</h3>
-        <p>Questions going stale. Blockers hiding in threads. Decisions nobody implemented. Lens catches what falls through the cracks.</p>
-        <div class="quote">"Sarah's been waiting on the Mexico/Spain dub QC for 8 hours. It's blocking Friday delivery to Netflix."</div>
-      </div>
-      <div class="lens-card asks">
-        <div class="icon">❓</div>
-        <h3>Asks</h3>
-        <p>Every question tracked. Who asked, who's assigned, how long it's been open. Nothing gets lost.</p>
-        <div class="quote">"5 open questions. 2 assigned to you. 1 unanswered for 3 days."</div>
-      </div>
-      <div class="lens-card decisions">
-        <div class="icon">✅</div>
-        <h3>Decisions</h3>
-        <p>Decisions captured from conversations. Team can agree, disagree, comment. Institutional memory.</p>
-        <div class="quote">"Approved Spanish + Portuguese for Hulu cut. Hold UAE compliance pass for next sprint."</div>
-      </div>
-    </div>
-
-    <div class="lens-screens" style="grid-template-columns: repeat(3, 1fr);">
-      <div class="screenshot-frame">
-        <img src="/assets/nudges_film_friendly.png" alt="Cyan Lens — Nudges surfaces stale asks, blockers, and unimplemented decisions" loading="lazy">
-      </div>
-      <div class="screenshot-frame">
-        <img src="/assets/asks_film_friendly.png" alt="Cyan Lens — Asks tracks every open question across the team" loading="lazy">
-      </div>
-      <div class="screenshot-frame">
-        <img src="/assets/decisions_film_friendly.png" alt="Cyan Lens — Decisions captures the call and the rationale behind it" loading="lazy">
-      </div>
+      <p class="flow-out"><b>Every chair finds its toil already done,</b> and signs only the doors that matter.</p>
     </div>
   </div>
 </section>
 
-<!-- Workflow Teaser — deliberately vague -->
-<section class="teaser">
+<!-- Every chair -->
+<section id="chairs" class="sec wash">
   <div class="wrap">
-    <div class="eyebrow" style="text-align: center;">Workflows</div>
-    <h2>Describe the outcome.<br><span class="accent">Cyan delivers it.</span></h2>
-    <p class="lede">Tell Cyan what needs to happen. It plans the work, picks the right tools, runs the pipeline, and keeps your team in the loop at every gate. Approvals where they belong. Audit trail by default.</p>
-
-    <div class="pipeline-abstract" aria-hidden="true">
-      <div class="node-abstract"></div>
-      <div class="connector-abstract"></div>
-      <div class="node-abstract"></div>
-      <div class="connector-abstract"></div>
-      <div class="node-abstract"></div>
-      <div class="connector-abstract"></div>
-      <div class="node-abstract"></div>
-      <div class="connector-abstract"></div>
-      <div class="node-abstract"></div>
+    <p class="eyebrow">Every chair</p>
+    <h2>One spine. Every chair finds its toil already done.</h2>
+    <div class="spine" role="img" aria-label="The spine: post super sets the floor, assistant stages the day, editor signs the rough cut, turnover packages, sound heard and packaged, colorist looks not applied, master from your site">
+      <div class="pill" style="background:#7A8288"><b>Post super</b><span>sets the floor</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#7E9C3A"><b>Assistant</b><span>stages the day</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#2FB3D6"><b>Editor</b><span>rough cut, signed</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#14171A"><b>Turnover</b><span>packages</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#C08A1E"><b>Sound</b><span>heard, packaged</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#E5187B"><b>Colorist</b><span>looks, not applied</span></div>
+      <svg class="arr" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h9M7 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="pill" style="background:#14171A"><b>Master</b><span>from your site</span></div>
     </div>
-
-    <div class="lens-screens" style="margin-top: 48px; text-align: left;">
-      <div class="screenshot-frame">
-        <img src="/assets/plain_english_post_production_wf.png" alt="Describe your post-production workflow in plain English — Cyan compiles it" loading="lazy">
-      </div>
-      <div class="screenshot-frame">
-        <img src="/assets/talk_to_lens_to_build_wf.png" alt="Chat with Lens to refine the workflow before it runs" loading="lazy">
-      </div>
-    </div>
-
-    <a href="https://calendly.com/anirudh-vyas-blockxaero/30min" class="btn-primary teaser-cta">See how it works → Request a demo</a>
-  </div>
-</section>
-
-<!-- Demo: post-production (NAB Slide 6) -->
-<section id="demo">
-  <div class="wrap">
-    <div class="eyebrow">End-to-end workflow</div>
-    <h2>From script to broadcast.<br><span class="accent">One connected workflow.</span></h2>
-    <p class="lede">The work doesn't live in any one phase. Cyan rides the seams between them — pre-production to delivery.</p>
-
-    <div class="wf-phases">
-      <div class="wf-phase pre">
-        <div class="wf-head"><span class="wf-name">01 · Pre-production</span><span class="wf-trigger">trigger: script locks or revises</span></div>
-        <ul>
-          <li>Generate the scene breakdown</li>
-          <li>Reconcile it to the Movie Magic budget</li>
-          <li>Rebuild the schedule against cast holds &amp; locations</li>
-          <li>Flag budget drift on every revision</li>
-        </ul>
-        <div class="wf-tools">Final Draft · Movie Magic · EP</div>
-      </div>
-      <div class="wf-phase prod">
-        <div class="wf-head"><span class="wf-name">02 · Production</span><span class="wf-trigger">trigger: on-set capture</span></div>
-        <ul>
-          <li>Reconcile DIT logs to the shot list</li>
-          <li>Track circle takes &amp; continuity</li>
-          <li>Carry on-set metadata forward</li>
-          <li>Hand editorial-ready dailies to Frame.io</li>
-        </ul>
-        <div class="wf-tools">Silverstack · ShotGrid</div>
-      </div>
-      <div class="wf-phase post">
-        <div class="wf-head"><span class="wf-name">03 · Post-production</span><span class="wf-trigger">trigger: editor locks a cut</span></div>
-        <ul>
-          <li>Turn Frame.io notes into tasks</li>
-          <li>Push the change list to ShotGrid VFX</li>
-          <li>Route audio to Pro Tools</li>
-          <li>Reconcile versions across Avid &amp; Resolve</li>
-        </ul>
-        <div class="wf-tools">Frame.io · Avid · DaVinci Resolve · Pro Tools</div>
-      </div>
-      <div class="wf-phase deliver">
-        <div class="wf-head"><span class="wf-name">04 · Delivery</span><span class="wf-trigger">trigger: master approved</span></div>
-        <ul>
-          <li>Ingest &amp; broadcast-grade QC</li>
-          <li>Transcribe, translate &amp; subtitle</li>
-          <li>Compliance &amp; ad markers</li>
-          <li>Package per platform, deliver on approval</li>
-        </ul>
-        <div class="wf-tools">ingest · QC · subtitling · compliance · packaging</div>
-      </div>
-    </div>
-
-    <p class="wf-detail-label">The delivery leg, one prompt deep</p>
-    <div class="pipeline-real">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h4>Quality Check</h4>
-        <div class="timing">30s</div>
-        <p>Audio peaks, black frames, format issues.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h4>Transcription</h4>
-        <div class="timing">45s</div>
-        <p>Full transcript with speaker IDs and timestamps.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h4>Translation</h4>
-        <div class="timing">40s</div>
-        <p>Multi-language subtitle generation in one pass.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h4>Compliance</h4>
-        <div class="timing">12s</div>
-        <p>Regional broadcast compliance checks.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">05</div>
-        <h4>Ad Insertion</h4>
-        <div class="timing">18s</div>
-        <p>Ad break optimization with markers.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">06</div>
-        <h4>Human Review</h4>
-        <div class="timing human">You</div>
-        <p>Review AI findings — not raw footage. Per item.</p>
-      </div>
-    </div>
-
-    <div class="outcome-callout">
-      <div class="big">
-        <span class="from">4 hours</span>
-        <span class="arrow">→</span>
-        <span class="to">3 minutes</span>
-      </div>
-      <div class="partner-attr">
-        Workflow being piloted with <strong>Planetcast Media Services</strong> for IBC 2026.
-      </div>
-    </div>
-
-    <div class="screenshot-frame" style="margin-top: 64px;">
-      <img src="/assets/cyan_lens_orchestrates_to_pipeline.png" alt="Cyan Lens orchestrates each step of the post-production pipeline" loading="lazy">
-    </div>
-    <div class="screenshot-frame" style="margin-top: 24px;">
-      <img src="/assets/auto_adjust_workflow_with_ai.png" alt="The workflow adjusts automatically as conditions change" loading="lazy">
+    <div class="chairs">
+<article class="chair ae" style="--c:#7E9C3A">
+  <h3><span class="who">Assistant editor</span>The day stages itself</h3>
+  <ol class="dg" aria-label="Assistant editor: Arrival, Slate &amp; pair, Exceptions, Screen, then you bless the day">
+    <li><b>Arrival</b><span>receipted</span></li>
+    <li><b>Slate &amp; pair</b><span>by timecode</span></li>
+    <li><b>Exceptions</b><span>told to set</span></li>
+    <li><b>Screen</b><span>day checked</span></li>
+    <li class="you"><b>You</b><span>bless the day</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> one glance to bless the day; the answers only set can give.</p>
+</article>
+<article class="chair ed" style="--c:#2FB3D6">
+  <h3><span class="who">Editor</span>Rough cut minted, the film is yours</h3>
+  <ol class="dg" aria-label="Editor: Shot groups, Edits, Cut in, Lock door, then you sign or change">
+    <li><b>Shot groups</b><span>by setup</span></li>
+    <li><b>Edits</b><span>with reasons</span></li>
+    <li><b>Cut in</b><span>one press</span></li>
+    <li><b>Lock door</b><span>no slate cuts</span></li>
+    <li class="you"><b>You</b><span>sign or change</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> the fine cut in Premiere; every proposal names its takes and why.</p>
+</article>
+<article class="chair tv" style="--c:#14171A">
+  <h3><span class="who">Turnover</span>Hand-offs from the lock</h3>
+  <ol class="dg" aria-label="Turnover: Lock, Premiere, Sound suite, Notes, then you open and go">
+    <li><b>Lock</b><span>stands</span></li>
+    <li><b>Premiere</b><span>sequence</span></li>
+    <li><b>Sound suite</b><span>a true AAF</span></li>
+    <li><b>Notes</b><span>as markers</span></li>
+    <li class="you"><b>You</b><span>open and go</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> conform and relink follow the record to the camera originals.</p>
+</article>
+<article class="chair snd" style="--c:#C08A1E">
+  <h3><span class="who">Sound</span>Turnover with headphones</h3>
+  <ol class="dg" aria-label="Sound: Take, Slate calls, Dead tracks, Package, then you mix">
+    <li><b>Take</b><span>heard once</span></li>
+    <li><b>Slate calls</b><span>keep, again</span></li>
+    <li><b>Dead tracks</b><span>MOS, no play</span></li>
+    <li><b>Package</b><span>composed</span></li>
+    <li class="you"><b>You</b><span>mix</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> nothing to hunt for before the session opens.</p>
+</article>
+<article class="chair col" style="--c:#E5187B">
+  <h3><span class="who">Colorist</span>The grade that asks permission</h3>
+  <ol class="dg" aria-label="Colorist: Takes, Families, Try-on, Two nodes, then you sign at the wheels">
+    <li><b>Takes</b><span>measured</span></li>
+    <li><b>Families</b><span>proposed</span></li>
+    <li><b>Try-on</b><span>not on cards</span></li>
+    <li><b>Two nodes</b><span>in Resolve</span></li>
+    <li class="you"><b>You</b><span>sign at the wheels</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> every look carries its reason and its measurement.</p>
+</article>
+<article class="chair ps" style="--c:#7A8288">
+  <h3><span class="who">Post supervisor</span>Cadence, not plumbing</h3>
+  <ol class="dg" aria-label="Post supervisor: Sentence, Boards, The floor, Headline, then you sign policy">
+    <li><b>Sentence</b><span>the show</span></li>
+    <li><b>Boards</b><span>templates</span></li>
+    <li><b>The floor</b><span>runs itself</span></li>
+    <li><b>Headline</b><span>one a day</span></li>
+    <li class="you"><b>You</b><span>sign policy</span></li>
+  </ol>
+  <p class="yours"><b>Yours:</b> press a headline for the groups of changes, again for the signed work.</p>
+</article>
     </div>
   </div>
 </section>
 
-<!-- Video Review Face (NAB Slide 7) -->
-<section id="video-review">
+<!-- The footage -->
+<section id="footage" class="sec">
   <div class="wrap">
-    <div class="eyebrow">Video review</div>
-    <h2>AI findings — right on the timeline.</h2>
-    <p class="lede">Not just flags. Actions. Every finding has context, a fix, and a path to approval.</p>
-
-    <div class="video-mock" aria-hidden="true">
-      <div class="video-pane">
-        <div class="video-frame">
-          <div class="video-tc">04:12</div>
-        </div>
-        <div class="video-timeline">
-          <div class="timeline-bar"></div>
-          <div class="marker ai" style="left: 18%;"></div>
-          <div class="marker human" style="left: 28%;"></div>
-          <div class="marker ad" style="left: 42%;"></div>
-          <div class="marker ai" style="left: 56%;"></div>
-          <div class="marker ad" style="left: 71%;"></div>
-          <div class="marker ai" style="left: 84%;"></div>
-        </div>
-      </div>
-      <div class="comments-pane">
-        <div class="comments-header">Timeline · 6 findings</div>
-        <div class="comment">
-          <span class="tc">02:14</span>
-          <span class="author ai">AI</span>
-          <span class="text">Audio peak detected. Suggested fix: -3dB normalize.</span>
-        </div>
-        <div class="comment">
-          <span class="tc">03:30</span>
-          <span class="author human">Ravi</span>
-          <span class="text">Lip sync drift here. Can we re-time?</span>
-        </div>
-        <div class="comment">
-          <span class="tc">05:01</span>
-          <span class="author ai">AI</span>
-          <span class="text">Optimal ad break — natural scene transition.</span>
-        </div>
-        <div class="comment">
-          <span class="tc">06:48</span>
-          <span class="author ai">AI</span>
-          <span class="text">Compliance flag. Review for regional cut.</span>
-        </div>
-        <div class="comment">
-          <span class="tc">08:32</span>
-          <span class="author ai">AI</span>
-          <span class="text">Optimal ad break candidate.</span>
-        </div>
-        <div class="comment">
-          <span class="tc">10:05</span>
-          <span class="author ai">AI</span>
-          <span class="text">Quality check passed. Ready for approval.</span>
-        </div>
-      </div>
+    <p class="eyebrow">The footage</p>
+    <h2>How Cyan understands the footage</h2>
+    <div class="reads" role="list" aria-label="Footage read once, shot grouping by setup, content reads, aesthetics measured with math, rule of six, rough cut proposed and receipted">
+      <div role="listitem"><b>Footage</b><span>read once</span></div>
+      <div role="listitem"><b>Shot grouping</b><span>by setup</span></div>
+      <div role="listitem"><b>Content reads</b><span>setting, light, slate</span></div>
+      <div role="listitem"><b>Aesthetics</b><span>measured with math</span></div>
+      <div role="listitem"><b>Rule of six</b><span>a reason per edit</span></div>
+      <div role="listitem"><b>Rough cut</b><span>proposed, receipted</span></div>
     </div>
+    <div class="rule">
+      <div class="big">99 % agentic,<br>1 % human</div>
+      <p>Rules settle first; a model judges only what the rules cannot; a person is asked only when neither can settle it. Every decision writes its receipt.</p>
+    </div>
+  </div>
+</section>
 
-    <div class="video-callouts">
-      <div class="video-callout">
-        <div class="ico">🎯</div>
-        <h4>Per-item approval</h4>
-        <p>Review what AI found. Not 700 seconds of footage.</p>
+<!-- Plugins and the marketplace -->
+<section id="plugins" class="sec wash">
+  <div class="wrap">
+    <p class="eyebrow"><span>Plugins</span><span>the marketplace</span></p>
+    <h2>Every tool you use, and the ones you'll build.</h2>
+    <p class="lede">Cyan speaks MCP, the open standard for tools, so any tool with an API becomes a plugin a workflow calls by name. Install one from the marketplace, or publish your own.</p>
+    <div class="plug">
+      <div class="plug-spine"><b>The show's spine</b><span>calls plugins by name, step by step, and writes every call to the record.</span></div>
+      <div class="plug-grid" role="list" aria-label="Plugin groups: your tools, review and delivery, the media reader, your own">
+        <div class="pg" style="--c:var(--cyan)" role="listitem"><b>Your tools</b><ul><li>Premiere</li><li>Resolve</li><li>Pro Tools</li></ul><span>The chairs keep their tools. Cyan works inside them.</span></div>
+        <div class="pg" style="--c:var(--olive)" role="listitem"><b>Review and delivery</b><ul><li>Frame.io</li><li>Your storage</li><li>Masters out</li></ul><span>Proxies up, notes back, masters delivered from your site.</span></div>
+        <div class="pg" style="--c:var(--amber)" role="listitem"><b>The media reader</b><ul><li>Slate calls</li><li>Loudness</li><li>Shot grouping</li><li>Dead tracks</li></ul><span>Forty tools that read footage and sound.</span></div>
+        <div class="pg" style="--c:var(--magenta)" role="listitem"><b>Your own</b><ul><li>A QC model</li><li>A compliance scan</li><li>Transcription</li></ul><span>A studio's own model becomes a plugin any team can install.</span></div>
       </div>
-      <div class="video-callout">
-        <div class="ico">↔️</div>
-        <h4>Drag ad breaks live</h4>
-        <p>Move markers, see the impact update in place.</p>
-      </div>
-      <div class="video-callout">
-        <div class="ico">💬</div>
-        <h4>Ask AI in context</h4>
-        <p>Comment on any finding. Get an answer with the surrounding context.</p>
+      <div class="plug-market">
+        <div><b>Generated from the spec</b><p>Give Cyan an API spec and it writes the plugin. Weeks of connector engineering become hours.</p></div>
+        <div><b>Install and go</b><p>A team installs a plugin like an app. The spine can call it on the next show.</p></div>
+        <div><b>Build once, publish, earn</b><p>Builders ship plugins, teams install them, and the catalog deepens with every show.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- AI vs Humans (NAB Slide 8) -->
-<section id="split">
+<!-- Deployment (a proposal) -->
+<section id="deployment" class="sec">
   <div class="wrap">
-    <div class="eyebrow">Division of labor</div>
-    <h2>AI does the work.<br>Humans make the calls.</h2>
+    <p class="eyebrow"><span>A proposed deployment</span><span>on your floor</span><span>in phases</span></p>
+    <h2>How Cyan would be deployed: the work travels to your footage, the record travels everywhere.</h2>
+    <p class="lede">This is how Cyan would potentially be deployed for a floor like yours. It runs beside your storage: raw media never leaves your site, the seats share one record, and only small things travel between racks. It starts as half a rack and grows by adding racks.</p>
+    <div class="laws">
+      <div class="law"><b>Your footage stays put</b><p>Engines run at the site that holds the media root. Conform, grade and render happen against your storage, on your floor.</p></div>
+      <div class="law"><b>The record is yours, and cloudless</b><p>Boards, notes, approvals and the cut's history sync between your seats. A seat needs a link to the other seats, not to a cloud.</p></div>
+      <div class="law"><b>Only small things cross</b><p>Proxies, looks, comments, approvals and workflow definitions move between rooms. Masters are delivered from the site that made them.</p></div>
+    </div>
+    <div class="racks">
+      <h3>Three racks, and what travels between them</h3>
+      <div class="scroller">
+<svg class="racks-svg" viewBox="0 0 760 300" role="img" aria-label="Three racks and what travels between them">
+<defs>
+<marker id="rk-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#2FB3D6"/></marker>
+<marker id="rk-ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#E5187B"/></marker>
+<marker id="rk-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#7E9C3A"/></marker>
+</defs>
+<rect x="12" y="14" width="202" height="230" rx="10" fill="#F2FAFC" stroke="#2FB3D6" stroke-width="1.4"/>
+<text x="113.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">YOUR SITE</text>
+<rect x="30" y="48" width="60" height="108" rx="6" fill="#1B1F23"/>
+<rect x="36" y="56.0" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="60.7" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="69.1" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="73.9" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="82.3" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="87.0" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="95.4" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="100.2" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="108.6" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="113.3" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="121.7" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="126.4" r="1.6" fill="#2FB3D6"/>
+<rect x="36" y="134.9" width="48" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="43" cy="139.6" r="1.6" fill="#2FB3D6"/>
+<text x="60" y="172" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Half rack</text>
+<text x="60" y="184" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">engine beside</text>
+<text x="60" y="195" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">your storage</text>
+<g transform="translate(128,56)">
+<ellipse cx="22" cy="7" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="7" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="21" rx="22" ry="7" fill="#1B1F23"/>
+<ellipse cx="22" cy="39" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="39" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="53" rx="22" ry="7" fill="#1B1F23"/>
+<ellipse cx="22" cy="71" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="71" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="85" rx="22" ry="7" fill="#1B1F23"/>
+</g>
+<text x="150" y="172" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="11" fill="#14171A">Your storage</text>
+<text x="150" y="184" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">source · working</text>
+<text x="150" y="195" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">masters</text>
+<rect x="30" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
+<rect x="64" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
+<rect x="98" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
+<rect x="132" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
+<text x="113.0" y="236" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">the chairs' machines and DCC tools</text>
+<rect x="12" y="250" width="202" height="20" rx="10" fill="#14171A"/>
+<text x="113.0" y="263.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9" fill="#F4F1EA" textLength="186" lengthAdjust="spacingAndGlyphs">camera originals and masters never leave</text>
+<text x="411.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">THE HEAVY ROOM</text>
+<rect x="366" y="46" width="90" height="148" rx="6" fill="#1B1F23"/>
+<rect x="372" y="54.0" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="58.8" r="1.6" fill="#E5187B"/>
+<rect x="372" y="67.2" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="72.0" r="1.6" fill="#E5187B"/>
+<rect x="372" y="80.4" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="85.2" r="1.6" fill="#E5187B"/>
+<rect x="372" y="93.6" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="98.4" r="1.6" fill="#E5187B"/>
+<rect x="372" y="106.8" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="111.6" r="1.6" fill="#E5187B"/>
+<rect x="372" y="120.0" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="124.8" r="1.6" fill="#E5187B"/>
+<rect x="372" y="133.2" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="138.0" r="1.6" fill="#E5187B"/>
+<rect x="372" y="146.4" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="151.2" r="1.6" fill="#E5187B"/>
+<rect x="372" y="159.6" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="164.4" r="1.6" fill="#E5187B"/>
+<rect x="372" y="172.8" width="78" height="9.5" rx="2" fill="#2A3036"/>
+<circle cx="379" cy="177.6" r="1.6" fill="#E5187B"/>
+<text x="411.0" y="212" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Full rack</text>
+<text x="411.0" y="225" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.6" fill="#5B6670">models · render · metering</text>
+<text x="648.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">A REGIONAL ROOM</text>
+<rect x="618" y="70" width="60" height="84" rx="6" fill="#1B1F23"/>
+<rect x="624" y="78.0" width="48" height="9.8" rx="2" fill="#2A3036"/>
+<circle cx="631" cy="82.9" r="1.6" fill="#7E9C3A"/>
+<rect x="624" y="91.6" width="48" height="9.8" rx="2" fill="#2A3036"/>
+<circle cx="631" cy="96.5" r="1.6" fill="#7E9C3A"/>
+<rect x="624" y="105.2" width="48" height="9.8" rx="2" fill="#2A3036"/>
+<circle cx="631" cy="110.1" r="1.6" fill="#7E9C3A"/>
+<rect x="624" y="118.8" width="48" height="9.8" rx="2" fill="#2A3036"/>
+<circle cx="631" cy="123.7" r="1.6" fill="#7E9C3A"/>
+<rect x="624" y="132.4" width="48" height="9.8" rx="2" fill="#2A3036"/>
+<circle cx="631" cy="137.3" r="1.6" fill="#7E9C3A"/>
+<text x="648.0" y="170" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Seats</text>
+<text x="648.0" y="183" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.6" fill="#5B6670">editors in another city</text>
+<rect x="608" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
+<rect x="638" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
+<rect x="668" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
+<text x="648.0" y="234" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">if this link drops,</text>
+<text x="648.0" y="245" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">your floor keeps working</text>
+<path d="M222,92 L358,92" stroke="#2FB3D6" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ah)"/>
+<circle cx="222" cy="92" r="2.6" fill="#2FB3D6"/>
+<text x="290.0" y="85.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">workflows · approvals</text>
+<path d="M358,128 L222,128" stroke="#E5187B" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ahm)"/>
+<circle cx="358" cy="128" r="2.6" fill="#E5187B"/>
+<text x="290.0" y="121.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">looks · review proxies</text>
+<path d="M222,164 L358,164" stroke="#7E9C3A" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-aho)"/>
+<circle cx="222" cy="164" r="2.6" fill="#7E9C3A"/>
+<text x="290.0" y="157.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">notes · the shared record</text>
+<path d="M464,104 L610,104" stroke="#2FB3D6" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ah)" marker-start="url(#rk-ah)"/>
 
-    <div class="split">
-      <div class="split-col ai">
-        <h3>AI handles</h3>
-        <ul>
-          <li>Scans hours of video in seconds</li>
-          <li>Regional compliance checks</li>
-          <li>Multi-language subtitle generation</li>
-          <li>Ad break optimization</li>
-          <li>Quality control across format and audio</li>
-          <li>Responds to questions about findings in context</li>
-        </ul>
+<text x="537.0" y="97.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">the same record, both ways</text>
+<path d="M610,140 L464,140" stroke="#7E9C3A" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-aho)"/>
+<circle cx="610" cy="140" r="2.6" fill="#7E9C3A"/>
+<text x="537.0" y="133.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">overflow render requests</text>
+<line x1="12" y1="278" x2="748" y2="278" stroke="#D9DEE3" stroke-width="1"/>
+<g font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.8" fill="#5B6670">
+<rect x="24" y="286" width="14" height="4" rx="2" fill="#2FB3D6"/><text x="44" y="291">words, approvals, the record</text>
+<rect x="206" y="286" width="14" height="4" rx="2" fill="#E5187B"/><text x="226" y="291">looks and proxies</text>
+<rect x="340" y="286" width="14" height="4" rx="2" fill="#7E9C3A"/><text x="360" y="291">notes and render requests</text>
+<text x="748" y="291" text-anchor="end" font-weight="600" fill="#14171A">Kilobytes to megabytes. Raw media never crosses.</text>
+</g>
+</svg>
       </div>
-      <div class="split-col human">
-        <h3>Humans decide</h3>
-        <ul>
-          <li>Is this profanity intentional? Director's choice.</li>
-          <li>Move the ad break — the scene is too emotional.</li>
-          <li>The bleep sounds harsh — use a music sting instead.</li>
-          <li>Approve for one region, hold for another's review.</li>
-          <li>Ask AI: "What if we cut this scene?"</li>
-          <li>Final sign-off before delivery.</li>
+      <div class="racks-m">
+        <div class="rm-room" style="--rc:var(--cyan)"><b>Your site</b><span><i>Half rack:</i> engine beside your storage</span><span><i>Your storage:</i> source, working, masters</span><span>The chairs' machines and DCC tools</span><em>Camera originals and masters never leave</em></div>
+        <ul class="rm-link" aria-label="What travels between your site and the heavy room">
+          <li style="--lc:var(--cyan)">Workflows and approvals<small>down to the heavy room</small></li>
+          <li style="--lc:var(--magenta)">Looks and review proxies<small>back up to your site</small></li>
+          <li style="--lc:var(--olive)">Notes and the shared record<small>down to the heavy room</small></li>
         </ul>
+        <div class="rm-room" style="--rc:var(--magenta)"><b>The heavy room</b><span><i>Full rack:</i> models, render, metering</span></div>
+        <ul class="rm-link" aria-label="What travels between the heavy room and a regional room">
+          <li style="--lc:var(--cyan)">The same record<small>both ways</small></li>
+          <li style="--lc:var(--olive)">Overflow render requests<small>up from the regional room</small></li>
+        </ul>
+        <div class="rm-room" style="--rc:var(--olive)"><b>A regional room</b><span><i>Seats:</i> editors in another city</span><em>If this link drops, your floor keeps working</em></div>
+        <p class="rm-legend">Kilobytes to megabytes. Raw media never crosses.</p>
       </div>
+    </div>
+    <div class="phases">
+      <h3>A phased build-out, as proposed</h3>
+      <div class="scroller">
+      <table>
+        <thead><tr><th>Phase</th><th>Where</th><th>What would run</th><th>Scale, as an estimate</th></tr></thead>
+        <tbody>
+        <tr><td>One</td><td data-l="Where">Your site, half a rack</td><td data-l="What would run">The engine and its database on one machine, one reading model, working storage</td><td data-l="Scale, as an estimate">One or two engines, single-digit seats, about five kilowatts</td></tr>
+        <tr><td>Two</td><td data-l="Where">The heavy room, a full rack</td><td data-l="What would run">GPU render workers, larger judging models, the activity log and usage metering, the hot cache</td><td data-l="Scale, as an estimate">About sixteen GPUs within a ten-kilowatt rack, repeatable per rack</td></tr>
+        <tr><td>Three</td><td data-l="Where">A regional site</td><td data-l="What would run">Regional seats with their own permissions, overflow render, an optional shared model gateway</td><td data-l="Scale, as an estimate">Seats and burst render; the main floor is never dependent on it</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="note">A second studio with its own storage is the same playbook: a room beside their media, on their own record. New hardware is needed only when sustained GPU use passes seventy percent.</p>
+    </div>
+    <div class="ask">
+      <div><b>What we need from you to start</b><ul><li>Where the media root lives, and how it is shared.</li><li>A rack slot with power for the first room.</li><li>The seats' machines and their DCC licenses: Premiere, Resolve, Pro Tools.</li><li>Who sits in which chair on day one.</li></ul></div>
+      <div><b>What you get in the first week</b><ul><li>A show set up from one sentence, on your floor.</li><li>One shoot day run end to end: arrival, dailies, rough cut, lock, hand-offs.</li><li>Every step receipted on your own record.</li><li>A walk-through with each chair at their own screen.</li></ul></div>
     </div>
   </div>
 </section>
 
-<!-- Sovereignty / Shortest path (NAB Slide 10) -->
-<section id="sovereignty" class="sovereignty">
+<!-- IBC 2026 -->
+<section id="ibc" class="sec band">
   <div class="wrap">
-    <div class="eyebrow">Your data, your devices</div>
-    <h2>The shortest path is direct.</h2>
-    <p class="lede">Every other tool routes your data through servers you don't control. Cyan connects your team directly over encrypted channels. Files this large can finally move fast.</p>
-
-    <div class="path-compare">
-      <div class="path">
-        <div class="path-label">Everyone else</div>
-        <div class="path-flow">
-          <span class="step-name">Your Mac</span><span class="arrow">→</span>
-          <span class="step-name">WiFi router</span><span class="arrow">→</span>
-          <span class="step-name">ISP</span><span class="arrow">→</span>
-          <span class="step-name">Data center</span><span class="arrow">→</span>
-          <span class="step-name">ISP</span><span class="arrow">→</span>
-          <span class="step-name">WiFi router</span><span class="arrow">→</span>
-          <span class="step-name">Their Mac</span>
-        </div>
-      </div>
-      <div class="path cyan">
-        <div class="path-label">Cyan</div>
-        <div class="path-flow">
-          <span class="step-name">Your Mac</span><span class="arrow">→</span>
-          <span class="step-name">Their Mac</span>
-        </div>
-        <div class="thats-it">That's it.</div>
-      </div>
+    <p class="eyebrow">IBC 2026</p>
+    <h2>Cyan at IBC 2026 · on the Planetcast stand</h2>
+    <p class="lede">Ask the team for a live walk of one shoot day, from arrival to master. Talk to the team at the stand to plan your first room.</p>
+    <div class="ibc-cards">
+      <a class="ibc-card" href="/ibc/product.pdf"><span class="qr"><img src="/assets/qr-product.svg" alt="QR code for the product one-pager"></span><span><b>Product one&#8209;pager (PDF)</b><span>AI that choreographs your post floor.</span></span></a>
+      <a class="ibc-card" href="/ibc/deploy.pdf"><span class="qr"><img src="/assets/qr-deploy.svg" alt="QR code for the deployment one-pager"></span><span><b>Deployment one&#8209;pager (PDF)</b><span>How Cyan would be deployed, as proposed.</span></span></a>
+      <a class="ibc-card" href="/ibc/contact.vcf"><span class="qr"><img src="/assets/qr-contact-url.svg" alt="QR code to save our contact"></span><span><b>Save our contact</b><span>Anirudh Vyas · Founder &amp; CEO</span></span></a>
     </div>
-
-    <div class="stats-row">
-      <div class="stat">
-        <div class="num">1000×</div>
-        <div class="lbl">faster on LAN</div>
-      </div>
-      <div class="stat">
-        <div class="num">$0</div>
-        <div class="lbl">server costs</div>
-      </div>
-      <div class="stat">
-        <div class="num">100%</div>
-        <div class="lbl">data sovereignty</div>
-      </div>
-      <div class="stat">
-        <div class="num">∞</div>
-        <div class="lbl">works offline</div>
-      </div>
-    </div>
+    <p class="ibc-line">Scan any code, or open <a href="/ibc/">the-cyan.com/ibc</a> on your phone.</p>
   </div>
 </section>
 
 <!-- Team -->
-<section id="team">
+<section id="team" class="sec">
   <div class="wrap">
-    <div class="eyebrow">Who's building it</div>
+    <p class="eyebrow">Who's building it</p>
     <h2>Engineering and revenue,<br>with media in the blood.</h2>
     <div class="team-grid">
       <div class="member">
         <div class="m-name">Anirudh Vyas</div>
         <div class="m-role">Founder &amp; CEO</div>
-        <p class="m-cred">22 years building software at scale, with $2M+ in operational savings delivered. Advisor to Planetcast Media. Former Principal Engineer at Workday.</p>
+        <p class="m-cred">More than two decades building software at scale, with $2M+ in operational savings delivered. Advisor to Planetcast Media. Former Principal Engineer at Workday.</p>
         <div class="m-prev">prev · Workday · Thomson Reuters · Wells Fargo</div>
       </div>
       <div class="member">
@@ -1394,15 +662,15 @@ footer a:hover { color: var(--cyan); }
 </section>
 
 <!-- Beta CTA -->
-<section id="beta" class="beta">
+<section id="beta" class="sec wash beta">
   <div class="wrap">
-    <div class="eyebrow" style="text-align: center;">Help us shape this</div>
+    <p class="eyebrow">Help us shape this</p>
     <h2>Join the beta.</h2>
     <p class="lede">We're working with broadcast and post-production teams shipping at scale. If that sounds like you, get in touch.</p>
 
     <form class="beta-form" id="beta-form" action="https://buttondown.com/api/emails/embed-subscribe/blockxaero" method="post" target="popupwindow" onsubmit="return betaSubmit(event)">
-      <input type="email" name="email" placeholder="you@company.com" required>
-      <button type="submit" class="btn-primary">Join beta</button>
+      <input type="email" name="email" placeholder="you@company.com" aria-label="Your email" required>
+      <button type="submit" class="btn btn-ink">Join beta</button>
     </form>
     <div class="beta-confirm" id="beta-confirm">✓ You're on the list. We'll be in touch soon.</div>
 
@@ -1413,14 +681,19 @@ footer a:hover { color: var(--cyan); }
 </section>
 
 <footer>
+  <div class="wrap">
   <p>© 2026 Cyan · Anirudh Vyas &amp; HeeJee Jo · <a href="mailto:anirudh.vyas@the-cyan.com">anirudh.vyas@the-cyan.com</a> · <a href="mailto:heejee.jo@the-cyan.com">heejee.jo@the-cyan.com</a></p>
+  </div>
 </footer>
 
 <script>
 function toggleNav(){var n=document.getElementById('navLinks');var t=document.getElementById('navToggle');var o=n.classList.toggle('open');t.setAttribute('aria-expanded',o);}
 function closeNav(){var n=document.getElementById('navLinks');n.classList.remove('open');document.getElementById('navToggle').setAttribute('aria-expanded','false');}
+document.getElementById('navToggle').addEventListener('click',toggleNav);
+document.querySelectorAll('#navLinks a[href^="#"]').forEach(function(a){a.addEventListener('click',closeNav);});
 function betaSubmit(e) {
-  // Let Buttondown receive the POST in the popup target, but show our own confirm
+  // Open the named popup that the form targets, so Buttondown receives the POST there; then show our own confirm
+  window.open('https://buttondown.com/blockxaero','popupwindow','width=600,height=500');
   setTimeout(() => {
     document.getElementById('beta-confirm').classList.add('show');
     document.getElementById('beta-form').reset();
