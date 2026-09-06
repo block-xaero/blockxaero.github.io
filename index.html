@@ -263,6 +263,19 @@ footer a:hover{color:var(--ink)}
   td[data-l]::before{content:attr(data-l);display:block;font:600 11px/1.3 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 }
 @media (max-width:420px){.steps{grid-template-columns:1fr}.reads{grid-template-columns:1fr}}
+
+.way+.way{margin-top:18px}
+.way h3 .way-sub{display:block;font:400 15px/1.35 var(--body);color:var(--muted);margin-top:4px}
+.meter{margin-top:40px;border:1px solid var(--line);border-radius:16px;background:var(--paper);padding:22px 22px 18px}
+.meter h3{font:700 22px/1.2 var(--display);letter-spacing:-.005em}
+.meter h3 .who{display:inline-block;padding:4px 10px;border-radius:999px;font:700 12px/1.3 var(--body);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:#7A8288;margin-right:10px;vertical-align:middle}
+.meter h3 small{display:block;font:400 15px/1.35 var(--body);color:var(--muted);margin-top:6px}
+.meter .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:0 22px;margin-top:18px}
+.meter .tile{border-top:3px solid #7A8288;padding-top:12px}
+.meter .tile b{display:block;font:700 17px/1.2 var(--display);margin-bottom:6px}
+.meter .tile p{margin:0;font-size:15px;line-height:1.4;color:var(--ink)}
+@media (max-width:760px){.meter .tiles{grid-template-columns:1fr 1fr;gap:18px 18px}}
+@media (max-width:420px){.meter .tiles{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -439,6 +452,15 @@ footer a:hover{color:var(--ink)}
       <div class="big">99 % agentic,<br>1 % human</div>
       <p>Rules settle first; a model judges only what the rules cannot; a person is asked only when neither can settle it. Every decision writes its receipt.</p>
     </div>
+    <div class="meter">
+      <h3><span class="who">Studio exec · Post super</span>Observability and metering, built in <small>the record the work rides on, read the way a studio reads</small></h3>
+      <div class="tiles">
+        <div class="tile"><b>Minutes, yours and Cyan's</b><p>Per show, per day: people's time beside Cyan's, on the queue.</p></div>
+        <div class="tile"><b>Spend, per step</b><p>Every step carries its cost; the period's total sits on the dashboard.</p></div>
+        <div class="tile"><b>What ran, where, how long</b><p>Each step names its room, its duration, and who settled it: rule, model or person.</p></div>
+        <div class="tile"><b>Every park, every press</b><p>Who released a door, who approved a cut, when. The record is the audit.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -468,139 +490,164 @@ footer a:hover{color:var(--ink)}
 <!-- Deployment (a proposal) -->
 <section id="deployment" class="sec">
   <div class="wrap">
-    <p class="eyebrow"><span>A proposed deployment</span><span>on your floor</span><span>in phases</span></p>
+    <p class="eyebrow"><span>A proposed deployment</span><span>on your premises</span><span>or in the cloud</span><span>in phases</span></p>
     <h2>How Cyan would be deployed: the work travels to your footage, the record travels everywhere.</h2>
-    <p class="lede">This is how Cyan would potentially be deployed for a floor like yours. It runs beside your storage: raw media never leaves your site, the seats share one record, and only small things travel between racks. It starts as half a rack and grows by adding racks.</p>
+    <p class="lede">Two ways to run Cyan, and we favor the first. On your premises, the way we have built it twice: a rack beside your storage, a heavy room, a regional room. Or in the cloud, the way Cyan runs today: you edit, color or observe from anywhere, and the floor keeps the beat. Either way raw media stays where you keep it, the seats share one record, and only small things travel between rooms.</p>
     <div class="laws">
-      <div class="law"><b>Your footage stays put</b><p>Engines run at the site that holds the media root. Conform, grade and render happen against your storage, on your floor.</p></div>
-      <div class="law"><b>The record is yours, and cloudless</b><p>Boards, notes, approvals and the cut's history sync between your seats. A seat needs a link to the other seats, not to a cloud.</p></div>
+      <div class="law"><b>Your footage stays put</b><p>Engines run where the media root lives, your floor or your cloud storage. Conform, grade and render happen beside it.</p></div>
+      <div class="law"><b>The record is yours</b><p>Boards, notes, approvals and the cut's history sync between your seats, on your rack or in your cloud account, never on ours.</p></div>
       <div class="law"><b>Only small things cross</b><p>Proxies, looks, comments, approvals and workflow definitions move between rooms. Masters are delivered from the site that made them.</p></div>
     </div>
-    <div class="racks">
-      <h3>Three racks, and what travels between them</h3>
+    <div class="racks way">
+      <h3>On your premises <span class="way-sub">the way we favor — the two-site build we have run</span></h3>
       <div class="scroller">
-<svg class="racks-svg" viewBox="0 0 760 300" role="img" aria-label="Three racks and what travels between them">
+<svg class="racks-svg" viewBox="0 0 760 204" role="img" aria-label="On your premises: your site, the heavy room, a regional room">
 <defs>
-<marker id="rk-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#2FB3D6"/></marker>
-<marker id="rk-ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#E5187B"/></marker>
-<marker id="rk-aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#7E9C3A"/></marker>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#2FB3D6"/></marker>
+<marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#E5187B"/></marker>
+<marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#7E9C3A"/></marker>
 </defs>
-<rect x="12" y="14" width="202" height="230" rx="10" fill="#F2FAFC" stroke="#2FB3D6" stroke-width="1.4"/>
-<text x="113.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">YOUR SITE</text>
-<rect x="30" y="48" width="60" height="108" rx="6" fill="#1B1F23"/>
-<rect x="36" y="56.0" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="60.7" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="69.1" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="73.9" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="82.3" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="87.0" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="95.4" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="100.2" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="108.6" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="113.3" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="121.7" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="126.4" r="1.6" fill="#2FB3D6"/>
-<rect x="36" y="134.9" width="48" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="43" cy="139.6" r="1.6" fill="#2FB3D6"/>
-<text x="60" y="172" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Half rack</text>
-<text x="60" y="184" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">engine beside</text>
-<text x="60" y="195" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">your storage</text>
-<g transform="translate(128,56)">
-<ellipse cx="22" cy="7" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="7" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="21" rx="22" ry="7" fill="#1B1F23"/>
-<ellipse cx="22" cy="39" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="39" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="53" rx="22" ry="7" fill="#1B1F23"/>
-<ellipse cx="22" cy="71" rx="22" ry="7" fill="#2A3036"/><rect x="0" y="71" width="44" height="14" fill="#2A3036"/><ellipse cx="22" cy="85" rx="22" ry="7" fill="#1B1F23"/>
+<rect x="12" y="8" width="214" height="188" rx="9" fill="#F2FAFC" stroke="#2FB3D6" stroke-width="1.3"/>
+<text x="119.0" y="27" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="13" fill="#14171A" letter-spacing=".04em">YOUR SITE</text>
+<rect x="28" y="38" width="50" height="70" rx="5" fill="#1B1F23"/>
+<rect x="33" y="44.0" width="40" height="8.1" rx="2" fill="#2A3036"/><circle cx="39" cy="48.1" r="1.5" fill="#2FB3D6"/>
+<rect x="33" y="55.6" width="40" height="8.1" rx="2" fill="#2A3036"/><circle cx="39" cy="59.7" r="1.5" fill="#2FB3D6"/>
+<rect x="33" y="67.2" width="40" height="8.1" rx="2" fill="#2A3036"/><circle cx="39" cy="71.3" r="1.5" fill="#2FB3D6"/>
+<rect x="33" y="78.8" width="40" height="8.1" rx="2" fill="#2A3036"/><circle cx="39" cy="82.9" r="1.5" fill="#2FB3D6"/>
+<rect x="33" y="90.4" width="40" height="8.1" rx="2" fill="#2A3036"/><circle cx="39" cy="94.5" r="1.5" fill="#2FB3D6"/>
+<text x="53" y="124" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Half rack</text>
+<text x="53" y="137" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">engine by the storage</text>
+<g transform="translate(128,42)">
+<ellipse cx="18" cy="5.5" rx="18" ry="5.5" fill="#2A3036"/><rect x="0" y="5.5" width="36" height="12.5" fill="#2A3036"/><ellipse cx="18" cy="18" rx="18" ry="5.5" fill="#1B1F23"/>
+<ellipse cx="18" cy="26.5" rx="18" ry="5.5" fill="#2A3036"/><rect x="0" y="26.5" width="36" height="12.5" fill="#2A3036"/><ellipse cx="18" cy="39" rx="18" ry="5.5" fill="#1B1F23"/>
+<ellipse cx="18" cy="47.5" rx="18" ry="5.5" fill="#2A3036"/><rect x="0" y="47.5" width="36" height="12.5" fill="#2A3036"/><ellipse cx="18" cy="60" rx="18" ry="5.5" fill="#1B1F23"/>
 </g>
-<text x="150" y="172" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="11" fill="#14171A">Your storage</text>
-<text x="150" y="184" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">source · working</text>
-<text x="150" y="195" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">masters</text>
-<rect x="30" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
-<rect x="64" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
-<rect x="98" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
-<rect x="132" y="206" width="26" height="17" rx="2" fill="#2A3036"/>
-<text x="113.0" y="236" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">the chairs' machines and DCC tools</text>
-<rect x="12" y="250" width="202" height="20" rx="10" fill="#14171A"/>
-<text x="113.0" y="263.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9" fill="#F4F1EA" textLength="186" lengthAdjust="spacingAndGlyphs">camera originals and masters never leave</text>
-<text x="411.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">THE HEAVY ROOM</text>
-<rect x="366" y="46" width="90" height="148" rx="6" fill="#1B1F23"/>
-<rect x="372" y="54.0" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="58.8" r="1.6" fill="#E5187B"/>
-<rect x="372" y="67.2" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="72.0" r="1.6" fill="#E5187B"/>
-<rect x="372" y="80.4" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="85.2" r="1.6" fill="#E5187B"/>
-<rect x="372" y="93.6" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="98.4" r="1.6" fill="#E5187B"/>
-<rect x="372" y="106.8" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="111.6" r="1.6" fill="#E5187B"/>
-<rect x="372" y="120.0" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="124.8" r="1.6" fill="#E5187B"/>
-<rect x="372" y="133.2" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="138.0" r="1.6" fill="#E5187B"/>
-<rect x="372" y="146.4" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="151.2" r="1.6" fill="#E5187B"/>
-<rect x="372" y="159.6" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="164.4" r="1.6" fill="#E5187B"/>
-<rect x="372" y="172.8" width="78" height="9.5" rx="2" fill="#2A3036"/>
-<circle cx="379" cy="177.6" r="1.6" fill="#E5187B"/>
-<text x="411.0" y="212" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Full rack</text>
-<text x="411.0" y="225" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.6" fill="#5B6670">models · render · metering</text>
-<text x="648.0" y="34" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="12" fill="#14171A" letter-spacing=".04em">A REGIONAL ROOM</text>
-<rect x="618" y="70" width="60" height="84" rx="6" fill="#1B1F23"/>
-<rect x="624" y="78.0" width="48" height="9.8" rx="2" fill="#2A3036"/>
-<circle cx="631" cy="82.9" r="1.6" fill="#7E9C3A"/>
-<rect x="624" y="91.6" width="48" height="9.8" rx="2" fill="#2A3036"/>
-<circle cx="631" cy="96.5" r="1.6" fill="#7E9C3A"/>
-<rect x="624" y="105.2" width="48" height="9.8" rx="2" fill="#2A3036"/>
-<circle cx="631" cy="110.1" r="1.6" fill="#7E9C3A"/>
-<rect x="624" y="118.8" width="48" height="9.8" rx="2" fill="#2A3036"/>
-<circle cx="631" cy="123.7" r="1.6" fill="#7E9C3A"/>
-<rect x="624" y="132.4" width="48" height="9.8" rx="2" fill="#2A3036"/>
-<circle cx="631" cy="137.3" r="1.6" fill="#7E9C3A"/>
-<text x="648.0" y="170" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12.5" fill="#14171A">Seats</text>
-<text x="648.0" y="183" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.6" fill="#5B6670">editors in another city</text>
-<rect x="608" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
-<rect x="638" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
-<rect x="668" y="204" width="22" height="15" rx="2" fill="#2A3036"/>
-<text x="648.0" y="234" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">if this link drops,</text>
-<text x="648.0" y="245" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.4" fill="#5B6670">your floor keeps working</text>
-<path d="M222,92 L358,92" stroke="#2FB3D6" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ah)"/>
-<circle cx="222" cy="92" r="2.6" fill="#2FB3D6"/>
-<text x="290.0" y="85.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">workflows · approvals</text>
-<path d="M358,128 L222,128" stroke="#E5187B" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ahm)"/>
-<circle cx="358" cy="128" r="2.6" fill="#E5187B"/>
-<text x="290.0" y="121.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">looks · review proxies</text>
-<path d="M222,164 L358,164" stroke="#7E9C3A" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-aho)"/>
-<circle cx="222" cy="164" r="2.6" fill="#7E9C3A"/>
-<text x="290.0" y="157.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">notes · the shared record</text>
-<path d="M464,104 L610,104" stroke="#2FB3D6" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-ah)" marker-start="url(#rk-ah)"/>
+<text x="146" y="124" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Your storage</text>
+<text x="146" y="137" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">originals · masters</text>
+<rect x="30" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<rect x="60" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<rect x="90" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<rect x="120" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<rect x="150" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<rect x="180" y="146" width="24" height="12" rx="2" fill="#2A3036"/>
+<text x="119.0" y="172" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">the chairs and their tools, at the desk</text>
+<rect x="12" y="177" width="214" height="19" rx="9.5" fill="#14171A"/>
+<text x="119.0" y="190" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#F4F1EA" textLength="200" lengthAdjust="spacingAndGlyphs">originals and masters never leave the floor</text>
+<text x="418.0" y="27" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="13" fill="#14171A" letter-spacing=".04em">THE HEAVY ROOM</text>
+<rect x="372" y="38" width="92" height="92" rx="5" fill="#1B1F23"/>
+<rect x="377" y="44.0" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="48.0" r="1.5" fill="#E5187B"/>
+<rect x="377" y="55.4" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="59.4" r="1.5" fill="#E5187B"/>
+<rect x="377" y="66.9" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="70.9" r="1.5" fill="#E5187B"/>
+<rect x="377" y="78.3" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="82.3" r="1.5" fill="#E5187B"/>
+<rect x="377" y="89.7" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="93.7" r="1.5" fill="#E5187B"/>
+<rect x="377" y="101.1" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="105.1" r="1.5" fill="#E5187B"/>
+<rect x="377" y="112.6" width="82" height="8.0" rx="2" fill="#2A3036"/><circle cx="383" cy="116.6" r="1.5" fill="#E5187B"/>
+<text x="418.0" y="148" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Full rack</text>
+<text x="418.0" y="161" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">models · render · the record</text>
+<text x="418.0" y="174" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">metered per outlet</text>
+<text x="658.0" y="27" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="13" fill="#14171A" letter-spacing=".04em">A REGIONAL ROOM</text>
+<rect x="626" y="44" width="64" height="60" rx="5" fill="#1B1F23"/>
+<rect x="631" y="50.0" width="54" height="8.4" rx="2" fill="#2A3036"/><circle cx="637" cy="54.2" r="1.5" fill="#7E9C3A"/>
+<rect x="631" y="62.0" width="54" height="8.4" rx="2" fill="#2A3036"/><circle cx="637" cy="66.2" r="1.5" fill="#7E9C3A"/>
+<rect x="631" y="74.0" width="54" height="8.4" rx="2" fill="#2A3036"/><circle cx="637" cy="78.2" r="1.5" fill="#7E9C3A"/>
+<rect x="631" y="86.0" width="54" height="8.4" rx="2" fill="#2A3036"/><circle cx="637" cy="90.2" r="1.5" fill="#7E9C3A"/>
+<text x="658.0" y="122" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Seats</text>
+<text x="658.0" y="135" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">editors in another city</text>
+<rect x="620" y="146" width="22" height="12" rx="2" fill="#2A3036"/>
+<rect x="648" y="146" width="22" height="12" rx="2" fill="#2A3036"/>
+<rect x="676" y="146" width="22" height="12" rx="2" fill="#2A3036"/>
+<text x="658.0" y="172" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">if the link drops, the floor keeps working</text>
+<path d="M234,62 L364,62" stroke="#2FB3D6" stroke-width="1.7" stroke-linecap="round" fill="none" marker-end="url(#ah)" marker-start="url(#ah)"/>
 
-<text x="537.0" y="97.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">the same record, both ways</text>
-<path d="M610,140 L464,140" stroke="#7E9C3A" stroke-width="1.8" stroke-linecap="round" fill="none" marker-end="url(#rk-aho)"/>
-<circle cx="610" cy="140" r="2.6" fill="#7E9C3A"/>
-<text x="537.0" y="133.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="9.6" fill="#14171A">overflow render requests</text>
-<line x1="12" y1="278" x2="748" y2="278" stroke="#D9DEE3" stroke-width="1"/>
-<g font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="9.8" fill="#5B6670">
-<rect x="24" y="286" width="14" height="4" rx="2" fill="#2FB3D6"/><text x="44" y="291">words, approvals, the record</text>
-<rect x="206" y="286" width="14" height="4" rx="2" fill="#E5187B"/><text x="226" y="291">looks and proxies</text>
-<rect x="340" y="286" width="14" height="4" rx="2" fill="#7E9C3A"/><text x="360" y="291">notes and render requests</text>
-<text x="748" y="291" text-anchor="end" font-weight="600" fill="#14171A">Kilobytes to megabytes. Raw media never crosses.</text>
-</g>
+<text x="299.0" y="56" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="10.5" fill="#14171A">the record</text>
+<path d="M364,104 L234,104" stroke="#E5187B" stroke-width="1.7" stroke-linecap="round" fill="none" marker-end="url(#ahm)"/>
+<circle cx="364" cy="104" r="2.2" fill="#E5187B"/>
+<text x="299.0" y="98" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="10.5" fill="#14171A">looks · proxies</text>
+<path d="M472,66 L618,66" stroke="#2FB3D6" stroke-width="1.7" stroke-linecap="round" fill="none" marker-end="url(#ah)" marker-start="url(#ah)"/>
+
+<text x="545.0" y="60" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="10.5" fill="#14171A">the record</text>
+<path d="M618,104 L472,104" stroke="#7E9C3A" stroke-width="1.7" stroke-linecap="round" fill="none" marker-end="url(#aho)"/>
+<circle cx="618" cy="104" r="2.2" fill="#7E9C3A"/>
+<text x="545.0" y="98" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="10.5" fill="#14171A">render overflow</text>
 </svg>
       </div>
       <div class="racks-m">
-        <div class="rm-room" style="--rc:var(--cyan)"><b>Your site</b><span><i>Half rack:</i> engine beside your storage</span><span><i>Your storage:</i> source, working, masters</span><span>The chairs' machines and DCC tools</span><em>Camera originals and masters never leave</em></div>
-        <ul class="rm-link" aria-label="What travels between your site and the heavy room">
-          <li style="--lc:var(--cyan)">Workflows and approvals<small>down to the heavy room</small></li>
-          <li style="--lc:var(--magenta)">Looks and review proxies<small>back up to your site</small></li>
-          <li style="--lc:var(--olive)">Notes and the shared record<small>down to the heavy room</small></li>
-        </ul>
-        <div class="rm-room" style="--rc:var(--magenta)"><b>The heavy room</b><span><i>Full rack:</i> models, render, metering</span></div>
-        <ul class="rm-link" aria-label="What travels between the heavy room and a regional room">
-          <li style="--lc:var(--cyan)">The same record<small>both ways</small></li>
-          <li style="--lc:var(--olive)">Overflow render requests<small>up from the regional room</small></li>
-        </ul>
-        <div class="rm-room" style="--rc:var(--olive)"><b>A regional room</b><span><i>Seats:</i> editors in another city</span><em>If this link drops, your floor keeps working</em></div>
-        <p class="rm-legend">Kilobytes to megabytes. Raw media never crosses.</p>
+        <div class="rm-room" style="--rc:var(--cyan)"><b>Your site</b><span><i>Half rack:</i> the engine by your storage</span><span><i>Your storage:</i> originals and masters</span><span>The chairs and their tools, at the desk</span><em>Originals and masters never leave the floor</em></div>
+        <ul class="rm-link" aria-label="What travels between your site and the heavy room"><li style="--lc:var(--cyan)">The record<small>both ways</small></li><li style="--lc:var(--magenta)">Looks and proxies<small>back to your site</small></li></ul>
+        <div class="rm-room" style="--rc:var(--magenta)"><b>The heavy room</b><span><i>Full rack:</i> models, render, the record</span><span>Metered per outlet</span></div>
+        <ul class="rm-link" aria-label="What travels between the heavy room and a regional room"><li style="--lc:var(--cyan)">The record<small>both ways</small></li><li style="--lc:var(--olive)">Render overflow<small>from the regional room</small></li></ul>
+        <div class="rm-room" style="--rc:var(--olive)"><b>A regional room</b><span><i>Seats:</i> editors in another city</span><em>If the link drops, the floor keeps working</em></div>
+      </div>
+    </div>
+    <div class="racks way">
+      <h3>In the cloud <span class="way-sub">how Cyan runs today — edit, color or observe from anywhere; the floor keeps the beat</span></h3>
+      <div class="scroller">
+<svg class="racks-svg" viewBox="0 0 760 214" role="img" aria-label="In the cloud: the floor keeps the beat; the cloud holds the models, the relay, the bootstrap and your super peer">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#2FB3D6"/></marker>
+<marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#E5187B"/></marker>
+<marker id="aho" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.8 L9,5 L0,8.2 z" fill="#7E9C3A"/></marker>
+</defs>
+<g fill="#EAF6FA"><rect x="28" y="36.400000000000006" width="704" height="40.6" rx="12"/>
+<circle cx="129.8" cy="41.0" r="16.7"/>
+<circle cx="262.2" cy="28.8" r="22.8"/>
+<circle cx="424.2" cy="25.8" r="25.1"/>
+<circle cx="586.1" cy="36.4" r="19.0"/>
+<circle cx="689.1" cy="47.8" r="12.2"/>
+</g><rect x="12" y="6" width="736" height="76" rx="14" fill="none" stroke="#2FB3D6" stroke-width="1.2" stroke-dasharray="5 3"/>
+<text x="28" y="24" text-anchor="start" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="13" fill="#14171A" letter-spacing=".04em">THE CLOUD · four things, and nothing of yours</text>
+<rect x="28.0" y="32" width="170" height="42" rx="5" fill="#FFFFFF" stroke="#2FB3D6" stroke-width="1.3"/>
+<text x="113.0" y="49" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Cyan's own models</text>
+<text x="113.0" y="65" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">read the day · judge the look</text>
+<rect x="206.0" y="32" width="170" height="42" rx="5" fill="#FFFFFF" stroke="#7E9C3A" stroke-width="1.3"/>
+<text x="291.0" y="49" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">The relay</text>
+<text x="291.0" y="65" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">seats reach each other, anywhere</text>
+<rect x="384.0" y="32" width="170" height="42" rx="5" fill="#FFFFFF" stroke="#7E9C3A" stroke-width="1.3"/>
+<text x="469.0" y="49" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">The bootstrap</text>
+<text x="469.0" y="65" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">the first hello: a seat finds its floor</text>
+<rect x="562.0" y="32" width="170" height="42" rx="5" fill="#FFFFFF" stroke="#E5187B" stroke-width="1.3"/>
+<text x="647.0" y="49" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Your super peer</text>
+<text x="647.0" y="65" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">keeps the studio's record</text>
+<path d="M214,112 L214,88" stroke="#2FB3D6" stroke-width="1.6" stroke-linecap="round" fill="none" marker-end="url(#ah)"/>
+<text x="222" y="104" text-anchor="start" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">a sentence · a frame</text>
+<path d="M546,88 L546,112" stroke="#E5187B" stroke-width="1.6" stroke-linecap="round" fill="none" marker-end="url(#ahm)"/>
+<text x="554" y="104" text-anchor="start" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">the beat · a judgment</text>
+<rect x="12" y="118" width="736" height="92" rx="8" fill="#F2FAFC" stroke="#2FB3D6" stroke-width="1.3"/>
+<text x="28" y="136" text-anchor="start" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="800" font-size="13" fill="#14171A" letter-spacing=".04em">THE FLOOR · everyone knows their part and dances to the beat</text>
+<rect x="36.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="61.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="86.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<text x="96.0" y="191" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Editor</text>
+<text x="96.0" y="204" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">cuts from anywhere</text>
+<rect x="178.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="203.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="228.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<text x="238.0" y="191" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Colorist</text>
+<text x="238.0" y="204" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">grades from anywhere</text>
+<rect x="320.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="345.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="370.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<text x="380.0" y="191" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Assistant</text>
+<text x="380.0" y="204" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">stages the day, anywhere</text>
+<rect x="462.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="487.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<rect x="512.0" y="164" width="20" height="11" rx="2" fill="#2A3036"/>
+<text x="522.0" y="191" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">Post supervisor</text>
+<text x="522.0" y="204" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">observes from anywhere</text>
+<rect x="618.0" y="158" width="32" height="22" rx="5" fill="#1B1F23"/>
+<rect x="623.0" y="164.0" width="22" height="3.5" rx="2" fill="#2A3036"/><circle cx="629.0" cy="165.8" r="1.5" fill="#2FB3D6"/>
+<rect x="623.0" y="169.0" width="22" height="3.5" rx="2" fill="#2A3036"/><circle cx="629.0" cy="170.8" r="1.5" fill="#2FB3D6"/>
+<text x="664.0" y="191" text-anchor="middle" font-family="Bricolage Grotesque, Helvetica Neue, sans-serif" font-weight="700" font-size="12" fill="#14171A">The rack by the storage</text>
+<text x="664.0" y="204" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-size="10" fill="#5B6670">renders · originals stay</text>
+<path d="M56,150 L704,150" stroke="#2FB3D6" stroke-width="2.2" stroke-linecap="round" fill="none" marker-end="url(#ah)" marker-start="url(#ah)" opacity=".85"/>
+<rect x="202.0" y="142" width="356" height="16" rx="8" fill="#14171A"/>
+<text x="380.0" y="153.5" text-anchor="middle" font-family="Source Sans 3, Helvetica Neue, sans-serif" font-weight="600" font-size="10" fill="#F4F1EA">one shared record · roles say who acts · the workflow ticks on its own</text>
+</svg>
+      </div>
+      <div class="racks-m">
+        <div class="rm-room" style="--rc:var(--cyan)"><b>The cloud · four things, and nothing of yours</b><span><i>Cyan's own models:</i> read the day, judge the look</span><span><i>The relay:</i> seats reach each other, anywhere</span><span><i>The bootstrap:</i> the first hello, a seat finds its floor</span><span><i>Your super peer:</i> keeps the studio's record</span></div>
+        <ul class="rm-link" aria-label="What travels between the floor and the cloud"><li style="--lc:var(--cyan)">A sentence, a frame<small>up to the models</small></li><li style="--lc:var(--magenta)">The beat, a judgment<small>back to the floor</small></li></ul>
+        <div class="rm-room" style="--rc:var(--olive)"><b>The floor · everyone knows their part and dances to the beat</b><span>One shared record; roles say who acts; the workflow ticks on its own</span><span>The editor cuts, the colorist grades, the assistant stages the day, the post supervisor observes, each from anywhere</span><em>The rack by the storage renders; originals stay</em></div>
       </div>
     </div>
     <div class="phases">
@@ -609,17 +656,17 @@ footer a:hover{color:var(--ink)}
       <table>
         <thead><tr><th>Phase</th><th>Where</th><th>What would run</th><th>Scale, as an estimate</th></tr></thead>
         <tbody>
-        <tr><td>One</td><td data-l="Where">Your site, half a rack</td><td data-l="What would run">The engine and its database on one machine, one reading model, working storage</td><td data-l="Scale, as an estimate">One or two engines, single-digit seats, about five kilowatts</td></tr>
-        <tr><td>Two</td><td data-l="Where">The heavy room, a full rack</td><td data-l="What would run">GPU render workers, larger judging models, the activity log and usage metering, the hot cache</td><td data-l="Scale, as an estimate">About sixteen GPUs within a ten-kilowatt rack, repeatable per rack</td></tr>
-        <tr><td>Three</td><td data-l="Where">A regional site</td><td data-l="What would run">Regional seats with their own permissions, overflow render, an optional shared model gateway</td><td data-l="Scale, as an estimate">Seats and burst render; the main floor is never dependent on it</td></tr>
+        <tr><td>One</td><td data-l="Where">Your site: half a rack, or one cloud room</td><td data-l="What would run">The engine and its database on one machine, one reading model, working storage</td><td data-l="Scale, as an estimate">One or two engines, single-digit seats, about five kilowatts</td></tr>
+        <tr><td>Two</td><td data-l="Where">The heavy room: a full rack, or a cloud region</td><td data-l="What would run">GPU render workers, larger judging models, the activity log and usage metering, the hot cache</td><td data-l="Scale, as an estimate">About sixteen GPUs within a ten-kilowatt rack, repeatable per rack</td></tr>
+        <tr><td>Three</td><td data-l="Where">A regional site, or a cloud room</td><td data-l="What would run">Regional seats with their own permissions, overflow render, an optional shared model gateway</td><td data-l="Scale, as an estimate">Seats and burst render; the main floor is never dependent on it</td></tr>
         </tbody>
       </table>
       </div>
-      <p class="note">A second studio with its own storage is the same playbook: a room beside their media, on their own record. New hardware is needed only when sustained GPU use passes seventy percent.</p>
+      <p class="note">A second studio is the same playbook beside its own media. A rack grows when sustained GPU use passes seventy percent; a cloud room grows by the hour. Either way, every step carries its time and its cost.</p>
     </div>
     <div class="ask">
-      <div><b>What we need from you to start</b><ul><li>Where the media root lives, and how it is shared.</li><li>A rack slot with power for the first room.</li><li>The seats' machines and their DCC licenses: Premiere, Resolve, Pro Tools.</li><li>Who sits in which chair on day one.</li></ul></div>
-      <div><b>What you get in the first week</b><ul><li>A show set up from one sentence, on your floor.</li><li>One shoot day run end to end: arrival, dailies, rough cut, lock, hand-offs.</li><li>Every step receipted on your own record.</li><li>A walk-through with each chair at their own screen.</li></ul></div>
+      <div><b>What we need from you to start</b><ul><li>Where the media root lives, and how it is shared.</li><li>A rack slot with power, or a cloud account, for the first room.</li><li>The seats' machines and their DCC licenses: Premiere, Resolve, Pro Tools.</li><li>Who sits in which chair on day one.</li></ul></div>
+      <div><b>What you get in the first week</b><ul><li>A show set up from one sentence, on your floor.</li><li>One shoot day run end to end: arrival, dailies, rough cut, lock, hand-offs.</li><li>Every step receipted and metered on your own record.</li><li>A walk-through with each chair at their own screen.</li></ul></div>
     </div>
   </div>
 </section>
